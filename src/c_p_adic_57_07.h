@@ -35,10 +35,6 @@ p5707_t div_p5707(p5707_t a, p5707_t b);
 bool equ_p5707(p5707_t a, p5707_t b);
 // compare p-adic 57 07
 int com_p5707(p5707_t a, p5707_t b);
-// to string in decimal float 57 07. It'll allocate str. Don't forget to free it!
-int str_d_p5707(char **str, p5707_t a);
-// to string in binary float 57 07. It'll allocate str. Don't forget to free it!
-int str_b_p5707(char **str, p5707_t a);
 
 #endif //C_P_ADIC_57_07_H
 

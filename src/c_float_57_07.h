@@ -35,12 +35,6 @@ f5707_t div_f5707(f5707_t a, f5707_t b);
 bool equ_f5707(f5707_t a, f5707_t b);
 // compare float 57 07
 int com_f5707(f5707_t a, f5707_t b);
-// to string in decimal float 57 07. It'll allocate str. Don't forget to free it!
-int str_d_f5707(char **str, f5707_t a);
-// to string in binary float 57 07. It'll allocate str. Don't forget to free it!
-int str_b_f5707(char **str, f5707_t a);
-
-
 
 #endif // C_FLOAT_57_07_H
 

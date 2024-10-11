@@ -18,6 +18,12 @@ static void log_debug_float(const char* label, uint64_t f) {
     }
 }
 
+static void not_reachable() {
+    if (C_FLOAT_57_07_DEBUG) {
+        assert(false);
+    }
+}
+
 // get most significant bit for positive numbers
 static uint8_t get_msb_index_positive(uint64_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
@@ -30,9 +36,7 @@ static uint8_t get_msb_index_positive(uint64_t n) {
         }
     }
 
-    if (C_FLOAT_57_07_DEBUG) {
-        assert(false);
-    }
+    not_reachable();
     return 0; // This line should never be reached for non-zero input
 }
 
@@ -48,9 +52,7 @@ static uint8_t get_msb_index_128(__uint128_t n) {
         }
     }
 
-    if (C_FLOAT_57_07_DEBUG) {
-        assert(false);
-    }
+    not_reachable();
     return 0; // This line should never be reached for non-zero input
 }
 
@@ -305,7 +307,7 @@ f5707_t div_f5707(f5707_t a, f5707_t b) {
     }
 
     // Check for division by zero
-    if (sig_b == 0) {
+    if (sig_b == 0ULL) {
         if (posi_a) {
             return (((1ULL << (EXPONENT_BITS_F_57_07 - 2)) - 1) << SIGNIFICAND_BITS_F_57_07) | ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)) - 1); // Return max value as "infinity"
         } else {
@@ -358,21 +360,5 @@ int com_f5707(f5707_t a, f5707_t b) {
     if (exp_a < exp_b) return -1;
     if (sig_a > sig_b) return 1;
     return -1;
-}
-
-// to string in decimal float 57 07
-int str_d_f5707(char **restrict str, f5707_t a) {
-    uint64_t sig = sig_f5707(a);
-    uint64_t exp = exp_f5707(a);
-
-    return asprintf(str, "%ld x 2^%ld", sig, exp);
-}
-
-// to string in binary float 57 07
-int str_b_f5707(char **restrict str, f5707_t a) {
-    uint64_t sig = sig_f5707(a);
-    uint64_t exp = exp_f5707(a);
-
-    return asprintf(str, "0x%lx x 2^0x%lx", sig, exp);
 }
 

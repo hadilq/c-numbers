@@ -5,7 +5,7 @@
 ################################################################################
 
 CC = clang
-CFLAGS = -Wall -Wextra -std=gnu99 -O2
+CFLAGS = -Wall -Wextra -std=c99 -O2
 
 all: libcfloat5707.a libcpadic5707.a
 
