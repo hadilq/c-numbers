@@ -3,8 +3,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define _GNU_SOURCE
-
 static void log_debug_label(const char* label) {
     if (C_P_ADIC_57_07_DEBUG) {
         printf("%s\n", label);
@@ -266,8 +264,17 @@ p5707_t div_p5707(p5707_t a, p5707_t b) {
         exp_b |= SIGNIFICAND_MASK_P_57_07 << EXPONENT_BITS_P_57_07; // Fill the left with ones
     }
 
+    int8_t msb_b = get_msb_index(sig_b);
+    log_debug_p_adic("msb_b", msb_b);
+
+    // Normalize denominator
+    if (msb_b > 0) {
+        sig_b >>= msb_b;
+        exp_b += msb_b;
+    }
+
     // Check for division by zero
-    if (sig_b == 0) {
+    if (sig_b == 0ULL) {
         if (posi_a) {
             return (((1ULL << (EXPONENT_BITS_P_57_07 - 1)) - 1) << SIGNIFICAND_BITS_P_57_07) | ((1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) - 1); // Return max value as "infinity"
         } else {
@@ -275,23 +282,36 @@ p5707_t div_p5707(p5707_t a, p5707_t b) {
         }
     }
 
-    // Perform division
-    __uint128_t temp_sig = ((__uint128_t)sig_a << SIGNIFICAND_BITS_P_57_07) / sig_b;
-    log_debug_p_adic("result significand", temp_sig);
-
     // Adjust exponent
     uint64_t result_exp = exp_a - exp_b;
 
-    int8_t msb = get_msb_index_128(temp_sig);
-    log_debug_p_adic("msb", msb);
+    // Perform division
+    uint64_t result_sig = 0ULL;
 
-    // Normalize result
-    uint64_t result_sig = (uint64_t)temp_sig & SIGNIFICAND_MASK_P_57_07;
-    if (msb > 0) {
-        result_sig = temp_sig >> msb;
+    uint64_t carry = 0ULL;
+    uint64_t mask_r = 1ULL;
+    let((sig_b | 1ULL) != 0ULL);
+    for (int8_t i = 0; i < SIGNIFICAND_BITS_P_57_07; i++) {
+        uint64_t mask_j = 2ULL;
+        if (i > 0) {
+            mask_r = 1ULL << (i - 1);
+        }
+
+        for (int8_t j = 0; j < i; j++) {
+            carry += ((result_sig & mask_r) >> (i - j - 1)) * ((sig_b & mask_j) >> (j + 1));
+            mask_j <<= 1;
+            mask_r >>= 1;
+        }
+        uint64_t carry_0 = (carry & 1ULL) << i;
+        uint64_t sig_a_i = sig_a & (1ULL << i);
+        if (carry_0 > 0) {
+            result_sig += carry_0 - sig_a_i;
+        } else {
+            result_sig += sig_a & (1ULL << i);
+        }
+        carry >>= 1;
     }
-    log_debug_p_adic("result significand", result_sig);
-    log_debug_p_adic("result exp", result_exp);
+
 
     if (posi_a ^ posi_b) {
         result_sig = ~(result_sig - 1);

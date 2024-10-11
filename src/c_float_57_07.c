@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define _GNU_SOURCE
-
 static void log_debug_label(const char* label) {
     if (C_FLOAT_57_07_DEBUG) {
         printf("%s\n", label);

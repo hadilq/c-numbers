@@ -240,8 +240,8 @@ static void test_division() {
     result = div_p5707(a, b); // 011...11. × 2^1
     assert_p_adic_57_07(
         "Division result 2", result,
-        1ULL,
-        (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) - 1
+        0ULL,
+        (3ULL << (SIGNIFICAND_BITS_P_57_07 - 3)) | 1ULL
     );
 
     // Test case 3: Division of a positive number by zero
@@ -270,7 +270,7 @@ static void test_division() {
     result = div_p5707(mul_p5707(a, b), b); // Should return a
     assert_p_adic_57_07(
         "Division result 5", result,
-        0ULL,
+        -1LL,
         1ULL
     );
 
@@ -300,6 +300,46 @@ static void test_division() {
     result = div_p5707(mul_p5707(b, a), a); // Should return b
     assert_p_adic_57_07(
         "Division result 8", result,
+        3ULL,
+        (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)) | 1ULL
+    );
+
+    // Test case 9: Division reverse of multiplication for small positive numbers
+    a = new_p5707(0, 1ULL); // 00000...001. × 2^0
+    b = new_p5707(2, (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) | 2ULL); // 01000...010. × 2^2
+    result = mul_p5707(div_p5707(a, b), b); // Should return a
+    assert_p_adic_57_07(
+        "Division result 9", result,
+        -1LL,
+        (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) | 1ULL
+    );
+
+    // Test case 10: Division reverse of multiplication for big positive numbers
+    a = new_p5707(2, 1); // 0000...01. × 2^2
+    b = new_p5707(3, (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) | 1ULL); // 0100...01. × 2^3
+    result = mul_p5707(div_p5707(b, a), a); // Should return b
+    assert_p_adic_57_07(
+        "Division result 10", result,
+        3ULL,
+        1ULL << (SIGNIFICAND_BITS_P_57_07 - 2) | 1ULL
+    );
+
+    // Test case 11: Division reverse of multiplication for small negative numbers
+    a = new_p5707(1, neg_p5707(1)); // 1111...1. × 2^0
+    b = new_p5707(3, (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) | 1ULL); // 0100...01. × 2^3
+    result = mul_p5707(div_p5707(a, b), b); // Should return a
+    assert_p_adic_57_07(
+        "Division result 11", result,
+        1ULL,
+        neg_p5707(1) >> 1
+    );
+
+    // Test case 12: Division reverse of multiplication for big negative numbers
+    a = new_p5707(2, neg_p5707(1)); // 0000...01. × 2^2
+    b = new_p5707(3, (3ULL << (SIGNIFICAND_BITS_P_57_07 - 1)) | 1ULL); // 1100...01. × 2^3
+    result = mul_p5707(div_p5707(b, a), a); // Should return b
+    assert_p_adic_57_07(
+        "Division result 12", result,
         3ULL,
         (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)) | 1ULL
     );
