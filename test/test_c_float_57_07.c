@@ -331,7 +331,7 @@ int main() {
     test_division();
     test_equals_and_compare();
 
-    printf("All float 57 07 tests passed!\n");
+    printf("All float 57_07 tests passed!\n");
     return 0;
 }
 

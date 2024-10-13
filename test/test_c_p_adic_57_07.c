@@ -250,7 +250,7 @@ static void test_division() {
     result = div_p5707(a, b); // Should return max value as "infinity"
     assert_p_adic_57_07(
         "Division result 3", result,
-        (1ULL << (EXPONENT_BITS_P_57_07 - 1)) - 1,
+        (1ULL << (EXPONENT_BITS_P_57_07 - 2)) - 1,
         (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) - 1
     );
 
@@ -260,7 +260,7 @@ static void test_division() {
     result = div_p5707(a, b); // Should return min value as "-infinity"
     assert_p_adic_57_07(
         "Division result 4", result,
-        (1ULL << (EXPONENT_BITS_P_57_07 - 1)) - 1,
+        (1ULL << (EXPONENT_BITS_P_57_07 - 2)) - 1,
         1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)
     );
 
@@ -371,7 +371,7 @@ int main() {
     test_division();
     test_equals_and_compare();
 
-    printf("All p-adic 57 07 tests passed!\n");
+    printf("All p-adic 57_07 tests passed!\n");
     return 0;
 }
 

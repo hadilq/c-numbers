@@ -276,9 +276,9 @@ p5707_t div_p5707(p5707_t a, p5707_t b) {
     // Check for division by zero
     if (sig_b == 0ULL) {
         if (posi_a) {
-            return (((1ULL << (EXPONENT_BITS_P_57_07 - 1)) - 1) << SIGNIFICAND_BITS_P_57_07) | ((1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) - 1); // Return max value as "infinity"
+            return (((1ULL << (EXPONENT_BITS_P_57_07 - 2)) - 1) << SIGNIFICAND_BITS_P_57_07) | ((1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) - 1); // Return max value as "infinity"
         } else {
-            return (((1ULL << (EXPONENT_BITS_P_57_07 - 1)) - 1) << SIGNIFICAND_BITS_P_57_07) | (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)); // Return min value as "-infinity"
+            return (((1ULL << (EXPONENT_BITS_P_57_07 - 2)) - 1) << SIGNIFICAND_BITS_P_57_07) | (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)); // Return min value as "-infinity"
         }
     }
 
