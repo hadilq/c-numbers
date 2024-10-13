@@ -196,7 +196,7 @@ static void test_multiplication() {
     result = mul_p5707(a, b); // 01111...001. × 2^2
     assert_p_adic_57_07(
         "Multiplication result 4", result,
-        2ULL,
+        30ULL,
         ((1ULL << (SIGNIFICAND_BITS_P_57_07 / 2 + 1)) - 1) << (SIGNIFICAND_BITS_P_57_07 /  2) | 1ULL
     );
 
@@ -270,7 +270,7 @@ static void test_division() {
     result = div_p5707(mul_p5707(a, b), b); // Should return a
     assert_p_adic_57_07(
         "Division result 5", result,
-        -1LL,
+        0ULL,
         1ULL
     );
 
@@ -310,7 +310,7 @@ static void test_division() {
     result = mul_p5707(div_p5707(a, b), b); // Should return a
     assert_p_adic_57_07(
         "Division result 9", result,
-        -1LL,
+        0ULL,
         (1ULL << (SIGNIFICAND_BITS_P_57_07 - 2)) | 1ULL
     );
 

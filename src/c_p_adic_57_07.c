@@ -218,6 +218,7 @@ p5707_t mul_p5707(p5707_t a, p5707_t b) {
     uint64_t result_sig = (uint64_t)temp_sig & SIGNIFICAND_MASK_P_57_07;
     if (msb > 0) {
         result_sig = temp_sig >> msb;
+        result_exp += msb;
     }
     log_debug_p_adic("result significand", result_sig);
     log_debug_p_adic("result exp", result_exp);

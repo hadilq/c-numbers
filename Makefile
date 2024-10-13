@@ -24,4 +24,6 @@ clean:
 test: test_prog
 	./test/test_c_float_57_07.a
 	./test/test_c_p_adic_57_07.a
+	./test/test_c_float_26_06.a
+	./test/test_c_p_adic_26_06.a
 
