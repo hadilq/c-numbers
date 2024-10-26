@@ -201,7 +201,12 @@ f2606_t neg_f2606(f2606_t b) {
     uint32_t sig_b = b & SIGNIFICAND_MASK_F_26_06;
 
     // Flip all bits of significand for two's complement
-    sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_26_06;
+    if ((1ULL << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_b)) {
+        // negative
+        sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_F_26_06;
+    } else {
+        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_26_06;
+    }
 
     return exp_b | sig_b;
 }

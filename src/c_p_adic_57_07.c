@@ -165,7 +165,12 @@ p5707_t neg_p5707(p5707_t b) {
     uint64_t sig_b = b & SIGNIFICAND_MASK_P_57_07;
 
     // Flip all bits of significand for two's complement
-    sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_57_07;
+    if ((1ULL << (SIGNIFICAND_BITS_P_57_07 - 1) & sig_b)) {
+        // negative
+        sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_P_57_07;
+    } else {
+        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_57_07;
+    }
 
     return exp_b | sig_b;
 }
