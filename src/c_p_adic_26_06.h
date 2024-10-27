@@ -17,25 +17,25 @@ typedef uint32_t p2606_t;
 #define SIGNIFICAND_SIGN_MASK_P_26_06 (1U << (SIGNIFICAND_BITS_P_26_06 - 1))
 #define EXPONENT_SIGN_MASK_P_26_06 (1U << (EXPONENT_BITS_P_26_06 - 1))
 
-// construct p-adic 26 06
+// construct p-adic 2606
 p2606_t new_p2606(uint32_t exp, uint32_t sig);
-// exponent part of p-adic 26 06
+// exponent part of p-adic 2606
 uint32_t exp_p2606(p2606_t a);
-// significand part of p-adic 26 06
+// significand part of p-adic 2606
 uint32_t sig_p2606(p2606_t a);
-// add p-adic 26 06
+// add p-adic 2606
 p2606_t add_p2606(p2606_t a, p2606_t b);
-// subtract p-adic 26 06
+// subtract p-adic 2606
 p2606_t sub_p2606(p2606_t a, p2606_t b);
-// negate p-adic 26 06
+// negate p-adic 2606
 p2606_t neg_p2606(p2606_t a);
-// multiply p-adic 26 06
+// multiply p-adic 2606
 p2606_t mul_p2606(p2606_t a, p2606_t b);
-// divide p-adic 26 06
+// divide p-adic 2606
 p2606_t div_p2606(p2606_t a, p2606_t b);
-// equals p-adic 26 06
+// equals p-adic 2606
 bool equ_p2606(p2606_t a, p2606_t b);
-// compare p-adic 26 06
+// compare p-adic 2606
 int com_p2606(p2606_t a, p2606_t b);
 
 #endif //C_P_ADIC_26_06_H

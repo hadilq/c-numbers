@@ -17,25 +17,25 @@ typedef uint16_t f1105_t;
 #define SIGNIFICAND_SIGN_MASK_F_11_05 (1U << (SIGNIFICAND_BITS_F_11_05 - 1))
 #define EXPONENT_SIGN_MASK_F_11_05 (1U << (EXPONENT_BITS_F_11_05 - 1))
 
-// construct float 11 05
+// construct float 1105
 f1105_t new_f1105(uint16_t exp, uint16_t sig);
-// exponent part of float 11 05
+// exponent part of float 1105
 uint16_t exp_f1105(f1105_t a);
-// significand part of float 11 05
+// significand part of float 1105
 uint16_t sig_f1105(f1105_t a);
-// add float 11 05
+// add float 1105
 f1105_t add_f1105(f1105_t a, f1105_t b);
-// subtract float 11 05
+// subtract float 1105
 f1105_t sub_f1105(f1105_t a, f1105_t b);
-// negate float 11 05
+// negate float 1105
 f1105_t neg_f1105(f1105_t a);
-// multiply float 11 05
+// multiply float 1105
 f1105_t mul_f1105(f1105_t a, f1105_t b);
-// divide float 11 05
+// divide float 1105
 f1105_t div_f1105(f1105_t a, f1105_t b);
-// equals float 11 05
+// equals float 1105
 bool equ_f1105(f1105_t a, f1105_t b);
-// compare float 11 05
+// compare float 1105
 int com_f1105(f1105_t a, f1105_t b);
 
 #endif // C_FLOAT_11_05_H

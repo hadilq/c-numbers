@@ -1,38 +1,38 @@
-#include "c_p_adic_11_05.h"
+#include "c_p_adic_16.h"
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 
 static void log_debug_label(const char* label) {
-    if (C_P_ADIC_11_05_DEBUG) {
+    if (C_P_ADIC_CCC_16_DEBUG) {
         printf("%s\n", label);
     }
 }
 
 static void log_debug_p_adic(const char* label, uint16_t f) {
-    if (C_P_ADIC_11_05_DEBUG) {
+    if (C_P_ADIC_CCC_16_DEBUG) {
         printf("%s: %d, 0x%x\n", label, f, f);
     }
 }
 
 static void not_reachable() {
-    if (C_P_ADIC_11_05_DEBUG) {
+    if (C_P_ADIC_CCC_16_DEBUG) {
         assert(false);
     }
 }
 
 static void let(bool assumption) {
-    if (C_P_ADIC_11_05_DEBUG) {
+    if (C_P_ADIC_CCC_16_DEBUG) {
         assert(assumption);
     }
 }
 
 // get most significant bit for positive numbers
 static uint8_t get_msb_index(uint16_t n) {
-    if (n == 0) return SIGNIFICAND_BITS_P_11_05 - 1; // Handle 0 as a special case
+    if (n == 0) return SIGNIFICAND_BITS_P_CCC_16 - 1; // Handle 0 as a special case
 
-    uint16_t copy = n << EXPONENT_BITS_P_11_05;
-    for (uint8_t i = SIGNIFICAND_BITS_P_11_05 - 1; i >= 0; i--) {
+    uint16_t copy = n << EXPONENT_BITS_P_CCC_16;
+    for (uint8_t i = SIGNIFICAND_BITS_P_CCC_16 - 1; i >= 0; i--) {
         copy <<= 1;
         if (copy == 0) {
             return i;
@@ -47,9 +47,9 @@ static uint8_t get_msb_index(uint16_t n) {
 static uint8_t get_msb_index_32(uint32_t n) {
     if (n == 0U) return 0; // Handle 0 as a special case
 
-    uint32_t copy = n << (2 * EXPONENT_BITS_P_11_05);
+    uint32_t copy = n << (2 * EXPONENT_BITS_P_CCC_16);
     if (copy == 0U) return 0; // Handle 0 as a special case
-    for (uint8_t i = 2 * SIGNIFICAND_BITS_P_11_05 - 1; i >= 0; i--) {
+    for (uint8_t i = 2 * SIGNIFICAND_BITS_P_CCC_16 - 1; i >= 0; i--) {
         copy <<= 1;
         if (copy == 0U) {
             return i;
@@ -60,40 +60,40 @@ static uint8_t get_msb_index_32(uint32_t n) {
     return 0; // This line should never be reached for non-zero input
 }
 
-// construct p-adic 1105
-p1105_t new_p1105(uint16_t exp, uint16_t sig) {
-    return (exp << SIGNIFICAND_BITS_P_11_05) | (sig & SIGNIFICAND_MASK_P_11_05);
+// construct p-adic DDD16
+pDDD16_t new_pDDD16(uint16_t exp, uint16_t sig) {
+    return (exp << SIGNIFICAND_BITS_P_CCC_16) | (sig & SIGNIFICAND_MASK_P_CCC_16);
 }
 
-// exponent part of p-adic 1105
-uint16_t exp_p1105(p1105_t a) {
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
+// exponent part of p-adic DDD16
+uint16_t exp_pDDD16(pDDD16_t a) {
+    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
 
     // Handle negatives exponents
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_a)) {
-        exp_a |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_a)) {
+        exp_a |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
     return exp_a;
 }
 
-// significand part of p-adic 1105
-uint16_t sig_p1105(p1105_t a) {
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
+// significand part of p-adic DDD16
+uint16_t sig_pDDD16(pDDD16_t a) {
+    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
 
     // Handle negative numbers
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_a)) {
-        sig_a |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_a)) {
+        sig_a |= EXPONENT_MASK_P_CCC_16;
     }
     return sig_a;
 }
 
-// add p-adic 1105
-p1105_t add_p1105(p1105_t a, p1105_t b) {
+// add p-adic DDD16
+pDDD16_t add_pDDD16(pDDD16_t a, pDDD16_t b) {
     // Extract exponent and significand
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
+    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
+    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
     uint16_t result_exp = exp_a;
     log_debug_p_adic("exp_a", exp_a);
     log_debug_p_adic("exp_b", exp_b);
@@ -101,21 +101,21 @@ p1105_t add_p1105(p1105_t a, p1105_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_a)) {
-        sig_a |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_a)) {
+        sig_a |= EXPONENT_MASK_P_CCC_16;
         log_debug_label("a is negative");
     }
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_b)) {
-        sig_b |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_b)) {
+        sig_b |= EXPONENT_MASK_P_CCC_16;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_a)) {
-        exp_a |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_a)) {
+        exp_a |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_b)) {
-        exp_b |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_b)) {
+        exp_b |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
 
     // Align significands and handle negatives
@@ -152,34 +152,34 @@ p1105_t add_p1105(p1105_t a, p1105_t b) {
     }
 
     // Assemble result
-    return new_p1105(result_exp, result_sig);
+    return new_pDDD16(result_exp, result_sig);
 }
 
-p1105_t sub_p1105(p1105_t a, p1105_t b) {
-    return add_p1105(a, neg_p1105(b));
+pDDD16_t sub_pDDD16(pDDD16_t a, pDDD16_t b) {
+    return add_pDDD16(a, neg_pDDD16(b));
 }
 
-p1105_t neg_p1105(p1105_t b) {
+pDDD16_t neg_pDDD16(pDDD16_t b) {
     // Negate b and add
-    uint16_t exp_b = b & EXPONENT_MASK_P_11_05;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
+    uint16_t exp_b = b & EXPONENT_MASK_P_CCC_16;
+    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
 
     // Flip all bits of significand for two's complement
-    if ((1ULL << (SIGNIFICAND_BITS_P_11_05 - 1) & sig_b)) {
+    if ((1ULL << (SIGNIFICAND_BITS_P_CCC_16 - 1) & sig_b)) {
         // negative
-        sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_P_11_05;
+        sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_P_CCC_16;
     } else {
-        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_11_05;
+        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_CCC_16;
     }
 
     return exp_b | sig_b;
 }
 
-p1105_t mul_p1105(p1105_t a, p1105_t b) {
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
+pDDD16_t mul_pDDD16(pDDD16_t a, pDDD16_t b) {
+    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
+    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
     bool posi_a = true;
     bool posi_b = true;
     log_debug_p_adic("exp_a", exp_a);
@@ -188,25 +188,25 @@ p1105_t mul_p1105(p1105_t a, p1105_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_a)) {
-        sig_a |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_a)) {
+        sig_a |= EXPONENT_MASK_P_CCC_16;
         posi_a = false;
-        sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_11_05;
+        sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_CCC_16;
         log_debug_label("a is negative");
     }
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_b)) {
-        sig_b |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_b)) {
+        sig_b |= EXPONENT_MASK_P_CCC_16;
         posi_b = false;
-        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_11_05;
+        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_CCC_16;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_a)) {
-        exp_a |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_a)) {
+        exp_a |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_b)) {
-        exp_b |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_b)) {
+        exp_b |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
 
     // Multiply significands
@@ -220,7 +220,7 @@ p1105_t mul_p1105(p1105_t a, p1105_t b) {
     log_debug_p_adic("msb", msb);
 
     // Normalize result
-    uint16_t result_sig = (uint16_t)temp_sig & SIGNIFICAND_MASK_P_11_05;
+    uint16_t result_sig = (uint16_t)temp_sig & SIGNIFICAND_MASK_P_CCC_16;
     if (msb > 0) {
         result_sig = temp_sig >> msb;
         result_exp += msb;
@@ -233,14 +233,14 @@ p1105_t mul_p1105(p1105_t a, p1105_t b) {
         log_debug_p_adic("result significand", result_sig);
     }
 
-    return new_p1105(result_exp, result_sig);
+    return new_pDDD16(result_exp, result_sig);
 }
 
-p1105_t div_p1105(p1105_t a, p1105_t b) {
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
+pDDD16_t div_pDDD16(pDDD16_t a, pDDD16_t b) {
+    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
+    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
     bool posi_a = true;
     bool posi_b = true;
     log_debug_p_adic("exp_a", exp_a);
@@ -249,25 +249,25 @@ p1105_t div_p1105(p1105_t a, p1105_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_a)) {
-        sig_a |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_a)) {
+        sig_a |= EXPONENT_MASK_P_CCC_16;
         posi_a = false;
-        sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_11_05;
+        sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_CCC_16;
         log_debug_label("a is negative");
     }
-    if ((SIGNIFICAND_SIGN_MASK_P_11_05 & sig_b)) {
-        sig_b |= EXPONENT_MASK_P_11_05;
+    if ((SIGNIFICAND_SIGN_MASK_P_CCC_16 & sig_b)) {
+        sig_b |= EXPONENT_MASK_P_CCC_16;
         posi_b = false;
-        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_11_05;
+        sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_CCC_16;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_a)) {
-        exp_a |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_a)) {
+        exp_a |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
-    if ((EXPONENT_SIGN_MASK_P_11_05 & exp_b)) {
-        exp_b |= SIGNIFICAND_MASK_P_11_05 << EXPONENT_BITS_P_11_05; // Fill the left with ones
+    if ((EXPONENT_SIGN_MASK_P_CCC_16 & exp_b)) {
+        exp_b |= SIGNIFICAND_MASK_P_CCC_16 << EXPONENT_BITS_P_CCC_16; // Fill the left with ones
     }
 
     int8_t msb_b = get_msb_index(sig_b);
@@ -283,12 +283,12 @@ p1105_t div_p1105(p1105_t a, p1105_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_P_11_05 - 2)) - 1) << SIGNIFICAND_BITS_P_11_05)
-                   | ((1U << (SIGNIFICAND_BITS_P_11_05 - 2)) - 1);
+            return (((1U << (EXPONENT_BITS_P_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_16)
+                   | ((1U << (SIGNIFICAND_BITS_P_CCC_16 - 2)) - 1);
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_P_11_05 - 2)) - 1) << SIGNIFICAND_BITS_P_11_05)
-                   | (SIGNIFICAND_SIGN_MASK_P_11_05);
+            return (((1U << (EXPONENT_BITS_P_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_16)
+                   | (SIGNIFICAND_SIGN_MASK_P_CCC_16);
         }
     }
 
@@ -301,7 +301,7 @@ p1105_t div_p1105(p1105_t a, p1105_t b) {
     uint16_t carry = 0U;
     uint16_t mask_r = 1U;
     let((sig_b | 1U) != 0U);
-    for (int8_t i = 0; i < SIGNIFICAND_BITS_P_11_05; i++) {
+    for (int8_t i = 0; i < SIGNIFICAND_BITS_P_CCC_16; i++) {
         uint16_t mask_j = 2U;
         if (i > 0) {
             mask_r = 1U << (i - 1);
@@ -328,20 +328,20 @@ p1105_t div_p1105(p1105_t a, p1105_t b) {
         log_debug_p_adic("result significand", result_sig );
     }
 
-    return new_p1105(result_exp, result_sig);
+    return new_pDDD16(result_exp, result_sig);
 }
 
-bool equ_p1105(p1105_t a, p1105_t b) {
+bool equ_pDDD16(pDDD16_t a, pDDD16_t b) {
     return a == b;
 }
 
-int com_p1105(p1105_t a, p1105_t b) {
+int com_pDDD16(pDDD16_t a, pDDD16_t b) {
     if (a == b) return 0;
 
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
+    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
+    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

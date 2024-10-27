@@ -17,25 +17,25 @@ typedef uint8_t p0404_t;
 #define SIGNIFICAND_SIGN_MASK_P_04_04 (1U << (SIGNIFICAND_BITS_P_04_04 - 1))
 #define EXPONENT_SIGN_MASK_P_04_04 (1U << (EXPONENT_BITS_P_04_04 - 1))
 
-// construct p-adic 04 04
+// construct p-adic 0404
 p0404_t new_p0404(uint8_t exp, uint8_t sig);
-// exponent part of p-adic 04 04
+// exponent part of p-adic 0404
 uint8_t exp_p0404(p0404_t a);
-// significand part of p-adic 04 04
+// significand part of p-adic 0404
 uint8_t sig_p0404(p0404_t a);
-// add p-adic 04 04
+// add p-adic 0404
 p0404_t add_p0404(p0404_t a, p0404_t b);
-// subtract p-adic 04 04
+// subtract p-adic 0404
 p0404_t sub_p0404(p0404_t a, p0404_t b);
-// negate p-adic 04 04
+// negate p-adic 0404
 p0404_t neg_p0404(p0404_t a);
-// multiply p-adic 04 04
+// multiply p-adic 0404
 p0404_t mul_p0404(p0404_t a, p0404_t b);
-// divide p-adic 04 04
+// divide p-adic 0404
 p0404_t div_p0404(p0404_t a, p0404_t b);
-// equals p-adic 04 04
+// equals p-adic 0404
 bool equ_p0404(p0404_t a, p0404_t b);
-// compare p-adic 04 04
+// compare p-adic 0404
 int com_p0404(p0404_t a, p0404_t b);
 
 #endif //C_P_ADIC_04_04_H
