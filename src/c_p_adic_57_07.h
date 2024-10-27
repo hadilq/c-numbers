@@ -14,6 +14,8 @@ typedef uint64_t p5707_t;
 
 #define SIGNIFICAND_MASK_P_57_07 ((1ULL << SIGNIFICAND_BITS_P_57_07) - 1)
 #define EXPONENT_MASK_P_57_07 (((1ULL << EXPONENT_BITS_P_57_07) - 1) << SIGNIFICAND_BITS_P_57_07)
+#define SIGNIFICAND_SIGN_MASK_P_57_07 (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1))
+#define EXPONENT_SIGN_MASK_P_57_07 (1ULL << (EXPONENT_BITS_P_57_07 - 1))
 
 // construct p-adic 57 07
 p5707_t new_p5707(uint64_t exp, uint64_t sig);

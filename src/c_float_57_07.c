@@ -10,7 +10,7 @@ static void log_debug_label(const char* label) {
     }
 }
 
-static void log_debug_float(const char* label, uint64_t f) {
+static void log_debug_float(const char* label, int64_t f) {
     if (C_FLOAT_57_07_DEBUG) {
         printf("%s: %ld, 0x%lx\n", label, f, f);
     }
@@ -56,19 +56,17 @@ static uint8_t get_msb_index_128(__uint128_t n) {
 
 // get most significant bit for negative numbers
 static uint8_t get_msb_index_negative(uint64_t n) {
-    if (n == 0) return 0; // Handle 0 as a special case
+    uint64_t copy = ~n;
+    if (copy == 0) return 0; // Handle -1 as a special case
 
-    uint64_t copy = n;
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_57_07; i++) {
         copy >>= 1;
-        if (~copy == 0) {
+        if (copy == 0) {
             return i;
         }
     }
 
-    if (C_FLOAT_57_07_DEBUG) {
-        assert(false);
-    }
+    not_reachable();
     return 0; // This line should never be reached for non-zero input
 }
 
@@ -82,7 +80,7 @@ uint64_t exp_f5707(f5707_t a) {
     uint64_t exp_a = (a & EXPONENT_MASK_F_57_07) >> SIGNIFICAND_BITS_F_57_07;
 
     // Handle negatives exponents
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
     return exp_a;
@@ -93,7 +91,7 @@ uint64_t sig_f5707(f5707_t a) {
     uint64_t sig_a = a & SIGNIFICAND_MASK_F_57_07;
 
     // Handle negative numbers
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_57_07;
     }
     return sig_a;
@@ -115,22 +113,22 @@ f5707_t add_f5707(f5707_t a, f5707_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_57_07;
         posi_a = false;
         log_debug_label("a is negative");
     }
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_57_07;
         posi_b = false;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
 
@@ -169,7 +167,7 @@ f5707_t add_f5707(f5707_t a, f5707_t b) {
        posi_result = false;
     }
 
-    int8_t msb = SIGNIFICAND_BITS_F_57_07 - 1;
+    int8_t msb;
     if (posi_result) {
         msb = get_msb_index_positive(result_sig);
     } else {
@@ -201,7 +199,7 @@ f5707_t neg_f5707(f5707_t b) {
     uint64_t sig_b = b & SIGNIFICAND_MASK_F_57_07;
 
     // Flip all bits of significand for two's complement
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_b)) {
         // negative
         sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_F_57_07;
     } else {
@@ -224,13 +222,13 @@ f5707_t mul_f5707(f5707_t a, f5707_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_57_07;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_F_57_07;
         log_debug_label("a is negative");
     }
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_57_07;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_57_07;
@@ -238,10 +236,10 @@ f5707_t mul_f5707(f5707_t a, f5707_t b) {
     }
 
     // Handle negatives exponents
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
 
@@ -288,13 +286,13 @@ f5707_t div_f5707(f5707_t a, f5707_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_57_07;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_F_57_07;
         log_debug_label("a is negative");
     }
-    if ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_57_07 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_57_07;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_57_07;
@@ -302,19 +300,23 @@ f5707_t div_f5707(f5707_t a, f5707_t b) {
     }
 
     // Handle negatives exponents
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
-    if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_57_07 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_57_07 << EXPONENT_BITS_F_57_07; // Fill the left with ones
     }
 
     // Check for division by zero
     if (sig_b == 0ULL) {
         if (posi_a) {
-            return (((1ULL << (EXPONENT_BITS_F_57_07 - 2)) - 1) << SIGNIFICAND_BITS_F_57_07) | ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)) - 1); // Return max value as "infinity"
+            // Return max value as "infinity"
+            return (((1ULL << (EXPONENT_BITS_F_57_07 - 2)) - 1) << SIGNIFICAND_BITS_F_57_07)
+                   | ((1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)) - 1);
         } else {
-            return (((1ULL << (EXPONENT_BITS_F_57_07 - 2)) - 1) << SIGNIFICAND_BITS_F_57_07) | (1ULL << (SIGNIFICAND_BITS_F_57_07 - 1)); // Return min value as "-infinity"
+            // Return min value as "-infinity"
+            return (((1ULL << (EXPONENT_BITS_F_57_07 - 2)) - 1) << SIGNIFICAND_BITS_F_57_07)
+                   | (SIGNIFICAND_SIGN_MASK_F_57_07);
         }
     }
 

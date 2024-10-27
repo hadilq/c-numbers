@@ -14,7 +14,7 @@ static void print_float_26_06(const char* label, f2606_t f) {
         if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp)) {
             exp |= ((1U << SIGNIFICAND_BITS_F_26_06) - 1) << EXPONENT_BITS_F_26_06; // Fill the left with ones
         }
-        printf("%s: Exponent: %d, Significand: 0x%x, FULL value: 0x%x\n", label, exp, sig, f);
+        printf("%s: f2606: Exponent: %d, Significand: 0x%x, FULL value: 0x%x\n", label, exp, sig, f);
     }
 }
 
@@ -119,10 +119,10 @@ static void test_subtraction() {
     // Test case 3: Subtraction requiring normalization
     a = new_f2606(2, (1U << (SIGNIFICAND_BITS_F_26_06 - 2)) | 4U); // 0.10000...100 × 2^2
     b = new_f2606(2, (1U << (SIGNIFICAND_BITS_F_26_06 - 2)) | 3U); // 0.10000...011 × 2^2
-    result = sub_f2606(a, b); // 0.10000...000 × 2^(-(SIGNIFICAND_BITS_F_26_06 - 2) + 2)
+    result = sub_f2606(a, b); // 0.10000...000 × 2^((sig_bits - 2)-(2 + 1))
     assert_float_26_06(
         "Subtraction result 3", result,
-        ~(SIGNIFICAND_BITS_F_26_06 - 4U - 1U),
+        (~(SIGNIFICAND_BITS_F_26_06 - 2) & ((1U << EXPONENT_BITS_F_26_06) - 1)) + 1U + 2U,
         1U << (SIGNIFICAND_BITS_F_26_06 - 2)
     );
 
@@ -196,8 +196,7 @@ static void test_multiplication() {
     result = mul_f2606(a, b); // 0.10...000 × 2^30
     assert_float_26_06(
         "Multiplication result 4", result,
-        // FIXME: it's suspicious!!
-        30,
+        neg_f2606(34U) & ((1U << EXPONENT_BITS_F_26_06) - 1),
         (1U << (SIGNIFICAND_BITS_F_26_06 - 2))
     );
 

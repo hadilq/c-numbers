@@ -14,7 +14,7 @@ static void print_p_adic_57_07(const char* label, p5707_t f) {
         if ((1ULL << (EXPONENT_BITS_P_57_07 - 1) & exp)) {
             exp |= ((1ULL << SIGNIFICAND_BITS_P_57_07) - 1) << EXPONENT_BITS_P_57_07; // Fill the left with ones
         }
-        printf("%s: Exponent: %ld, Significand: 0x%lx, Full value: 0x%lx\n", label, exp, sig, f);
+        printf("%s: p5707: Exponent: %ld, Significand: 0x%lx, Full value: 0x%lx\n", label, exp, sig, f);
     }
 }
 

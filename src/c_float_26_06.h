@@ -12,28 +12,30 @@
 
 typedef uint32_t f2606_t;
 
-#define SIGNIFICAND_MASK_F_26_06 ((1U << SIGNIFICAND_BITS_F_26_06) - 1)
-#define EXPONENT_MASK_F_26_06 (((1U << EXPONENT_BITS_F_26_06) - 1) << SIGNIFICAND_BITS_F_26_06)
+#define SIGNIFICAND_MASK_F_26_06 ((1UL << SIGNIFICAND_BITS_F_26_06) - 1)
+#define EXPONENT_MASK_F_26_06 (((1UL << EXPONENT_BITS_F_26_06) - 1) << SIGNIFICAND_BITS_F_26_06)
+#define SIGNIFICAND_SIGN_MASK_F_26_06 (1UL << (SIGNIFICAND_BITS_F_26_06 - 1))
+#define EXPONENT_SIGN_MASK_F_26_06 (1UL << (EXPONENT_BITS_F_26_06 - 1))
 
-// construct float 57 07
+// construct float 26 06
 f2606_t new_f2606(uint32_t exp, uint32_t sig);
-// exponent part of float 57 07
+// exponent part of float 26 06
 uint32_t exp_f2606(f2606_t a);
-// significand part of float 57 07
+// significand part of float 26 06
 uint32_t sig_f2606(f2606_t a);
-// add float 57 07
+// add float 26 06
 f2606_t add_f2606(f2606_t a, f2606_t b);
-// subtract float 57 07
+// subtract float 26 06
 f2606_t sub_f2606(f2606_t a, f2606_t b);
-// negate float 57 07
+// negate float 26 06
 f2606_t neg_f2606(f2606_t a);
-// multiply float 57 07
+// multiply float 26 06
 f2606_t mul_f2606(f2606_t a, f2606_t b);
-// divide float 57 07
+// divide float 26 06
 f2606_t div_f2606(f2606_t a, f2606_t b);
-// equals float 57 07
+// equals float 26 06
 bool equ_f2606(f2606_t a, f2606_t b);
-// compare float 57 07
+// compare float 26 06
 int com_f2606(f2606_t a, f2606_t b);
 
 #endif // C_FLOAT_26_06_H

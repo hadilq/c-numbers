@@ -14,7 +14,7 @@ static void print_float_57_07(const char* label, f5707_t f) {
         if ((1ULL << (EXPONENT_BITS_F_57_07 - 1) & exp)) {
             exp |= ((1ULL << SIGNIFICAND_BITS_F_57_07) - 1) << EXPONENT_BITS_F_57_07; // Fill the left with ones
         }
-        printf("%s: Exponent: %ld, Significand: 0x%lx, Full value: 0x%lx\n", label, exp, sig, f);
+        printf("%s: f5707: Exponent: %ld, Significand: 0x%lx, Full value: 0x%lx\n", label, exp, sig, f);
     }
 }
 
@@ -119,10 +119,10 @@ static void test_subtraction() {
     // Test case 3: Subtraction requiring normalization
     a = new_f5707(2, (1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)) | 4ULL); // 0.10000...100 × 2^2
     b = new_f5707(2, (1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)) | 3ULL); // 0.10000...011 × 2^2
-    result = sub_f5707(a, b); // 0.10000...000 × 2^(-(SIGNIFICAND_BITS_F_57_07 - 2) + 2)
+    result = sub_f5707(a, b); // 0.10000...000 × 2^((sig_bits - 2)-(2 + 1))
     assert_float_57_07(
         "Subtraction result 3", result,
-        ~(SIGNIFICAND_BITS_F_57_07 - 4ULL - 1ULL),
+        (~(SIGNIFICAND_BITS_F_57_07 - 2) & ((1U << EXPONENT_BITS_F_57_07) - 1)) + 1U + 2U,
         1ULL << (SIGNIFICAND_BITS_F_57_07 - 2)
     );
 

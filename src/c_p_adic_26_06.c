@@ -60,34 +60,34 @@ static uint8_t get_msb_index_64(uint64_t n) {
     return 0; // This line should never be reached for non-zero input
 }
 
-// construct p-adic 57 07
+// construct p-adic 26 06
 p2606_t new_p2606(uint32_t exp, uint32_t sig) {
     return (exp << SIGNIFICAND_BITS_P_26_06) | (sig & SIGNIFICAND_MASK_P_26_06);
 }
 
-// exponent part of p-adic 57 07
+// exponent part of p-adic 26 06
 uint32_t exp_p2606(p2606_t a) {
     uint32_t exp_a = (a & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
     return exp_a;
 }
 
-// significand part of p-adic 57 07
+// significand part of p-adic 26 06
 uint32_t sig_p2606(p2606_t a) {
     uint32_t sig_a = a & SIGNIFICAND_MASK_P_26_06;
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_P_26_06;
     }
     return sig_a;
 }
 
-// add p-adic 57 07
+// add p-adic 26 06
 p2606_t add_p2606(p2606_t a, p2606_t b) {
     // Extract exponent and significand
     uint32_t exp_a = (a & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
@@ -101,20 +101,20 @@ p2606_t add_p2606(p2606_t a, p2606_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_P_26_06;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_P_26_06;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
 
@@ -188,13 +188,13 @@ p2606_t mul_p2606(p2606_t a, p2606_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_P_26_06;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_26_06;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_P_26_06;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_26_06;
@@ -202,10 +202,10 @@ p2606_t mul_p2606(p2606_t a, p2606_t b) {
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
 
@@ -249,13 +249,13 @@ p2606_t div_p2606(p2606_t a, p2606_t b) {
     log_debug_p_adic("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_P_26_06;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_P_26_06;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_P_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_P_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_P_26_06;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_P_26_06;
@@ -263,10 +263,10 @@ p2606_t div_p2606(p2606_t a, p2606_t b) {
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_P_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_P_26_06 << EXPONENT_BITS_P_26_06; // Fill the left with ones
     }
 
@@ -282,9 +282,13 @@ p2606_t div_p2606(p2606_t a, p2606_t b) {
     // Check for division by zero
     if (sig_b == 0U) {
         if (posi_a) {
-            return (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06) | ((1U << (SIGNIFICAND_BITS_P_26_06 - 2)) - 1); // Return max value as "infinity"
+            // Return max value as "infinity"
+            return (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06)
+                   | ((1U << (SIGNIFICAND_BITS_P_26_06 - 2)) - 1);
         } else {
-            return (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06) | (1U << (SIGNIFICAND_BITS_P_26_06 - 1)); // Return min value as "-infinity"
+            // Return min value as "-infinity"
+            return (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06)
+                   | (SIGNIFICAND_SIGN_MASK_P_26_06);
         }
     }
 

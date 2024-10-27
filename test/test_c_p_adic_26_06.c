@@ -14,7 +14,7 @@ static void print_p_adic_26_06(const char* label, p2606_t f) {
         if ((1U << (EXPONENT_BITS_P_26_06 - 1) & exp)) {
             exp |= ((1U << SIGNIFICAND_BITS_P_26_06) - 1) << EXPONENT_BITS_P_26_06; // Fill the left with ones
         }
-        printf("%s: Exponent: %ld, Significand: 0x%lx, FU value: 0x%lx\n", label, exp, sig, f);
+        printf("%s: p2606: Exponent: %ld, Significand: 0x%lx, FU value: 0x%lx\n", label, exp, sig, f);
     }
 }
 

@@ -10,7 +10,7 @@ static void log_debug_label(const char* label) {
     }
 }
 
-static void log_debug_float(const char* label, uint32_t f) {
+static void log_debug_float(const char* label, int32_t f) {
     if (C_FLOAT_26_06_DEBUG) {
         printf("%s: %d, 0x%x\n", label, f, f);
     }
@@ -42,7 +42,7 @@ static uint8_t get_msb_index_positive(uint32_t n) {
 static uint8_t get_msb_index_64(uint64_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
 
-    __uint64_t copy = n;
+    uint64_t copy = n;
     for (uint8_t i = 1; i <= 2 * SIGNIFICAND_BITS_F_26_06; i++) {
         copy >>= 1;
         if (copy == 0) {
@@ -56,50 +56,48 @@ static uint8_t get_msb_index_64(uint64_t n) {
 
 // get most significant bit for negative numbers
 static uint8_t get_msb_index_negative(uint32_t n) {
-    if (n == 0) return 0; // Handle 0 as a special case
+    uint32_t copy = ~n;
+    if (copy == 0) return 0; // Handle -1 as a special case
 
-    uint32_t copy = n;
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_26_06; i++) {
         copy >>= 1;
-        if (~copy == 0) {
+        if (copy == 0) {
             return i;
         }
     }
 
-    if (C_FLOAT_26_06_DEBUG) {
-        assert(false);
-    }
+    not_reachable();
     return 0; // This line should never be reached for non-zero input
 }
 
-// construct float 57 07
+// construct float 26 06
 f2606_t new_f2606(uint32_t exp, uint32_t sig) {
     return (exp << SIGNIFICAND_BITS_F_26_06) | (sig & SIGNIFICAND_MASK_F_26_06);
 }
 
-// exponent part of float 57 07
+// exponent part of float 26 06
 uint32_t exp_f2606(f2606_t a) {
     uint32_t exp_a = (a & EXPONENT_MASK_F_26_06) >> SIGNIFICAND_BITS_F_26_06;
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
     return exp_a;
 }
 
-// significand part of float 57 07
+// significand part of float 26 06
 uint32_t sig_f2606(f2606_t a) {
     uint32_t sig_a = a & SIGNIFICAND_MASK_F_26_06;
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_26_06;
     }
     return sig_a;
 }
 
-// add float 57 07
+// add float 26 06
 f2606_t add_f2606(f2606_t a, f2606_t b) {
     // Extract exponent and significand
     uint32_t exp_a = (a & EXPONENT_MASK_F_26_06) >> SIGNIFICAND_BITS_F_26_06;
@@ -115,22 +113,22 @@ f2606_t add_f2606(f2606_t a, f2606_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_26_06;
         posi_a = false;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_26_06;
         posi_b = false;
         log_debug_label("b is negative");
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
 
@@ -169,7 +167,7 @@ f2606_t add_f2606(f2606_t a, f2606_t b) {
        posi_result = false;
     }
 
-    int8_t msb = SIGNIFICAND_BITS_F_26_06 - 1;
+    int8_t msb;
     if (posi_result) {
         msb = get_msb_index_positive(result_sig);
     } else {
@@ -201,7 +199,7 @@ f2606_t neg_f2606(f2606_t b) {
     uint32_t sig_b = b & SIGNIFICAND_MASK_F_26_06;
 
     // Flip all bits of significand for two's complement
-    if ((1ULL << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_b)) {
         // negative
         sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_F_26_06;
     } else {
@@ -224,13 +222,13 @@ f2606_t mul_f2606(f2606_t a, f2606_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_26_06;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_F_26_06;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_26_06;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_26_06;
@@ -238,15 +236,15 @@ f2606_t mul_f2606(f2606_t a, f2606_t b) {
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
 
     // Multiply significands
-    uint64_t temp_sig = (__uint64_t)sig_a * sig_b;
+    uint64_t temp_sig = (uint64_t)sig_a * sig_b;
     log_debug_float("result significand", temp_sig);
 
     // Adjust exponent
@@ -288,13 +286,13 @@ f2606_t div_f2606(f2606_t a, f2606_t b) {
     log_debug_float("sig_b", sig_b);
 
     // Handle negative numbers
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_a)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_a)) {
         sig_a |= EXPONENT_MASK_F_26_06;
         posi_a = false;
         sig_a = (~(sig_a - 1)) & SIGNIFICAND_MASK_F_26_06;
         log_debug_label("a is negative");
     }
-    if ((1U << (SIGNIFICAND_BITS_F_26_06 - 1) & sig_b)) {
+    if ((SIGNIFICAND_SIGN_MASK_F_26_06 & sig_b)) {
         sig_b |= EXPONENT_MASK_F_26_06;
         posi_b = false;
         sig_b = (~(sig_b - 1)) & SIGNIFICAND_MASK_F_26_06;
@@ -302,24 +300,28 @@ f2606_t div_f2606(f2606_t a, f2606_t b) {
     }
 
     // Handle negatives exponents
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_a)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_a)) {
         exp_a |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
-    if ((1U << (EXPONENT_BITS_F_26_06 - 1) & exp_b)) {
+    if ((EXPONENT_SIGN_MASK_F_26_06 & exp_b)) {
         exp_b |= SIGNIFICAND_MASK_F_26_06 << EXPONENT_BITS_F_26_06; // Fill the left with ones
     }
 
     // Check for division by zero
     if (sig_b == 0U) {
         if (posi_a) {
-            return (((1U << (EXPONENT_BITS_F_26_06 - 2)) - 1) << SIGNIFICAND_BITS_F_26_06) | ((1U << (SIGNIFICAND_BITS_F_26_06 - 2)) - 1); // Return max value as "infinity"
+            // Return max value as "infinity"
+            return (((1U << (EXPONENT_BITS_F_26_06 - 2)) - 1) << SIGNIFICAND_BITS_F_26_06)
+                   | ((1U << (SIGNIFICAND_BITS_F_26_06 - 2)) - 1);
         } else {
-            return (((1U << (EXPONENT_BITS_F_26_06 - 2)) - 1) << SIGNIFICAND_BITS_F_26_06) | (1U << (SIGNIFICAND_BITS_F_26_06 - 1)); // Return min value as "-infinity"
+            // Return min value as "-infinity"
+            return (((1U << (EXPONENT_BITS_F_26_06 - 2)) - 1) << SIGNIFICAND_BITS_F_26_06)
+                   | (SIGNIFICAND_SIGN_MASK_F_26_06);
         }
     }
 
     // Perform division
-    uint64_t temp_sig = ((__uint64_t)sig_a << SIGNIFICAND_BITS_F_26_06) / sig_b;
+    uint64_t temp_sig = ((uint64_t)sig_a << SIGNIFICAND_BITS_F_26_06) / sig_b;
 
     // Adjust exponent
     uint32_t result_exp = exp_a - exp_b;
