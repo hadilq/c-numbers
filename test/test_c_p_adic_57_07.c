@@ -36,7 +36,7 @@ static void test_addition() {
     // Test case 1: Simple addition
     p5707_t a = new_p5707(2, 5ULL); // 000...0101. × 2^2
     p5707_t b = new_p5707(2, 6ULL); // 000...0110. × 2^2
-    p5707_t result = add_p5707(a, b); // 00...010110. × 2^55
+    p5707_t result = add_p5707(a, b); // 00...010110. × 2^2
     assert_p_adic_57_07(
         "Addition result 1", result,
         2ULL,
@@ -46,7 +46,7 @@ static void test_addition() {
     // Test case 2: Addition on max positive significand
     a = new_p5707(2, (1ULL << (SIGNIFICAND_BITS_P_57_07 - 1)) - 1); // 011111...11. × 2^2
     b = new_p5707(2, 1); // 000000...01. × 2^2
-    result = add_p5707(a, b); // 0000...01. × 2^58
+    result = add_p5707(a, b); // 0000...01. × 2^2
     assert_p_adic_57_07(
         "Addition result 2", result,
         58ULL,
