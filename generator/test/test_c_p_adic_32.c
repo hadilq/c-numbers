@@ -75,12 +75,12 @@ static void test_addition() {
 
     // Test case 5: Very big exponent
     a = new_pDDD32(3, (1U << (SIGNIFICAND_BITS_P_CCC_32 - 2)) | 1U); // 010000...01. × 2^3
-    b = new_pDDD32(54, (1U << (SIGNIFICAND_BITS_P_CCC_32 - 2)) | 1U); // 010000...01. × 2^54
-    result = add_pDDD32(b, a); // 01000010...001. × 2^3
+    b = new_pDDD32(-1, (1U << (SIGNIFICAND_BITS_P_CCC_32 - 2)) | 1U); // 010000...01. × 2^-1
+    result = add_pDDD32(b, a); // 01000010...001. × 2^-1
     assert_p_adic_CCC_32(
         "Addition result 5", result,
-        3U,
-        (1U << (SIGNIFICAND_BITS_P_CCC_32 - 2)) | (1U << (SIGNIFICAND_BITS_P_CCC_32 - 7)) | 1U
+        -1,
+        (1U << (SIGNIFICAND_BITS_P_CCC_32 - 2)) | (1U << 4) | 1U
     );
 
     // Test case 6: Two big exponent

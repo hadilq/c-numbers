@@ -90,8 +90,8 @@ uint64_t sig_pDDD64(pDDD64_t a) {
 // add p-adic DDD64
 pDDD64_t add_pDDD64(pDDD64_t a, pDDD64_t b) {
     // Extract exponent and significand
-    uint64_t exp_a = (a & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
-    uint64_t exp_b = (b & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
+    int64_t exp_a = (a & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
+    int64_t exp_b = (b & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
     uint64_t sig_a = a & SIGNIFICAND_MASK_P_CCC_64;
     uint64_t sig_b = b & SIGNIFICAND_MASK_P_CCC_64;
     uint64_t result_exp = exp_a;

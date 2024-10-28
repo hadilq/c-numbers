@@ -26,7 +26,7 @@ static void not_reachable() {
 static uint8_t get_msb_index_positive(uint32_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
 
-    uint32_t copy = n;
+    uint32_t copy = n & SIGNIFICAND_MASK_F_CCC_32;
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_CCC_32; i++) {
         copy >>= 1;
         if (copy == 0) {
@@ -42,7 +42,7 @@ static uint8_t get_msb_index_positive(uint32_t n) {
 static uint8_t get_msb_index_64(uint64_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
 
-    uint64_t copy = n;
+    uint64_t copy = n & SIGNIFICAND_2_MASK_F_CCC_32;
     for (uint8_t i = 1; i <= 2 * SIGNIFICAND_BITS_F_CCC_32; i++) {
         copy >>= 1;
         if (copy == 0) {
@@ -56,7 +56,7 @@ static uint8_t get_msb_index_64(uint64_t n) {
 
 // get most significant bit for negative numbers
 static uint8_t get_msb_index_negative(uint32_t n) {
-    uint32_t copy = ~n;
+    uint32_t copy = ~n & SIGNIFICAND_MASK_F_CCC_32;
     if (copy == 0) return 0; // Handle -1 as a special case
 
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_CCC_32; i++) {
@@ -100,8 +100,8 @@ uint32_t sig_fDDD32(fDDD32_t a) {
 // add float DDD32
 fDDD32_t add_fDDD32(fDDD32_t a, fDDD32_t b) {
     // Extract exponent and significand
-    uint32_t exp_a = (a & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
-    uint32_t exp_b = (b & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
+    int32_t exp_a = (a & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
+    int32_t exp_b = (b & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
     uint32_t sig_a = a & SIGNIFICAND_MASK_F_CCC_32;
     uint32_t sig_b = b & SIGNIFICAND_MASK_F_CCC_32;
     uint32_t result_exp = exp_a;
@@ -138,6 +138,9 @@ fDDD32_t add_fDDD32(fDDD32_t a, fDDD32_t b) {
         sig_b >>= diff;
         if (!posi_b) {
             sig_b |= ((1U << diff) - 1) << (BITS_F_CCC_32 - diff); // Fill the left with ones
+            if ((sig_b & SIGNIFICAND_MASK_F_CCC_32) == SIGNIFICAND_MASK_F_CCC_32) {
+                sig_b = 0;
+            }
         }
         log_debug_float("diff 'exp_a > exp_b' is", diff);
         result_exp = exp_a;
@@ -146,6 +149,9 @@ fDDD32_t add_fDDD32(fDDD32_t a, fDDD32_t b) {
         sig_a >>= diff;
         if (!posi_a) {
             sig_a |= ((1U << diff) - 1) << (BITS_F_CCC_32 - diff); // Fill the left with ones
+            if ((sig_a & SIGNIFICAND_MASK_F_CCC_32) == SIGNIFICAND_MASK_F_CCC_32) {
+                sig_a = 0;
+            }
         }
         log_debug_float("diff 'exp_b > exp_a' is", diff);
         result_exp = exp_b;
@@ -163,7 +169,7 @@ fDDD32_t add_fDDD32(fDDD32_t a, fDDD32_t b) {
     log_debug_float("result significand", result_sig);
     log_debug_float("result exponent", result_exp);
 
-    if (1U << (BITS_F_CCC_32 - 1) & result_sig) {
+    if (BITS_SIGN_MASK_F_CCC_32 & result_sig) {
        posi_result = false;
     }
 

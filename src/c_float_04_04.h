@@ -13,9 +13,11 @@
 typedef uint8_t f0404_t;
 
 #define SIGNIFICAND_MASK_F_04_04 ((1U << SIGNIFICAND_BITS_F_04_04) - 1)
+#define SIGNIFICAND_2_MASK_F_04_04 ((1UL << 2 * SIGNIFICAND_BITS_F_04_04) - 1)
 #define EXPONENT_MASK_F_04_04 (((1U << EXPONENT_BITS_F_04_04) - 1) << SIGNIFICAND_BITS_F_04_04)
 #define SIGNIFICAND_SIGN_MASK_F_04_04 (1U << (SIGNIFICAND_BITS_F_04_04 - 1))
 #define EXPONENT_SIGN_MASK_F_04_04 (1U << (EXPONENT_BITS_F_04_04 - 1))
+#define BITS_SIGN_MASK_F_04_04 (1U << (BITS_F_04_04 - 1))
 
 // construct float 0404
 f0404_t new_f0404(uint8_t exp, uint8_t sig);

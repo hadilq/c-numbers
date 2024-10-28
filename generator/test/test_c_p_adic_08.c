@@ -75,22 +75,22 @@ static void test_addition() {
 
     // Test case 5: Very big exponent
     a = new_pDDD08(3, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^3
-    b = new_pDDD08(54, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^54
+    b = new_pDDD08(7, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^7
     result = add_pDDD08(b, a); // 01000010...001. × 2^3
     assert_p_adic_CCC_08(
         "Addition result 5", result,
         3U,
-        0xdU
+        5U
     );
 
     // Test case 6: Two big exponent
-    a = new_pDDD08(41, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^41
-    b = new_pDDD08(52, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^52
-    result = add_pDDD08(b, a); // 010000...001. × 2^4
+    a = new_pDDD08(6, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^6
+    b = new_pDDD08(7, (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U); // 010000...01. × 2^7
+    result = add_pDDD08(b, a); // 010000...001. × 2^6
     assert_p_adic_CCC_08(
         "Addition result 6", result,
-        4U,
-        (1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) | 1U
+        6U,
+        0xfU
     );
 }
 

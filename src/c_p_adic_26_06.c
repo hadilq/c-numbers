@@ -90,8 +90,8 @@ uint32_t sig_p2606(p2606_t a) {
 // add p-adic 2606
 p2606_t add_p2606(p2606_t a, p2606_t b) {
     // Extract exponent and significand
-    uint32_t exp_a = (a & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
-    uint32_t exp_b = (b & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
+    int32_t exp_a = (a & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
+    int32_t exp_b = (b & EXPONENT_MASK_P_26_06) >> SIGNIFICAND_BITS_P_26_06;
     uint32_t sig_a = a & SIGNIFICAND_MASK_P_26_06;
     uint32_t sig_b = b & SIGNIFICAND_MASK_P_26_06;
     uint32_t result_exp = exp_a;

@@ -90,8 +90,8 @@ uint32_t sig_pDDD32(pDDD32_t a) {
 // add p-adic DDD32
 pDDD32_t add_pDDD32(pDDD32_t a, pDDD32_t b) {
     // Extract exponent and significand
-    uint32_t exp_a = (a & EXPONENT_MASK_P_CCC_32) >> SIGNIFICAND_BITS_P_CCC_32;
-    uint32_t exp_b = (b & EXPONENT_MASK_P_CCC_32) >> SIGNIFICAND_BITS_P_CCC_32;
+    int32_t exp_a = (a & EXPONENT_MASK_P_CCC_32) >> SIGNIFICAND_BITS_P_CCC_32;
+    int32_t exp_b = (b & EXPONENT_MASK_P_CCC_32) >> SIGNIFICAND_BITS_P_CCC_32;
     uint32_t sig_a = a & SIGNIFICAND_MASK_P_CCC_32;
     uint32_t sig_b = b & SIGNIFICAND_MASK_P_CCC_32;
     uint32_t result_exp = exp_a;

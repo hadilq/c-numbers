@@ -16,6 +16,7 @@ typedef uint8_t pDDD08_t;
 #define EXPONENT_MASK_P_CCC_08 (((1ULL << EXPONENT_BITS_P_CCC_08) - 1) << SIGNIFICAND_BITS_P_CCC_08)
 #define SIGNIFICAND_SIGN_MASK_P_CCC_08 (1U << (SIGNIFICAND_BITS_P_CCC_08 - 1))
 #define EXPONENT_SIGN_MASK_P_CCC_08 (1U << (EXPONENT_BITS_P_CCC_08 - 1))
+#define BITS_SIGN_MASK_P_CCC_08 (1U << (BITS_P_CCC_08 - 1))
 
 // construct p-adic DDD08
 pDDD08_t new_pDDD08(uint8_t exp, uint8_t sig);

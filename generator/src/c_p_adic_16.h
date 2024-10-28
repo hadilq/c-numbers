@@ -16,6 +16,7 @@ typedef uint16_t pDDD16_t;
 #define EXPONENT_MASK_P_CCC_16 (((1ULL << EXPONENT_BITS_P_CCC_16) - 1) << SIGNIFICAND_BITS_P_CCC_16)
 #define SIGNIFICAND_SIGN_MASK_P_CCC_16 (1U << (SIGNIFICAND_BITS_P_CCC_16 - 1))
 #define EXPONENT_SIGN_MASK_P_CCC_16 (1U << (EXPONENT_BITS_P_CCC_16 - 1))
+#define BITS_SIGN_MASK_P_CCC_16 (1U << (BITS_P_CCC_16 - 1))
 
 // construct p-adic DDD16
 pDDD16_t new_pDDD16(uint16_t exp, uint16_t sig);

@@ -76,10 +76,10 @@ static void test_addition() {
     // Test case 5: One negative exponent
     a = new_f0404(3, (1U << (SIGNIFICAND_BITS_F_04_04 - 2)) | 1U); // 0.10000...01 × 2^3
     b = new_f0404(-1, (1U << (SIGNIFICAND_BITS_F_04_04 - 2)) | 1U); // 0.10000...01 × 2^-1
-    result = add_f0404(b, a); // 0.10000...00 × 2^-1
+    result = add_f0404(b, a); // 0.10000...00 × 2^3
     assert_float_04_04(
         "Addition result 5", result,
-        (1U << EXPONENT_BITS_F_04_04) - 1,
+        3U,
         ((1U << (SIGNIFICAND_BITS_F_04_04 - 2))) | 1U
     );
 

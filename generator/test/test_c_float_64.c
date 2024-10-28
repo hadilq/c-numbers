@@ -21,12 +21,12 @@ static void print_float_CCC_64(const char* label, fDDD64_t f) {
 static void assert_float_CCC_64(const char* label, fDDD64_t f, uint64_t expected_exp, uint64_t expected_sig) {
     if (C_FLOAT_CCC_64_DEBUG) {
         print_float_CCC_64(label, f);
-        printf("expected exp: 0x%lx\n", expected_exp << SIGNIFICAND_BITS_F_CCC_64);
-        printf("actual exp  : 0x%llx\n", f &EXPONENT_MASK_F_CCC_64);
+        printf("expected exp: 0x%lx\n", expected_exp);
+        printf("actual exp  : 0x%llx\n", (f & EXPONENT_MASK_F_CCC_64) >> SIGNIFICAND_BITS_F_CCC_64);
         printf("expected sig: 0x%lx\n", expected_sig);
         printf("actual sig  : 0x%llx\n", f & SIGNIFICAND_MASK_F_CCC_64);
     }
-    assert((f &EXPONENT_MASK_F_CCC_64) == expected_exp << SIGNIFICAND_BITS_F_CCC_64);
+    assert((f & EXPONENT_MASK_F_CCC_64) == expected_exp << SIGNIFICAND_BITS_F_CCC_64);
     assert((f & SIGNIFICAND_MASK_F_CCC_64) == expected_sig);
 }
 
@@ -76,11 +76,11 @@ static void test_addition() {
     // Test case 5: One negative exponent
     a = new_fDDD64(3, (1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2)) | 1ULL); // 0.10000...01 × 2^3
     b = new_fDDD64(-1, (1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2)) | 1ULL); // 0.10000...01 × 2^-1
-    result = add_fDDD64(b, a); // 0.10000...00 × 2^-1
+    result = add_fDDD64(b, a); // 0.10000...00 × 2^3
     assert_float_CCC_64(
         "Addition result 5", result,
-        (1ULL << EXPONENT_BITS_F_CCC_64) - 1,
-        ((1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2))) | 1ULL
+        3,
+        ((1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2))) | ((1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 6))) | 1ULL
     );
 
     // Test case 6: Two negative exponent

@@ -16,6 +16,7 @@ typedef uint32_t pDDD32_t;
 #define EXPONENT_MASK_P_CCC_32 (((1ULL << EXPONENT_BITS_P_CCC_32) - 1) << SIGNIFICAND_BITS_P_CCC_32)
 #define SIGNIFICAND_SIGN_MASK_P_CCC_32 (1U << (SIGNIFICAND_BITS_P_CCC_32 - 1))
 #define EXPONENT_SIGN_MASK_P_CCC_32 (1U << (EXPONENT_BITS_P_CCC_32 - 1))
+#define BITS_SIGN_MASK_P_CCC_32 (1U << (BITS_P_CCC_32 - 1))
 
 // construct p-adic DDD32
 pDDD32_t new_pDDD32(uint32_t exp, uint32_t sig);

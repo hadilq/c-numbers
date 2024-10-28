@@ -90,8 +90,8 @@ uint8_t sig_p0404(p0404_t a) {
 // add p-adic 0404
 p0404_t add_p0404(p0404_t a, p0404_t b) {
     // Extract exponent and significand
-    uint8_t exp_a = (a & EXPONENT_MASK_P_04_04) >> SIGNIFICAND_BITS_P_04_04;
-    uint8_t exp_b = (b & EXPONENT_MASK_P_04_04) >> SIGNIFICAND_BITS_P_04_04;
+    int8_t exp_a = (a & EXPONENT_MASK_P_04_04) >> SIGNIFICAND_BITS_P_04_04;
+    int8_t exp_b = (b & EXPONENT_MASK_P_04_04) >> SIGNIFICAND_BITS_P_04_04;
     uint8_t sig_a = a & SIGNIFICAND_MASK_P_04_04;
     uint8_t sig_b = b & SIGNIFICAND_MASK_P_04_04;
     uint8_t result_exp = exp_a;
@@ -165,7 +165,7 @@ p0404_t neg_p0404(p0404_t b) {
     uint8_t sig_b = b & SIGNIFICAND_MASK_P_04_04;
 
     // Flip all bits of significand for two's complement
-    if ((1ULL << (SIGNIFICAND_BITS_P_04_04 - 1) & sig_b)) {
+    if (SIGNIFICAND_SIGN_MASK_P_04_04 & sig_b) {
         // negative
         sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_P_04_04;
     } else {

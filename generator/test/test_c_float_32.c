@@ -79,8 +79,8 @@ static void test_addition() {
     result = add_fDDD32(b, a); // 0.10000...00 × 2^-1
     assert_float_CCC_32(
         "Addition result 5", result,
-        (1U << EXPONENT_BITS_F_CCC_32) - 1,
-        ((1U << (SIGNIFICAND_BITS_F_CCC_32 - 2))) | 1U
+        3,
+        ((1U << (SIGNIFICAND_BITS_F_CCC_32 - 2))) | ((1U << (SIGNIFICAND_BITS_F_CCC_32 - 6))) | 1U
     );
 
     // Test case 6: Two negative exponent

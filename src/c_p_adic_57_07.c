@@ -90,8 +90,8 @@ uint64_t sig_p5707(p5707_t a) {
 // add p-adic 5707
 p5707_t add_p5707(p5707_t a, p5707_t b) {
     // Extract exponent and significand
-    uint64_t exp_a = (a & EXPONENT_MASK_P_57_07) >> SIGNIFICAND_BITS_P_57_07;
-    uint64_t exp_b = (b & EXPONENT_MASK_P_57_07) >> SIGNIFICAND_BITS_P_57_07;
+    int64_t exp_a = (a & EXPONENT_MASK_P_57_07) >> SIGNIFICAND_BITS_P_57_07;
+    int64_t exp_b = (b & EXPONENT_MASK_P_57_07) >> SIGNIFICAND_BITS_P_57_07;
     uint64_t sig_a = a & SIGNIFICAND_MASK_P_57_07;
     uint64_t sig_b = b & SIGNIFICAND_MASK_P_57_07;
     uint64_t result_exp = exp_a;

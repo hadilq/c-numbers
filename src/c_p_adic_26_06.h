@@ -16,6 +16,7 @@ typedef uint32_t p2606_t;
 #define EXPONENT_MASK_P_26_06 (((1ULL << EXPONENT_BITS_P_26_06) - 1) << SIGNIFICAND_BITS_P_26_06)
 #define SIGNIFICAND_SIGN_MASK_P_26_06 (1U << (SIGNIFICAND_BITS_P_26_06 - 1))
 #define EXPONENT_SIGN_MASK_P_26_06 (1U << (EXPONENT_BITS_P_26_06 - 1))
+#define BITS_SIGN_MASK_P_26_06 (1U << (BITS_P_26_06 - 1))
 
 // construct p-adic 2606
 p2606_t new_p2606(uint32_t exp, uint32_t sig);

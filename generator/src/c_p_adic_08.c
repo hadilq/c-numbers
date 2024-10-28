@@ -90,8 +90,8 @@ uint8_t sig_pDDD08(pDDD08_t a) {
 // add p-adic DDD08
 pDDD08_t add_pDDD08(pDDD08_t a, pDDD08_t b) {
     // Extract exponent and significand
-    uint8_t exp_a = (a & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
-    uint8_t exp_b = (b & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
+    int8_t exp_a = (a & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
+    int8_t exp_b = (b & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
     uint8_t sig_a = a & SIGNIFICAND_MASK_P_CCC_08;
     uint8_t sig_b = b & SIGNIFICAND_MASK_P_CCC_08;
     uint8_t result_exp = exp_a;
@@ -165,7 +165,7 @@ pDDD08_t neg_pDDD08(pDDD08_t b) {
     uint8_t sig_b = b & SIGNIFICAND_MASK_P_CCC_08;
 
     // Flip all bits of significand for two's complement
-    if ((1ULL << (SIGNIFICAND_BITS_P_CCC_08 - 1) & sig_b)) {
+    if (SIGNIFICAND_SIGN_MASK_P_CCC_08 & sig_b) {
         // negative
         sig_b = (~sig_b + 1) & SIGNIFICAND_MASK_P_CCC_08;
     } else {

@@ -5,8 +5,8 @@
 
 static void print_p_adic_11_05(const char* label, p1105_t f) {
     if (C_P_ADIC_11_05_DEBUG) {
-        uint32_t exp = (f & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-        uint32_t sig = f & SIGNIFICAND_MASK_P_11_05;
+        uint16_t exp = (f & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
+        uint16_t sig = f & SIGNIFICAND_MASK_P_11_05;
 
         if ((1U << (SIGNIFICAND_BITS_P_11_05 - 1) & sig)) {
             sig |= ((1U << EXPONENT_BITS_P_11_05) - 1) << SIGNIFICAND_BITS_P_11_05; // Fill the left with ones
@@ -18,7 +18,7 @@ static void print_p_adic_11_05(const char* label, p1105_t f) {
     }
 }
 
-static void assert_p_adic_11_05(const char* label, p1105_t f, uint32_t expected_exp, uint32_t expected_sig) {
+static void assert_p_adic_11_05(const char* label, p1105_t f, uint16_t expected_exp, uint16_t expected_sig) {
     if (C_P_ADIC_11_05_DEBUG) {
         print_p_adic_11_05(label, f);
         printf("expected exp: 0x%x\n", expected_exp << SIGNIFICAND_BITS_P_11_05);
@@ -26,7 +26,7 @@ static void assert_p_adic_11_05(const char* label, p1105_t f, uint32_t expected_
         printf("expected sig: 0x%x\n", expected_sig);
         printf("actual sig  : 0x%x\n", f & SIGNIFICAND_MASK_P_11_05);
     }
-    assert((f & EXPONENT_MASK_P_11_05) == expected_exp << SIGNIFICAND_BITS_P_11_05);
+    assert((f & EXPONENT_MASK_P_11_05) == (expected_exp << SIGNIFICAND_BITS_P_11_05));
     assert((f & SIGNIFICAND_MASK_P_11_05) == expected_sig);
 }
 
@@ -75,21 +75,21 @@ static void test_addition() {
 
     // Test case 5: Very big exponent
     a = new_p1105(3, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^3
-    b = new_p1105(54, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^54
-    result = add_p1105(b, a); // 01000010...001. × 2^3
+    b = new_p1105(-1, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^-1
+    result = add_p1105(b, a); // 01000010...001. × 2^-1
     assert_p_adic_11_05(
         "Addition result 5", result,
-        3U,
-        (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U
+        (1U << EXPONENT_BITS_P_11_05) - 1,
+        (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | (1U << 4) | 1U
     );
 
     // Test case 6: Two big exponent
-    a = new_p1105(41, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^41
-    b = new_p1105(52, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^52
-    result = add_p1105(b, a); // 010000...001. × 2^41
+    a = new_p1105(17, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^17
+    b = new_p1105(30, (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U); // 010000...01. × 2^30
+    result = add_p1105(b, a); // 010000...001. × 2^17
     assert_p_adic_11_05(
         "Addition result 6", result,
-        9U,
+        17U,
         (1U << (SIGNIFICAND_BITS_P_11_05 - 2)) | 1U
     );
 }

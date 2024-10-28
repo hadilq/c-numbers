@@ -26,7 +26,7 @@ static void not_reachable() {
 static uint8_t get_msb_index_positive(uint16_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
 
-    uint16_t copy = n;
+    uint16_t copy = n & SIGNIFICAND_MASK_F_11_05;
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_11_05; i++) {
         copy >>= 1;
         if (copy == 0) {
@@ -42,7 +42,7 @@ static uint8_t get_msb_index_positive(uint16_t n) {
 static uint8_t get_msb_index_32(uint32_t n) {
     if (n == 0) return 0; // Handle 0 as a special case
 
-    uint32_t copy = n;
+    uint32_t copy = n & SIGNIFICAND_2_MASK_F_11_05;
     for (uint8_t i = 1; i <= 2 * SIGNIFICAND_BITS_F_11_05; i++) {
         copy >>= 1;
         if (copy == 0) {
@@ -56,7 +56,7 @@ static uint8_t get_msb_index_32(uint32_t n) {
 
 // get most significant bit for negative numbers
 static uint8_t get_msb_index_negative(uint16_t n) {
-    uint16_t copy = ~n;
+    uint16_t copy = ~n & SIGNIFICAND_MASK_F_11_05;
     if (copy == 0) return 0; // Handle -1 as a special case
 
     for (uint8_t i = 1; i <= SIGNIFICAND_BITS_F_11_05; i++) {
@@ -100,8 +100,8 @@ uint16_t sig_f1105(f1105_t a) {
 // add float 1105
 f1105_t add_f1105(f1105_t a, f1105_t b) {
     // Extract exponent and significand
-    uint16_t exp_a = (a & EXPONENT_MASK_F_11_05) >> SIGNIFICAND_BITS_F_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_F_11_05) >> SIGNIFICAND_BITS_F_11_05;
+    int16_t exp_a = (a & EXPONENT_MASK_F_11_05) >> SIGNIFICAND_BITS_F_11_05;
+    int16_t exp_b = (b & EXPONENT_MASK_F_11_05) >> SIGNIFICAND_BITS_F_11_05;
     uint16_t sig_a = a & SIGNIFICAND_MASK_F_11_05;
     uint16_t sig_b = b & SIGNIFICAND_MASK_F_11_05;
     uint16_t result_exp = exp_a;
@@ -138,6 +138,9 @@ f1105_t add_f1105(f1105_t a, f1105_t b) {
         sig_b >>= diff;
         if (!posi_b) {
             sig_b |= ((1U << diff) - 1) << (BITS_F_11_05 - diff); // Fill the left with ones
+            if ((sig_b & SIGNIFICAND_MASK_F_11_05) == SIGNIFICAND_MASK_F_11_05) {
+                sig_b = 0;
+            }
         }
         log_debug_float("diff 'exp_a > exp_b' is", diff);
         result_exp = exp_a;
@@ -146,6 +149,9 @@ f1105_t add_f1105(f1105_t a, f1105_t b) {
         sig_a >>= diff;
         if (!posi_a) {
             sig_a |= ((1U << diff) - 1) << (BITS_F_11_05 - diff); // Fill the left with ones
+            if ((sig_a & SIGNIFICAND_MASK_F_11_05) == SIGNIFICAND_MASK_F_11_05) {
+                sig_a = 0;
+            }
         }
         log_debug_float("diff 'exp_b > exp_a' is", diff);
         result_exp = exp_b;
@@ -163,7 +169,7 @@ f1105_t add_f1105(f1105_t a, f1105_t b) {
     log_debug_float("result significand", result_sig);
     log_debug_float("result exponent", result_exp);
 
-    if (1U << (BITS_F_11_05 - 1) & result_sig) {
+    if (BITS_SIGN_MASK_F_11_05 & result_sig) {
        posi_result = false;
     }
     log_debug_float("positive result", posi_result);

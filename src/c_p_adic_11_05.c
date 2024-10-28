@@ -90,8 +90,8 @@ uint16_t sig_p1105(p1105_t a) {
 // add p-adic 1105
 p1105_t add_p1105(p1105_t a, p1105_t b) {
     // Extract exponent and significand
-    uint16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
+    int16_t exp_a = (a & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
+    int16_t exp_b = (b & EXPONENT_MASK_P_11_05) >> SIGNIFICAND_BITS_P_11_05;
     uint16_t sig_a = a & SIGNIFICAND_MASK_P_11_05;
     uint16_t sig_b = b & SIGNIFICAND_MASK_P_11_05;
     uint16_t result_exp = exp_a;

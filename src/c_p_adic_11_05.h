@@ -16,6 +16,7 @@ typedef uint16_t p1105_t;
 #define EXPONENT_MASK_P_11_05 (((1ULL << EXPONENT_BITS_P_11_05) - 1) << SIGNIFICAND_BITS_P_11_05)
 #define SIGNIFICAND_SIGN_MASK_P_11_05 (1U << (SIGNIFICAND_BITS_P_11_05 - 1))
 #define EXPONENT_SIGN_MASK_P_11_05 (1U << (EXPONENT_BITS_P_11_05 - 1))
+#define BITS_SIGN_MASK_P_11_05 (1U << (BITS_P_11_05 - 1))
 
 // construct p-adic 1105
 p1105_t new_p1105(uint16_t exp, uint16_t sig);

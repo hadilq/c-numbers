@@ -90,8 +90,8 @@ uint16_t sig_pDDD16(pDDD16_t a) {
 // add p-adic DDD16
 pDDD16_t add_pDDD16(pDDD16_t a, pDDD16_t b) {
     // Extract exponent and significand
-    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    int16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    int16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
     uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
     uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
     uint16_t result_exp = exp_a;

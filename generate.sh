@@ -1,15 +1,20 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p "bc"
 
+generate_test=flase
+
 function generate_for {
   bits="$1"
   format_bit="$(printf "%02d" "$bits")"
   find generator -type f -regex ".*$bits\.[ch]" | while read -r file; do
     file_name=$(basename "$file")
+    if [[ $file_name == "test_"* ]] && [[ $generate_test != true ]]; then
+      continue
+    fi
     init=$(echo "x = l($bits)/l(2) + 1; scale = 0; x / 1" | bc -l)
     init_significand=$((bits - init))
-    #finish=$((bits - init))
-    finish=$((init + 2))
+    #finish=$((bits - 2))
+    finish=$((bits - (init + 2) < 2 ? bits - 2 : init + 2))
     for exponent in $(seq "$init" "$finish"); do
       significand=$((bits - exponent))
       format_exponent="$(printf "%02d" "$exponent")"
@@ -22,8 +27,8 @@ function generate_for {
       fi
 
       echo "generate_file: $generate_file"
-      sed -e "s/CCC_$format_bit $init_significand/CCC_$format_bit $significand/g" < "$file" | \
-      	sed -e "s/CCC_$format_bit $init/CCC_$format_bit $exponent/g" | \
+      sed -e "s/SIGNIFICAND_BITS_\(.*\)_CCC_$format_bit $init_significand/SIGNIFICAND_BITS_\1_CCC_$format_bit $significand/g" < "$file" | \
+        sed -e "s/EXPONENT_BITS_\(.*\)_CCC_$format_bit $init/EXPONENT_BITS_\1_CCC_$format_bit $exponent/g" | \
       	sed -e "s/_$format_bit.h/_$format_significand\_$format_exponent.h/g" | \
       	sed -e "s/CCC_$format_bit/$format_significand\_$format_exponent/g" | \
       	sed -e "s/DDD$format_bit/$format_significand$format_exponent/g" \
@@ -123,6 +128,9 @@ done
 } >> src/Makefile
 
 # Generate test Makefile
+if [[ $generate_test != true ]]; then
+  exit 0
+fi
 echo "generate_file: test/Makefile"
 cat <<EOF > test/Makefile
 ################################################################################

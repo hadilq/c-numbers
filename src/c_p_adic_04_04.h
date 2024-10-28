@@ -16,6 +16,7 @@ typedef uint8_t p0404_t;
 #define EXPONENT_MASK_P_04_04 (((1ULL << EXPONENT_BITS_P_04_04) - 1) << SIGNIFICAND_BITS_P_04_04)
 #define SIGNIFICAND_SIGN_MASK_P_04_04 (1U << (SIGNIFICAND_BITS_P_04_04 - 1))
 #define EXPONENT_SIGN_MASK_P_04_04 (1U << (EXPONENT_BITS_P_04_04 - 1))
+#define BITS_SIGN_MASK_P_04_04 (1U << (BITS_P_04_04 - 1))
 
 // construct p-adic 0404
 p0404_t new_p0404(uint8_t exp, uint8_t sig);
