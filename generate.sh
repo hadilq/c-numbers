@@ -13,8 +13,7 @@ function generate_for {
     fi
     init=$(echo "x = l($bits)/l(2) + 1; scale = 0; x / 1" | bc -l)
     init_significand=$((bits - init))
-    #finish=$((bits - 2))
-    finish=$((bits - (init + 2) < 2 ? bits - 2 : init + 2))
+    finish=$((bits - 2))
     for exponent in $(seq "$init" "$finish"); do
       significand=$((bits - exponent))
       format_exponent="$(printf "%02d" "$exponent")"
@@ -128,9 +127,6 @@ done
 } >> src/Makefile
 
 # Generate test Makefile
-if [[ $generate_test != true ]]; then
-  exit 0
-fi
 echo "generate_file: test/Makefile"
 cat <<EOF > test/Makefile
 ################################################################################

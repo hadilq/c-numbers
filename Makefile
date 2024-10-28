@@ -17,17 +17,18 @@ lib:
 test_prog: lib
 	$(MAKE) -C test
 
+test: test_prog
+	./test/testcfloat0206.a
+	./test/testcfloat0404.a
+	./test/testcfloat1105.a
+	./test/testcfloat2606.a
+	./test/testcfloat5707.a
+	./test/testcpadic0404.a
+	./test/testcpadic1105.a
+	./test/testcpadic2606.a
+	./test/testcpadic5707.a
+
 clean:
 	$(MAKE) -C src clean
 	$(MAKE) -C test clean
-
-test: test_prog
-	./test/test_c_float_57_07.a
-	./test/test_c_p_adic_57_07.a
-	./test/test_c_float_26_06.a
-	./test/test_c_p_adic_26_06.a
-	./test/test_c_float_11_05.a
-	./test/test_c_p_adic_11_05.a
-	./test/test_c_float_04_04.a
-	./test/test_c_p_adic_04_04.a
 
