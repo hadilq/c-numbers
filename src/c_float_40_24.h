@@ -25,12 +25,30 @@ typedef uint64_t f4024_t;
 
 // construct float 4024
 f4024_t new_f4024(int64_t exp, int64_t sig);
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float64)
 // construct float 4024
 f4024_t new_f4024_from_float64(_Float64 f);
+    #define FLOAT64_BUILTIN
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 // construct float 4024
 f4024_t new_f4024_from_float32(_Float32 f);
+    #define FLOAT32_BUILTIN
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 // construct float 4024
 f4024_t new_f4024_from_float16(_Float16 f);
+    #define FLOAT16_BUILTIN
+  #endif
+#endif
 // exponent part of float 4024
 int64_t exp_f4024(f4024_t a);
 // significand part of float 4024

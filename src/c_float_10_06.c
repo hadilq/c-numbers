@@ -75,6 +75,8 @@ f1006_t new_f1006(int16_t exp, int16_t sig) {
     return (exp << SIGNIFICAND_BITS_F_10_06) | (sig & SIGNIFICAND_MASK_F_10_06);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
 #define Float16_EXP 5
@@ -117,6 +119,8 @@ f1006_t new_f1006_from_float16(_Float16 f) {
     }
     return new_f1006(exponent, significand);
 }
+  #endif
+#endif
 
 // exponent part of float 1006
 int16_t exp_f1006(f1006_t a) {

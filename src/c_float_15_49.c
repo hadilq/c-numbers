@@ -75,6 +75,9 @@ f1549_t new_f1549(int64_t exp, int64_t sig) {
     return (exp << SIGNIFICAND_BITS_F_15_49) | (sig & SIGNIFICAND_MASK_F_15_49);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float64)
+
 #define Float64_SIG 52
 #define Float64_SIG_1 Float64_SIG + 1
 #define Float64_EXP 11
@@ -119,6 +122,11 @@ f1549_t new_f1549_from_float64(_Float64 f) {
     return new_f1549(exponent, significand);
 
 }
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 
 #define Float32_SIG 23
 #define Float32_SIG_1 Float32_SIG + 1
@@ -163,6 +171,11 @@ f1549_t new_f1549_from_float32(_Float32 f) {
     }
     return new_f1549(exponent, significand);
 }
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
@@ -205,6 +218,9 @@ f1549_t new_f1549_from_float16(_Float16 f) {
     }
     return new_f1549(exponent, significand);
 }
+  #endif
+#endif
+
 
 // exponent part of float 1549
 int64_t exp_f1549(f1549_t a) {

@@ -75,6 +75,8 @@ fDDD32_t new_fDDD32(int32_t exp, int32_t sig) {
     return (exp << SIGNIFICAND_BITS_F_CCC_32) | (sig & SIGNIFICAND_MASK_F_CCC_32);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 #define Float32_SIG 23
 #define Float32_SIG_1 Float32_SIG + 1
 #define Float32_EXP 8
@@ -117,7 +119,11 @@ fDDD32_t new_fDDD32_from_float32(_Float32 f) {
     }
     return new_fDDD32(exponent, significand);
 }
+  #endif
+#endif
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
 #define Float16_EXP 5
@@ -159,6 +165,8 @@ fDDD32_t new_fDDD32_from_float16(_Float16 f) {
     }
     return new_fDDD32(exponent, significand);
 }
+  #endif
+#endif
 
 // exponent part of float DDD32
 int32_t exp_fDDD32(fDDD32_t a) {

@@ -33,6 +33,8 @@ static void assert_float_CCC_64(const char* label, fDDD64_t f, uint64_t expected
 static void test_constructor() {
     printf("Testing constructor...\n");
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float64)
     // Test case 1: Float64
     fDDD64_t a = new_fDDD64_from_float64(1.164);
     assert_float_CCC_64(
@@ -40,22 +42,32 @@ static void test_constructor() {
         0,
         0xa7ef9db22d0e40ULL
     );
+  #endif
+#endif
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
     // Test case 2: Float32
-    a = new_fDDD64_from_float32(1.164);
+    fDDD64_t b = new_fDDD64_from_float32(1.164);
     assert_float_CCC_64(
-        "Constructor result 2", a,
+        "Constructor result 2", b,
         0,
         0xa7efa000000000ULL
     );
+  #endif
+#endif
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
     // Test case 3: Float16
-    a = new_fDDD64_from_float16(1.164);
+    fDDD64_t c = new_fDDD64_from_float16(1.164);
     assert_float_CCC_64(
-        "Constructor result 3", a,
+        "Constructor result 3", c,
         0,
         0xa8000000000000ULL
     );
+  #endif
+#endif
 }
 
 static void test_addition() {

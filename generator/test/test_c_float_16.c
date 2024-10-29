@@ -33,6 +33,8 @@ static void assert_float_CCC_16(const char* label, fDDD16_t f, uint16_t expected
 static void test_constructor() {
     printf("Testing constructor...\n");
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
     // Test case 1: Float16
     fDDD16_t a = new_fDDD16_from_float16(1.164);
     assert_float_CCC_16(
@@ -40,6 +42,8 @@ static void test_constructor() {
         0,
         0x4a8ULL
     );
+  #endif
+#endif
 }
 
 static void test_addition() {

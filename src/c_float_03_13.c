@@ -75,6 +75,8 @@ f0313_t new_f0313(int16_t exp, int16_t sig) {
     return (exp << SIGNIFICAND_BITS_F_03_13) | (sig & SIGNIFICAND_MASK_F_03_13);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
 #define Float16_EXP 5
@@ -117,6 +119,8 @@ f0313_t new_f0313_from_float16(_Float16 f) {
     }
     return new_f0313(exponent, significand);
 }
+  #endif
+#endif
 
 // exponent part of float 0313
 int16_t exp_f0313(f0313_t a) {

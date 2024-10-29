@@ -25,10 +25,21 @@ typedef uint32_t f0725_t;
 
 // construct float 0725
 f0725_t new_f0725(int32_t exp, int32_t sig);
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 // construct float 0725
 f0725_t new_f0725_from_float32(_Float32 f);
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 // construct float 0725
 f0725_t new_f0725_from_float16(_Float16 f);
+  #endif
+#endif
+
 // exponent part of float 0725
 int32_t exp_f0725(f0725_t a);
 // significand part of float 0725

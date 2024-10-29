@@ -25,10 +25,21 @@ typedef uint32_t fDDD32_t;
 
 // construct float DDD32
 fDDD32_t new_fDDD32(int32_t exp, int32_t sig);
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 // construct float DDD32
 fDDD32_t new_fDDD32_from_float32(_Float32 f);
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 // construct float DDD32
 fDDD32_t new_fDDD32_from_float16(_Float16 f);
+  #endif
+#endif
+
 // exponent part of float DDD32
 int32_t exp_fDDD32(fDDD32_t a);
 // significand part of float DDD32

@@ -75,6 +75,8 @@ f1220_t new_f1220(int32_t exp, int32_t sig) {
     return (exp << SIGNIFICAND_BITS_F_12_20) | (sig & SIGNIFICAND_MASK_F_12_20);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 #define Float32_SIG 23
 #define Float32_SIG_1 Float32_SIG + 1
 #define Float32_EXP 8
@@ -117,7 +119,11 @@ f1220_t new_f1220_from_float32(_Float32 f) {
     }
     return new_f1220(exponent, significand);
 }
+  #endif
+#endif
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
 #define Float16_EXP 5
@@ -159,6 +165,8 @@ f1220_t new_f1220_from_float16(_Float16 f) {
     }
     return new_f1220(exponent, significand);
 }
+  #endif
+#endif
 
 // exponent part of float 1220
 int32_t exp_f1220(f1220_t a) {

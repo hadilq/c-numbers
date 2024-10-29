@@ -24,8 +24,14 @@ typedef uint16_t f0709_t;
 
 // construct float 0709
 f0709_t new_f0709(int16_t exp, int16_t sig);
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 // construct float DDD32
 f0709_t new_f0709_from_float16(_Float16 f);
+  #endif
+#endif
+
 // exponent part of float 0709
 int16_t exp_f0709(f0709_t a);
 // significand part of float 0709

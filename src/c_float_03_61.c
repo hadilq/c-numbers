@@ -75,6 +75,9 @@ f0361_t new_f0361(int64_t exp, int64_t sig) {
     return (exp << SIGNIFICAND_BITS_F_03_61) | (sig & SIGNIFICAND_MASK_F_03_61);
 }
 
+#ifdef __is_identifier
+  #if !__is_identifier(_Float64)
+
 #define Float64_SIG 52
 #define Float64_SIG_1 Float64_SIG + 1
 #define Float64_EXP 11
@@ -119,6 +122,11 @@ f0361_t new_f0361_from_float64(_Float64 f) {
     return new_f0361(exponent, significand);
 
 }
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float32)
 
 #define Float32_SIG 23
 #define Float32_SIG_1 Float32_SIG + 1
@@ -163,6 +171,11 @@ f0361_t new_f0361_from_float32(_Float32 f) {
     }
     return new_f0361(exponent, significand);
 }
+  #endif
+#endif
+
+#ifdef __is_identifier
+  #if !__is_identifier(_Float16)
 
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
@@ -205,6 +218,9 @@ f0361_t new_f0361_from_float16(_Float16 f) {
     }
     return new_f0361(exponent, significand);
 }
+  #endif
+#endif
+
 
 // exponent part of float 0361
 int64_t exp_f0361(f0361_t a) {
