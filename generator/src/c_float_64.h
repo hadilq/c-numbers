@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_CCC_64_H
 #define C_FLOAT_CCC_64_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -23,11 +24,17 @@ typedef uint64_t fDDD64_t;
 #define MIN_VALUE_F_CCC_64 (((1ULL << (EXPONENT_BITS_F_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_64) | (SIGNIFICAND_SIGN_MASK_F_CCC_64)
 
 // construct float DDD64
-fDDD64_t new_fDDD64(uint64_t exp, uint64_t sig);
+fDDD64_t new_fDDD64(int64_t exp, int64_t sig);
+// construct float DDD64
+fDDD64_t new_fDDD64_from_float64(_Float64 f);
+// construct float DDD64
+fDDD64_t new_fDDD64_from_float32(_Float32 f);
+// construct float DDD64
+fDDD64_t new_fDDD64_from_float16(_Float16 f);
 // exponent part of float DDD64
-uint64_t exp_fDDD64(fDDD64_t a);
+int64_t exp_fDDD64(fDDD64_t a);
 // significand part of float DDD64
-uint64_t sig_fDDD64(fDDD64_t a);
+int64_t sig_fDDD64(fDDD64_t a);
 // add float DDD64
 fDDD64_t add_fDDD64(fDDD64_t a, fDDD64_t b);
 // subtract float DDD64

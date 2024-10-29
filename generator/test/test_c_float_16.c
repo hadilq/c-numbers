@@ -30,6 +30,18 @@ static void assert_float_CCC_16(const char* label, fDDD16_t f, uint16_t expected
     assert((f & SIGNIFICAND_MASK_F_CCC_16) == expected_sig);
 }
 
+static void test_constructor() {
+    printf("Testing constructor...\n");
+
+    // Test case 1: Float16
+    fDDD16_t a = new_fDDD16_from_float16(1.164);
+    assert_float_CCC_16(
+        "Constructor result 1", a,
+        0,
+        0x4a8ULL
+    );
+}
+
 static void test_addition() {
     printf("Testing addition...\n");
 
@@ -325,6 +337,7 @@ static void test_equals_and_compare() {
 }
 
 int main() {
+    test_constructor();
     test_addition();
     test_subtraction();
     test_multiplication();

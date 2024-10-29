@@ -30,6 +30,26 @@ static void assert_float_CCC_32(const char* label, fDDD32_t f, uint32_t expected
     assert((f & SIGNIFICAND_MASK_F_CCC_32) == expected_sig);
 }
 
+static void test_constructor() {
+    printf("Testing constructor...\n");
+
+    // Test case 1: Float32
+    fDDD32_t a = new_fDDD32_from_float32(1.164);
+    assert_float_CCC_32(
+        "Constructor result 1", a,
+        0,
+        0x14fdf40ULL
+    );
+
+    // Test case 2: Float16
+    a = new_fDDD32_from_float16(1.164);
+    assert_float_CCC_32(
+        "Constructor result 2", a,
+        0,
+        0x1500000ULL
+    );
+}
+
 static void test_addition() {
     printf("Testing addition...\n");
 
@@ -325,6 +345,7 @@ static void test_equals_and_compare() {
 }
 
 int main() {
+    test_constructor();
     test_addition();
     test_subtraction();
     test_multiplication();

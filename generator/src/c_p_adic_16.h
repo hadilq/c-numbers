@@ -22,11 +22,11 @@ typedef uint16_t pDDD16_t;
 #define MIN_VALUE_P_CCC_16 (((1U << (EXPONENT_BITS_P_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_16) | (SIGNIFICAND_SIGN_MASK_P_CCC_16)
 
 // construct p-adic DDD16
-pDDD16_t new_pDDD16(uint16_t exp, uint16_t sig);
+pDDD16_t new_pDDD16(int16_t exp, int16_t sig);
 // exponent part of p-adic DDD16
-uint16_t exp_pDDD16(pDDD16_t a);
+int16_t exp_pDDD16(pDDD16_t a);
 // significand part of p-adic DDD16
-uint16_t sig_pDDD16(pDDD16_t a);
+int16_t sig_pDDD16(pDDD16_t a);
 // add p-adic DDD16
 pDDD16_t add_pDDD16(pDDD16_t a, pDDD16_t b);
 // subtract p-adic DDD16

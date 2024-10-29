@@ -22,11 +22,11 @@ typedef uint64_t pDDD64_t;
 #define MIN_VALUE_P_CCC_64 (((1ULL << (EXPONENT_BITS_P_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_64) | (SIGNIFICAND_SIGN_MASK_P_CCC_64)
 
 // construct p-adic DDD64
-pDDD64_t new_pDDD64(uint64_t exp, uint64_t sig);
+pDDD64_t new_pDDD64(int64_t exp, int64_t sig);
 // exponent part of p-adic DDD64
-uint64_t exp_pDDD64(pDDD64_t a);
+int64_t exp_pDDD64(pDDD64_t a);
 // significand part of p-adic DDD64
-uint64_t sig_pDDD64(pDDD64_t a);
+int64_t sig_pDDD64(pDDD64_t a);
 // add p-adic DDD64
 pDDD64_t add_pDDD64(pDDD64_t a, pDDD64_t b);
 // subtract p-adic DDD64

@@ -23,11 +23,13 @@ typedef uint16_t fDDD16_t;
 #define MIN_VALUE_F_CCC_16 (((1U << (EXPONENT_BITS_F_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_16) | (SIGNIFICAND_SIGN_MASK_F_CCC_16)
 
 // construct float DDD16
-fDDD16_t new_fDDD16(uint16_t exp, uint16_t sig);
+fDDD16_t new_fDDD16(int16_t exp, int16_t sig);
+// construct float DDD32
+fDDD16_t new_fDDD16_from_float16(_Float16 f);
 // exponent part of float DDD16
-uint16_t exp_fDDD16(fDDD16_t a);
+int16_t exp_fDDD16(fDDD16_t a);
 // significand part of float DDD16
-uint16_t sig_fDDD16(fDDD16_t a);
+int16_t sig_fDDD16(fDDD16_t a);
 // add float DDD16
 fDDD16_t add_fDDD16(fDDD16_t a, fDDD16_t b);
 // subtract float DDD16

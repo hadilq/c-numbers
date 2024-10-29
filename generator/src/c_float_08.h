@@ -23,11 +23,11 @@ typedef uint8_t fDDD08_t;
 #define MIN_VALUE_F_CCC_08 (((1U << (EXPONENT_BITS_F_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_08) | (SIGNIFICAND_SIGN_MASK_F_CCC_08)
 
 // construct float DDD08
-fDDD08_t new_fDDD08(uint8_t exp, uint8_t sig);
+fDDD08_t new_fDDD08(int8_t exp, int8_t sig);
 // exponent part of float DDD08
-uint8_t exp_fDDD08(fDDD08_t a);
+int8_t exp_fDDD08(fDDD08_t a);
 // significand part of float DDD08
-uint8_t sig_fDDD08(fDDD08_t a);
+int8_t sig_fDDD08(fDDD08_t a);
 // add float DDD08
 fDDD08_t add_fDDD08(fDDD08_t a, fDDD08_t b);
 // subtract float DDD08

@@ -71,12 +71,12 @@ static uint8_t get_msb_index_negative(uint8_t n) {
 }
 
 // construct float DDD08
-fDDD08_t new_fDDD08(uint8_t exp, uint8_t sig) {
+fDDD08_t new_fDDD08(int8_t exp, int8_t sig) {
     return (exp << SIGNIFICAND_BITS_F_CCC_08) | (sig & SIGNIFICAND_MASK_F_CCC_08);
 }
 
 // exponent part of float DDD08
-uint8_t exp_fDDD08(fDDD08_t a) {
+int8_t exp_fDDD08(fDDD08_t a) {
     uint8_t exp_a = (a & EXPONENT_MASK_F_CCC_08) >> SIGNIFICAND_BITS_F_CCC_08;
 
     // Handle negatives exponents
@@ -87,7 +87,7 @@ uint8_t exp_fDDD08(fDDD08_t a) {
 }
 
 // significand part of float DDD08
-uint8_t sig_fDDD08(fDDD08_t a) {
+int8_t sig_fDDD08(fDDD08_t a) {
     uint8_t sig_a = a & SIGNIFICAND_MASK_F_CCC_08;
 
     // Handle negative numbers

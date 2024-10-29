@@ -61,12 +61,12 @@ static uint8_t get_msb_index_16(uint16_t n) {
 }
 
 // construct p-adic DDD08
-pDDD08_t new_pDDD08(uint8_t exp, uint8_t sig) {
+pDDD08_t new_pDDD08(int8_t exp, int8_t sig) {
     return (exp << SIGNIFICAND_BITS_P_CCC_08) | (sig & SIGNIFICAND_MASK_P_CCC_08);
 }
 
 // exponent part of p-adic DDD08
-uint8_t exp_pDDD08(pDDD08_t a) {
+int8_t exp_pDDD08(pDDD08_t a) {
     uint8_t exp_a = (a & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
 
     // Handle negatives exponents
@@ -77,7 +77,7 @@ uint8_t exp_pDDD08(pDDD08_t a) {
 }
 
 // significand part of p-adic DDD08
-uint8_t sig_pDDD08(pDDD08_t a) {
+int8_t sig_pDDD08(pDDD08_t a) {
     uint8_t sig_a = a & SIGNIFICAND_MASK_P_CCC_08;
 
     // Handle negative numbers

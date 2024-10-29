@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_CCC_32_H
 #define C_FLOAT_CCC_32_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -22,25 +23,29 @@ typedef uint32_t fDDD32_t;
 #define MAX_VALUE_F_CCC_32 (((1U << (EXPONENT_BITS_F_CCC_32 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_32) | ((1U << (SIGNIFICAND_BITS_F_CCC_32 - 2)) - 1)
 #define MIN_VALUE_F_CCC_32 (((1U << (EXPONENT_BITS_F_CCC_32 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_32) | (SIGNIFICAND_SIGN_MASK_F_CCC_32)
 
-// construct float 26 06
-fDDD32_t new_fDDD32(uint32_t exp, uint32_t sig);
-// exponent part of float 26 06
-uint32_t exp_fDDD32(fDDD32_t a);
-// significand part of float 26 06
-uint32_t sig_fDDD32(fDDD32_t a);
-// add float 26 06
+// construct float DDD32
+fDDD32_t new_fDDD32(int32_t exp, int32_t sig);
+// construct float DDD32
+fDDD32_t new_fDDD32_from_float32(_Float32 f);
+// construct float DDD32
+fDDD32_t new_fDDD32_from_float16(_Float16 f);
+// exponent part of float DDD32
+int32_t exp_fDDD32(fDDD32_t a);
+// significand part of float DDD32
+int32_t sig_fDDD32(fDDD32_t a);
+// add float DDD32
 fDDD32_t add_fDDD32(fDDD32_t a, fDDD32_t b);
-// subtract float 26 06
+// subtract float DDD32
 fDDD32_t sub_fDDD32(fDDD32_t a, fDDD32_t b);
-// negate float 26 06
+// negate float DDD32
 fDDD32_t neg_fDDD32(fDDD32_t a);
-// multiply float 26 06
+// multiply float DDD32
 fDDD32_t mul_fDDD32(fDDD32_t a, fDDD32_t b);
-// divide float 26 06
+// divide float DDD32
 fDDD32_t div_fDDD32(fDDD32_t a, fDDD32_t b);
-// equals float 26 06
+// equals float DDD32
 bool equ_fDDD32(fDDD32_t a, fDDD32_t b);
-// compare float 26 06
+// compare float DDD32
 int com_fDDD32(fDDD32_t a, fDDD32_t b);
 
 #endif // C_FLOAT_CCC_32_H

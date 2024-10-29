@@ -22,11 +22,11 @@ typedef uint32_t pDDD32_t;
 #define MIN_VALUE_P_CCC_32 (((1U << (EXPONENT_BITS_P_CCC_32 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_32) | (SIGNIFICAND_SIGN_MASK_P_CCC_32)
 
 // construct p-adic DDD32
-pDDD32_t new_pDDD32(uint32_t exp, uint32_t sig);
+pDDD32_t new_pDDD32(int32_t exp, int32_t sig);
 // exponent part of p-adic DDD32
-uint32_t exp_pDDD32(pDDD32_t a);
+int32_t exp_pDDD32(pDDD32_t a);
 // significand part of p-adic DDD32
-uint32_t sig_pDDD32(pDDD32_t a);
+int32_t sig_pDDD32(pDDD32_t a);
 // add p-adic DDD32
 pDDD32_t add_pDDD32(pDDD32_t a, pDDD32_t b);
 // subtract p-adic DDD32

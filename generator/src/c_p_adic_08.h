@@ -22,11 +22,11 @@ typedef uint8_t pDDD08_t;
 #define MIN_VALUE_P_CCC_08 (((1U << (EXPONENT_BITS_P_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_08) | (SIGNIFICAND_SIGN_MASK_P_CCC_08)
 
 // construct p-adic DDD08
-pDDD08_t new_pDDD08(uint8_t exp, uint8_t sig);
+pDDD08_t new_pDDD08(int8_t exp, int8_t sig);
 // exponent part of p-adic DDD08
-uint8_t exp_pDDD08(pDDD08_t a);
+int8_t exp_pDDD08(pDDD08_t a);
 // significand part of p-adic DDD08
-uint8_t sig_pDDD08(pDDD08_t a);
+int8_t sig_pDDD08(pDDD08_t a);
 // add p-adic DDD08
 pDDD08_t add_pDDD08(pDDD08_t a, pDDD08_t b);
 // subtract p-adic DDD08
