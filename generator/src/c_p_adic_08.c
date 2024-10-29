@@ -283,12 +283,10 @@ pDDD08_t div_pDDD08(pDDD08_t a, pDDD08_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_P_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_08)
-                   | ((1U << (SIGNIFICAND_BITS_P_CCC_08 - 2)) - 1);
+            return MAX_VALUE_P_CCC_08;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_P_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_08)
-                   | (SIGNIFICAND_SIGN_MASK_P_CCC_08);
+            return MIN_VALUE_P_CCC_08;
         }
     }
 

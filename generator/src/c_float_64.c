@@ -317,12 +317,10 @@ fDDD64_t div_fDDD64(fDDD64_t a, fDDD64_t b) {
     if (sig_b == 0ULL) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1ULL << (EXPONENT_BITS_F_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_64)
-                   | ((1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2)) - 1);
+            return MAX_VALUE_F_CCC_64;
         } else {
             // Return min value as "-infinity"
-            return (((1ULL << (EXPONENT_BITS_F_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_64)
-                   | (SIGNIFICAND_SIGN_MASK_F_CCC_64);
+            return MIN_VALUE_F_CCC_64;
         }
     }
 

@@ -19,6 +19,9 @@ typedef uint64_t fDDD64_t;
 #define EXPONENT_SIGN_MASK_F_CCC_64 (1ULL << (EXPONENT_BITS_F_CCC_64 - 1))
 #define BITS_SIGN_MASK_F_CCC_64 (1ULL << (BITS_F_CCC_64 - 1))
 
+#define MAX_VALUE_F_CCC_64 (((1ULL << (EXPONENT_BITS_F_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_64) | ((1ULL << (SIGNIFICAND_BITS_F_CCC_64 - 2)) - 1)
+#define MIN_VALUE_F_CCC_64 (((1ULL << (EXPONENT_BITS_F_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_64) | (SIGNIFICAND_SIGN_MASK_F_CCC_64)
+
 // construct float DDD64
 fDDD64_t new_fDDD64(uint64_t exp, uint64_t sig);
 // exponent part of float DDD64

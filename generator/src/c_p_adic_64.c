@@ -283,12 +283,10 @@ pDDD64_t div_pDDD64(pDDD64_t a, pDDD64_t b) {
     if (sig_b == 0ULL) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1ULL << (EXPONENT_BITS_P_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_64)
-                   | ((1ULL << (SIGNIFICAND_BITS_P_CCC_64 - 2)) - 1);
+            return MAX_VALUE_P_CCC_64;
         } else {
             // Return min value as "-infinity"
-            return (((1ULL << (EXPONENT_BITS_P_CCC_64 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_64)
-                   | (SIGNIFICAND_SIGN_MASK_P_CCC_64);
+            return MIN_VALUE_P_CCC_64;
         }
     }
 

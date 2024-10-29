@@ -19,6 +19,9 @@ typedef uint8_t fDDD08_t;
 #define EXPONENT_SIGN_MASK_F_CCC_08 (1U << (EXPONENT_BITS_F_CCC_08 - 1))
 #define BITS_SIGN_MASK_F_CCC_08 (1U << (BITS_F_CCC_08 - 1))
 
+#define MAX_VALUE_F_CCC_08 (((1U << (EXPONENT_BITS_F_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_08) | ((1U << (SIGNIFICAND_BITS_F_CCC_08 - 2)) - 1)
+#define MIN_VALUE_F_CCC_08 (((1U << (EXPONENT_BITS_F_CCC_08 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_08) | (SIGNIFICAND_SIGN_MASK_F_CCC_08)
+
 // construct float DDD08
 fDDD08_t new_fDDD08(uint8_t exp, uint8_t sig);
 // exponent part of float DDD08

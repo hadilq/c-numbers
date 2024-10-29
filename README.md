@@ -75,7 +75,6 @@ This set of operations is available for all the types in this collection.
 
 # Roadmap
 - Have some utility to convert `float8`, `float16`, `float32`, and `float64` into these types.
-- Have min and max value constants for each type.
 - Complete the test suite, and review the comments on the current tests.
 
 # Cite

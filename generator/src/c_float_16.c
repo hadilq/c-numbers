@@ -319,12 +319,10 @@ fDDD16_t div_fDDD16(fDDD16_t a, fDDD16_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_F_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_16)
-                   | ((1U << (SIGNIFICAND_BITS_F_CCC_16 - 2)) - 1);
+            return MAX_VALUE_F_CCC_16;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_F_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_16)
-                   | (SIGNIFICAND_SIGN_MASK_F_CCC_16);
+            return MIN_VALUE_F_CCC_16;
         }
     }
 

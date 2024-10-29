@@ -283,12 +283,10 @@ pDDD16_t div_pDDD16(pDDD16_t a, pDDD16_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_P_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_16)
-                   | ((1U << (SIGNIFICAND_BITS_P_CCC_16 - 2)) - 1);
+            return MAX_VALUE_P_CCC_16;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_P_CCC_16 - 2)) - 1) << SIGNIFICAND_BITS_P_CCC_16)
-                   | (SIGNIFICAND_SIGN_MASK_P_CCC_16);
+            return MIN_VALUE_P_CCC_16;
         }
     }
 

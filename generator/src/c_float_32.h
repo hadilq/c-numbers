@@ -19,6 +19,9 @@ typedef uint32_t fDDD32_t;
 #define EXPONENT_SIGN_MASK_F_CCC_32 (1UL << (EXPONENT_BITS_F_CCC_32 - 1))
 #define BITS_SIGN_MASK_F_CCC_32 (1UL << (BITS_F_CCC_32 - 1))
 
+#define MAX_VALUE_F_CCC_32 (((1U << (EXPONENT_BITS_F_CCC_32 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_32) | ((1U << (SIGNIFICAND_BITS_F_CCC_32 - 2)) - 1)
+#define MIN_VALUE_F_CCC_32 (((1U << (EXPONENT_BITS_F_CCC_32 - 2)) - 1) << SIGNIFICAND_BITS_F_CCC_32) | (SIGNIFICAND_SIGN_MASK_F_CCC_32)
+
 // construct float 26 06
 fDDD32_t new_fDDD32(uint32_t exp, uint32_t sig);
 // exponent part of float 26 06
