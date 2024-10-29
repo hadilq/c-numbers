@@ -25,7 +25,11 @@ Regarding the difference in the sign bit's position in this type collection resp
 what we have in the family of [IEEE 754 single-precision floating-point format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format),
 I always wanted to know why they have separated it from the significand's bits,
 where it's more consistent to treat the most left bit as the sign bit.
-Therefore, I just did that here! It made the implementation easier and more consistent.
+Don't get me wrong!
+I really like having standards in general, and [IEEE-754-2008](https://en.wikipedia.org/wiki/IEEE_754)
+is awesome, but having extra instruction/algorithm for [subnormal number](https://en.wikipedia.org/wiki/Subnormal_number)
+in [IEEE-754-2008](https://en.wikipedia.org/wiki/IEEE_754) looks like more cost on the runtime, IMHO!
+Therefore, I just didn't do that here! It made the implementation easier and more consistent.
 I still couldn't find the problem though, so feel free to open an issue in this repository.
 
 This implementation tried to avoid a common library among these types,
@@ -57,8 +61,13 @@ Or imagine you want a float number with this capacity, then you can write
 f5707_t a = new_f5707(2, 5ULL << (SIGNIFICAND_BITS_F_57_07 - 4)); // 0.1010...00 × 2^2
 ```
 Here the exponent is `2` and the significand is `101` again, but you have to shift it to the left.
-Adding more convenient functions to convert `floatN` types to these types is in the roadmap.
 Again both the significand and exponent on all implementations in this collection can be both positive and negative integer numbers.
+
+Someone can construct some of these types by using `_Floar16`, `_Float32`, or `_Float64` types.
+Something like
+```
+f5707_t a = new_f5707_from_float64(1.164);
+```
 
 Where you can do basic arithmetic with them.
 
