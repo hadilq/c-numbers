@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_54_10_H
 #define C_FLOAT_54_10_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f5410_t;
 #define EXPONENT_SIGN_MASK_F_54_10 (1ULL << (EXPONENT_BITS_F_54_10 - 1))
 #define BITS_SIGN_MASK_F_54_10 (1ULL << (BITS_F_54_10 - 1))
 
+#define MAX_VALUE_F_54_10 (((1ULL << (EXPONENT_BITS_F_54_10 - 2)) - 1) << SIGNIFICAND_BITS_F_54_10) | ((1ULL << (SIGNIFICAND_BITS_F_54_10 - 2)) - 1)
+#define MIN_VALUE_F_54_10 (((1ULL << (EXPONENT_BITS_F_54_10 - 2)) - 1) << SIGNIFICAND_BITS_F_54_10) | (SIGNIFICAND_SIGN_MASK_F_54_10)
+
 // construct float 5410
-f5410_t new_f5410(uint64_t exp, uint64_t sig);
+f5410_t new_f5410(int64_t exp, int64_t sig);
+// construct float 5410
+f5410_t new_f5410_from_float64(_Float64 f);
+// construct float 5410
+f5410_t new_f5410_from_float32(_Float32 f);
+// construct float 5410
+f5410_t new_f5410_from_float16(_Float16 f);
 // exponent part of float 5410
-uint64_t exp_f5410(f5410_t a);
+int64_t exp_f5410(f5410_t a);
 // significand part of float 5410
-uint64_t sig_f5410(f5410_t a);
+int64_t sig_f5410(f5410_t a);
 // add float 5410
 f5410_t add_f5410(f5410_t a, f5410_t b);
 // subtract float 5410

@@ -61,12 +61,12 @@ static uint8_t get_msb_index_128(__uint128_t n) {
 }
 
 // construct p-adic 2044
-p2044_t new_p2044(uint64_t exp, uint64_t sig) {
+p2044_t new_p2044(int64_t exp, int64_t sig) {
     return (exp << SIGNIFICAND_BITS_P_20_44) | (sig & SIGNIFICAND_MASK_P_20_44);
 }
 
 // exponent part of p-adic 2044
-uint64_t exp_p2044(p2044_t a) {
+int64_t exp_p2044(p2044_t a) {
     uint64_t exp_a = (a & EXPONENT_MASK_P_20_44) >> SIGNIFICAND_BITS_P_20_44;
 
     // Handle negatives exponents
@@ -77,7 +77,7 @@ uint64_t exp_p2044(p2044_t a) {
 }
 
 // significand part of p-adic 2044
-uint64_t sig_p2044(p2044_t a) {
+int64_t sig_p2044(p2044_t a) {
     uint64_t sig_a = a & SIGNIFICAND_MASK_P_20_44;
 
     // Handle negative numbers
@@ -283,12 +283,10 @@ p2044_t div_p2044(p2044_t a, p2044_t b) {
     if (sig_b == 0ULL) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1ULL << (EXPONENT_BITS_P_20_44 - 2)) - 1) << SIGNIFICAND_BITS_P_20_44)
-                   | ((1ULL << (SIGNIFICAND_BITS_P_20_44 - 2)) - 1);
+            return MAX_VALUE_P_20_44;
         } else {
             // Return min value as "-infinity"
-            return (((1ULL << (EXPONENT_BITS_P_20_44 - 2)) - 1) << SIGNIFICAND_BITS_P_20_44)
-                   | (SIGNIFICAND_SIGN_MASK_P_20_44);
+            return MIN_VALUE_P_20_44;
         }
     }
 
@@ -338,10 +336,10 @@ bool equ_p2044(p2044_t a, p2044_t b) {
 int com_p2044(p2044_t a, p2044_t b) {
     if (a == b) return 0;
 
-    uint64_t exp_a = (a & EXPONENT_MASK_P_20_44) >> SIGNIFICAND_BITS_P_20_44;
-    uint64_t exp_b = (b & EXPONENT_MASK_P_20_44) >> SIGNIFICAND_BITS_P_20_44;
-    uint64_t sig_a = a & SIGNIFICAND_MASK_P_20_44;
-    uint64_t sig_b = b & SIGNIFICAND_MASK_P_20_44;
+    int64_t exp_a = (a & EXPONENT_MASK_P_20_44) >> SIGNIFICAND_BITS_P_20_44;
+    int64_t exp_b = (b & EXPONENT_MASK_P_20_44) >> SIGNIFICAND_BITS_P_20_44;
+    int64_t sig_a = a & SIGNIFICAND_MASK_P_20_44;
+    int64_t sig_b = b & SIGNIFICAND_MASK_P_20_44;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

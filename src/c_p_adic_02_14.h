@@ -18,12 +18,15 @@ typedef uint16_t p0214_t;
 #define EXPONENT_SIGN_MASK_P_02_14 (1U << (EXPONENT_BITS_P_02_14 - 1))
 #define BITS_SIGN_MASK_P_02_14 (1U << (BITS_P_02_14 - 1))
 
+#define MAX_VALUE_P_02_14 (((1U << (EXPONENT_BITS_P_02_14 - 2)) - 1) << SIGNIFICAND_BITS_P_02_14) | ((1U << (SIGNIFICAND_BITS_P_02_14 - 2)) - 1)
+#define MIN_VALUE_P_02_14 (((1U << (EXPONENT_BITS_P_02_14 - 2)) - 1) << SIGNIFICAND_BITS_P_02_14) | (SIGNIFICAND_SIGN_MASK_P_02_14)
+
 // construct p-adic 0214
-p0214_t new_p0214(uint16_t exp, uint16_t sig);
+p0214_t new_p0214(int16_t exp, int16_t sig);
 // exponent part of p-adic 0214
-uint16_t exp_p0214(p0214_t a);
+int16_t exp_p0214(p0214_t a);
 // significand part of p-adic 0214
-uint16_t sig_p0214(p0214_t a);
+int16_t sig_p0214(p0214_t a);
 // add p-adic 0214
 p0214_t add_p0214(p0214_t a, p0214_t b);
 // subtract p-adic 0214

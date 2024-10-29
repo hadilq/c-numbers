@@ -71,12 +71,97 @@ static uint8_t get_msb_index_negative(uint32_t n) {
 }
 
 // construct float 0824
-f0824_t new_f0824(uint32_t exp, uint32_t sig) {
+f0824_t new_f0824(int32_t exp, int32_t sig) {
     return (exp << SIGNIFICAND_BITS_F_08_24) | (sig & SIGNIFICAND_MASK_F_08_24);
 }
 
+#define Float32_SIG 23
+#define Float32_SIG_1 Float32_SIG + 1
+#define Float32_EXP 8
+typedef union {
+  _Float32 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint32_t significand : Float32_SIG;
+        uint32_t exponent : Float32_EXP;
+        uint32_t sign : 1;
+#else
+        uint32_t sign : 1;
+        uint32_t exponent : Float32_EXP;
+        uint32_t significand : Float32_SIG;
+#endif
+    } parts;
+} float32_cast;
+
+
+// construct float 0824
+f0824_t new_f0824_from_float32(_Float32 f) {
+    float32_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t sign = f1.parts.sign;
+    uint64_t exponent = f1.parts.exponent - 127;  // Unbias the exponent (bias is 127 for float32)
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -126;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;     // Zero
+        }
+    }
+    significand = significand | (1U << Float32_SIG) | (sign << (Float32_SIG_1));
+    if (SIGNIFICAND_BITS_F_08_24 > Float32_SIG_1) {
+        significand <<= SIGNIFICAND_BITS_F_08_24 - Float32_SIG_1;
+    } else {
+        significand >>= Float32_SIG_1 - SIGNIFICAND_BITS_F_08_24;
+    }
+    return new_f0824(exponent, significand);
+}
+
+#define Float16_SIG 10
+#define Float16_SIG_1 Float16_SIG + 1
+#define Float16_EXP 5
+typedef union {
+  _Float16 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint16_t significand : Float16_SIG;
+        uint16_t exponent : Float16_EXP;
+        uint16_t sign : 1;
+#else
+        uint16_t sign : 1;
+        uint16_t exponent : Float16_EXP;
+        uint16_t significand : Float16_SIG;
+#endif
+  } parts;
+} float16_cast;
+
+// construct float 0824
+f0824_t new_f0824_from_float16(_Float16 f) {
+    float16_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t exponent = f1.parts.exponent - 15;  // Unbias the exponent (bias is 15 for float16)
+    uint64_t sign = f1.parts.sign;
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -14;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;    // Zero
+        }
+    }
+    significand = significand | (1U << Float16_SIG) | (sign << (Float16_SIG_1));
+    if (SIGNIFICAND_BITS_F_08_24 > Float16_SIG_1) {
+        significand <<= SIGNIFICAND_BITS_F_08_24 - Float16_SIG_1;
+    } else {
+        significand >>= Float16_SIG_1 - SIGNIFICAND_BITS_F_08_24;
+    }
+    return new_f0824(exponent, significand);
+}
+
 // exponent part of float 0824
-uint32_t exp_f0824(f0824_t a) {
+int32_t exp_f0824(f0824_t a) {
     uint32_t exp_a = (a & EXPONENT_MASK_F_08_24) >> SIGNIFICAND_BITS_F_08_24;
 
     // Handle negatives exponents
@@ -87,7 +172,7 @@ uint32_t exp_f0824(f0824_t a) {
 }
 
 // significand part of float 0824
-uint32_t sig_f0824(f0824_t a) {
+int32_t sig_f0824(f0824_t a) {
     uint32_t sig_a = a & SIGNIFICAND_MASK_F_08_24;
 
     // Handle negative numbers
@@ -317,12 +402,10 @@ f0824_t div_f0824(f0824_t a, f0824_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_F_08_24 - 2)) - 1) << SIGNIFICAND_BITS_F_08_24)
-                   | ((1U << (SIGNIFICAND_BITS_F_08_24 - 2)) - 1);
+            return MAX_VALUE_F_08_24;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_F_08_24 - 2)) - 1) << SIGNIFICAND_BITS_F_08_24)
-                   | (SIGNIFICAND_SIGN_MASK_F_08_24);
+            return MIN_VALUE_F_08_24;
         }
     }
 
@@ -362,10 +445,10 @@ bool equ_f0824(f0824_t a, f0824_t b) {
 int com_f0824(f0824_t a, f0824_t b) {
     if (a == b) return 0;
 
-    uint32_t exp_a = (a & EXPONENT_MASK_F_08_24) >> SIGNIFICAND_BITS_F_08_24;
-    uint32_t exp_b = (b & EXPONENT_MASK_F_08_24) >> SIGNIFICAND_BITS_F_08_24;
-    uint32_t sig_a = a & SIGNIFICAND_MASK_F_08_24;
-    uint32_t sig_b = b & SIGNIFICAND_MASK_F_08_24;
+    int32_t exp_a = (a & EXPONENT_MASK_F_08_24) >> SIGNIFICAND_BITS_F_08_24;
+    int32_t exp_b = (b & EXPONENT_MASK_F_08_24) >> SIGNIFICAND_BITS_F_08_24;
+    int32_t sig_a = a & SIGNIFICAND_MASK_F_08_24;
+    int32_t sig_b = b & SIGNIFICAND_MASK_F_08_24;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

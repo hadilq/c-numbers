@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_27_37_H
 #define C_FLOAT_27_37_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f2737_t;
 #define EXPONENT_SIGN_MASK_F_27_37 (1ULL << (EXPONENT_BITS_F_27_37 - 1))
 #define BITS_SIGN_MASK_F_27_37 (1ULL << (BITS_F_27_37 - 1))
 
+#define MAX_VALUE_F_27_37 (((1ULL << (EXPONENT_BITS_F_27_37 - 2)) - 1) << SIGNIFICAND_BITS_F_27_37) | ((1ULL << (SIGNIFICAND_BITS_F_27_37 - 2)) - 1)
+#define MIN_VALUE_F_27_37 (((1ULL << (EXPONENT_BITS_F_27_37 - 2)) - 1) << SIGNIFICAND_BITS_F_27_37) | (SIGNIFICAND_SIGN_MASK_F_27_37)
+
 // construct float 2737
-f2737_t new_f2737(uint64_t exp, uint64_t sig);
+f2737_t new_f2737(int64_t exp, int64_t sig);
+// construct float 2737
+f2737_t new_f2737_from_float64(_Float64 f);
+// construct float 2737
+f2737_t new_f2737_from_float32(_Float32 f);
+// construct float 2737
+f2737_t new_f2737_from_float16(_Float16 f);
 // exponent part of float 2737
-uint64_t exp_f2737(f2737_t a);
+int64_t exp_f2737(f2737_t a);
 // significand part of float 2737
-uint64_t sig_f2737(f2737_t a);
+int64_t sig_f2737(f2737_t a);
 // add float 2737
 f2737_t add_f2737(f2737_t a, f2737_t b);
 // subtract float 2737

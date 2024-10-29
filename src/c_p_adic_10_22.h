@@ -18,12 +18,15 @@ typedef uint32_t p1022_t;
 #define EXPONENT_SIGN_MASK_P_10_22 (1U << (EXPONENT_BITS_P_10_22 - 1))
 #define BITS_SIGN_MASK_P_10_22 (1U << (BITS_P_10_22 - 1))
 
+#define MAX_VALUE_P_10_22 (((1U << (EXPONENT_BITS_P_10_22 - 2)) - 1) << SIGNIFICAND_BITS_P_10_22) | ((1U << (SIGNIFICAND_BITS_P_10_22 - 2)) - 1)
+#define MIN_VALUE_P_10_22 (((1U << (EXPONENT_BITS_P_10_22 - 2)) - 1) << SIGNIFICAND_BITS_P_10_22) | (SIGNIFICAND_SIGN_MASK_P_10_22)
+
 // construct p-adic 1022
-p1022_t new_p1022(uint32_t exp, uint32_t sig);
+p1022_t new_p1022(int32_t exp, int32_t sig);
 // exponent part of p-adic 1022
-uint32_t exp_p1022(p1022_t a);
+int32_t exp_p1022(p1022_t a);
 // significand part of p-adic 1022
-uint32_t sig_p1022(p1022_t a);
+int32_t sig_p1022(p1022_t a);
 // add p-adic 1022
 p1022_t add_p1022(p1022_t a, p1022_t b);
 // subtract p-adic 1022

@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_30_34_H
 #define C_FLOAT_30_34_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f3034_t;
 #define EXPONENT_SIGN_MASK_F_30_34 (1ULL << (EXPONENT_BITS_F_30_34 - 1))
 #define BITS_SIGN_MASK_F_30_34 (1ULL << (BITS_F_30_34 - 1))
 
+#define MAX_VALUE_F_30_34 (((1ULL << (EXPONENT_BITS_F_30_34 - 2)) - 1) << SIGNIFICAND_BITS_F_30_34) | ((1ULL << (SIGNIFICAND_BITS_F_30_34 - 2)) - 1)
+#define MIN_VALUE_F_30_34 (((1ULL << (EXPONENT_BITS_F_30_34 - 2)) - 1) << SIGNIFICAND_BITS_F_30_34) | (SIGNIFICAND_SIGN_MASK_F_30_34)
+
 // construct float 3034
-f3034_t new_f3034(uint64_t exp, uint64_t sig);
+f3034_t new_f3034(int64_t exp, int64_t sig);
+// construct float 3034
+f3034_t new_f3034_from_float64(_Float64 f);
+// construct float 3034
+f3034_t new_f3034_from_float32(_Float32 f);
+// construct float 3034
+f3034_t new_f3034_from_float16(_Float16 f);
 // exponent part of float 3034
-uint64_t exp_f3034(f3034_t a);
+int64_t exp_f3034(f3034_t a);
 // significand part of float 3034
-uint64_t sig_f3034(f3034_t a);
+int64_t sig_f3034(f3034_t a);
 // add float 3034
 f3034_t add_f3034(f3034_t a, f3034_t b);
 // subtract float 3034

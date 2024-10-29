@@ -18,12 +18,15 @@ typedef uint32_t p1121_t;
 #define EXPONENT_SIGN_MASK_P_11_21 (1U << (EXPONENT_BITS_P_11_21 - 1))
 #define BITS_SIGN_MASK_P_11_21 (1U << (BITS_P_11_21 - 1))
 
+#define MAX_VALUE_P_11_21 (((1U << (EXPONENT_BITS_P_11_21 - 2)) - 1) << SIGNIFICAND_BITS_P_11_21) | ((1U << (SIGNIFICAND_BITS_P_11_21 - 2)) - 1)
+#define MIN_VALUE_P_11_21 (((1U << (EXPONENT_BITS_P_11_21 - 2)) - 1) << SIGNIFICAND_BITS_P_11_21) | (SIGNIFICAND_SIGN_MASK_P_11_21)
+
 // construct p-adic 1121
-p1121_t new_p1121(uint32_t exp, uint32_t sig);
+p1121_t new_p1121(int32_t exp, int32_t sig);
 // exponent part of p-adic 1121
-uint32_t exp_p1121(p1121_t a);
+int32_t exp_p1121(p1121_t a);
 // significand part of p-adic 1121
-uint32_t sig_p1121(p1121_t a);
+int32_t sig_p1121(p1121_t a);
 // add p-adic 1121
 p1121_t add_p1121(p1121_t a, p1121_t b);
 // subtract p-adic 1121

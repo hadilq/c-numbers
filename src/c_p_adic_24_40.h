@@ -18,12 +18,15 @@ typedef uint64_t p2440_t;
 #define EXPONENT_SIGN_MASK_P_24_40 (1ULL << (EXPONENT_BITS_P_24_40 - 1))
 #define BITS_SIGN_MASK_P_24_40 (1ULL << (BITS_P_24_40 - 1))
 
+#define MAX_VALUE_P_24_40 (((1ULL << (EXPONENT_BITS_P_24_40 - 2)) - 1) << SIGNIFICAND_BITS_P_24_40) | ((1ULL << (SIGNIFICAND_BITS_P_24_40 - 2)) - 1)
+#define MIN_VALUE_P_24_40 (((1ULL << (EXPONENT_BITS_P_24_40 - 2)) - 1) << SIGNIFICAND_BITS_P_24_40) | (SIGNIFICAND_SIGN_MASK_P_24_40)
+
 // construct p-adic 2440
-p2440_t new_p2440(uint64_t exp, uint64_t sig);
+p2440_t new_p2440(int64_t exp, int64_t sig);
 // exponent part of p-adic 2440
-uint64_t exp_p2440(p2440_t a);
+int64_t exp_p2440(p2440_t a);
 // significand part of p-adic 2440
-uint64_t sig_p2440(p2440_t a);
+int64_t sig_p2440(p2440_t a);
 // add p-adic 2440
 p2440_t add_p2440(p2440_t a, p2440_t b);
 // subtract p-adic 2440

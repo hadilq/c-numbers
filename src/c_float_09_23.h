@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_09_23_H
 #define C_FLOAT_09_23_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,25 +20,32 @@ typedef uint32_t f0923_t;
 #define EXPONENT_SIGN_MASK_F_09_23 (1UL << (EXPONENT_BITS_F_09_23 - 1))
 #define BITS_SIGN_MASK_F_09_23 (1UL << (BITS_F_09_23 - 1))
 
-// construct float 26 06
-f0923_t new_f0923(uint32_t exp, uint32_t sig);
-// exponent part of float 26 06
-uint32_t exp_f0923(f0923_t a);
-// significand part of float 26 06
-uint32_t sig_f0923(f0923_t a);
-// add float 26 06
+#define MAX_VALUE_F_09_23 (((1U << (EXPONENT_BITS_F_09_23 - 2)) - 1) << SIGNIFICAND_BITS_F_09_23) | ((1U << (SIGNIFICAND_BITS_F_09_23 - 2)) - 1)
+#define MIN_VALUE_F_09_23 (((1U << (EXPONENT_BITS_F_09_23 - 2)) - 1) << SIGNIFICAND_BITS_F_09_23) | (SIGNIFICAND_SIGN_MASK_F_09_23)
+
+// construct float 0923
+f0923_t new_f0923(int32_t exp, int32_t sig);
+// construct float 0923
+f0923_t new_f0923_from_float32(_Float32 f);
+// construct float 0923
+f0923_t new_f0923_from_float16(_Float16 f);
+// exponent part of float 0923
+int32_t exp_f0923(f0923_t a);
+// significand part of float 0923
+int32_t sig_f0923(f0923_t a);
+// add float 0923
 f0923_t add_f0923(f0923_t a, f0923_t b);
-// subtract float 26 06
+// subtract float 0923
 f0923_t sub_f0923(f0923_t a, f0923_t b);
-// negate float 26 06
+// negate float 0923
 f0923_t neg_f0923(f0923_t a);
-// multiply float 26 06
+// multiply float 0923
 f0923_t mul_f0923(f0923_t a, f0923_t b);
-// divide float 26 06
+// divide float 0923
 f0923_t div_f0923(f0923_t a, f0923_t b);
-// equals float 26 06
+// equals float 0923
 bool equ_f0923(f0923_t a, f0923_t b);
-// compare float 26 06
+// compare float 0923
 int com_f0923(f0923_t a, f0923_t b);
 
 #endif // C_FLOAT_09_23_H

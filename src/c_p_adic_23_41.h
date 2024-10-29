@@ -18,12 +18,15 @@ typedef uint64_t p2341_t;
 #define EXPONENT_SIGN_MASK_P_23_41 (1ULL << (EXPONENT_BITS_P_23_41 - 1))
 #define BITS_SIGN_MASK_P_23_41 (1ULL << (BITS_P_23_41 - 1))
 
+#define MAX_VALUE_P_23_41 (((1ULL << (EXPONENT_BITS_P_23_41 - 2)) - 1) << SIGNIFICAND_BITS_P_23_41) | ((1ULL << (SIGNIFICAND_BITS_P_23_41 - 2)) - 1)
+#define MIN_VALUE_P_23_41 (((1ULL << (EXPONENT_BITS_P_23_41 - 2)) - 1) << SIGNIFICAND_BITS_P_23_41) | (SIGNIFICAND_SIGN_MASK_P_23_41)
+
 // construct p-adic 2341
-p2341_t new_p2341(uint64_t exp, uint64_t sig);
+p2341_t new_p2341(int64_t exp, int64_t sig);
 // exponent part of p-adic 2341
-uint64_t exp_p2341(p2341_t a);
+int64_t exp_p2341(p2341_t a);
 // significand part of p-adic 2341
-uint64_t sig_p2341(p2341_t a);
+int64_t sig_p2341(p2341_t a);
 // add p-adic 2341
 p2341_t add_p2341(p2341_t a, p2341_t b);
 // subtract p-adic 2341

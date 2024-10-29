@@ -18,12 +18,15 @@ typedef uint32_t p2507_t;
 #define EXPONENT_SIGN_MASK_P_25_07 (1U << (EXPONENT_BITS_P_25_07 - 1))
 #define BITS_SIGN_MASK_P_25_07 (1U << (BITS_P_25_07 - 1))
 
+#define MAX_VALUE_P_25_07 (((1U << (EXPONENT_BITS_P_25_07 - 2)) - 1) << SIGNIFICAND_BITS_P_25_07) | ((1U << (SIGNIFICAND_BITS_P_25_07 - 2)) - 1)
+#define MIN_VALUE_P_25_07 (((1U << (EXPONENT_BITS_P_25_07 - 2)) - 1) << SIGNIFICAND_BITS_P_25_07) | (SIGNIFICAND_SIGN_MASK_P_25_07)
+
 // construct p-adic 2507
-p2507_t new_p2507(uint32_t exp, uint32_t sig);
+p2507_t new_p2507(int32_t exp, int32_t sig);
 // exponent part of p-adic 2507
-uint32_t exp_p2507(p2507_t a);
+int32_t exp_p2507(p2507_t a);
 // significand part of p-adic 2507
-uint32_t sig_p2507(p2507_t a);
+int32_t sig_p2507(p2507_t a);
 // add p-adic 2507
 p2507_t add_p2507(p2507_t a, p2507_t b);
 // subtract p-adic 2507

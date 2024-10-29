@@ -18,12 +18,15 @@ typedef uint16_t p0313_t;
 #define EXPONENT_SIGN_MASK_P_03_13 (1U << (EXPONENT_BITS_P_03_13 - 1))
 #define BITS_SIGN_MASK_P_03_13 (1U << (BITS_P_03_13 - 1))
 
+#define MAX_VALUE_P_03_13 (((1U << (EXPONENT_BITS_P_03_13 - 2)) - 1) << SIGNIFICAND_BITS_P_03_13) | ((1U << (SIGNIFICAND_BITS_P_03_13 - 2)) - 1)
+#define MIN_VALUE_P_03_13 (((1U << (EXPONENT_BITS_P_03_13 - 2)) - 1) << SIGNIFICAND_BITS_P_03_13) | (SIGNIFICAND_SIGN_MASK_P_03_13)
+
 // construct p-adic 0313
-p0313_t new_p0313(uint16_t exp, uint16_t sig);
+p0313_t new_p0313(int16_t exp, int16_t sig);
 // exponent part of p-adic 0313
-uint16_t exp_p0313(p0313_t a);
+int16_t exp_p0313(p0313_t a);
 // significand part of p-adic 0313
-uint16_t sig_p0313(p0313_t a);
+int16_t sig_p0313(p0313_t a);
 // add p-adic 0313
 p0313_t add_p0313(p0313_t a, p0313_t b);
 // subtract p-adic 0313

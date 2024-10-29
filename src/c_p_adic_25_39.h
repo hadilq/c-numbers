@@ -18,12 +18,15 @@ typedef uint64_t p2539_t;
 #define EXPONENT_SIGN_MASK_P_25_39 (1ULL << (EXPONENT_BITS_P_25_39 - 1))
 #define BITS_SIGN_MASK_P_25_39 (1ULL << (BITS_P_25_39 - 1))
 
+#define MAX_VALUE_P_25_39 (((1ULL << (EXPONENT_BITS_P_25_39 - 2)) - 1) << SIGNIFICAND_BITS_P_25_39) | ((1ULL << (SIGNIFICAND_BITS_P_25_39 - 2)) - 1)
+#define MIN_VALUE_P_25_39 (((1ULL << (EXPONENT_BITS_P_25_39 - 2)) - 1) << SIGNIFICAND_BITS_P_25_39) | (SIGNIFICAND_SIGN_MASK_P_25_39)
+
 // construct p-adic 2539
-p2539_t new_p2539(uint64_t exp, uint64_t sig);
+p2539_t new_p2539(int64_t exp, int64_t sig);
 // exponent part of p-adic 2539
-uint64_t exp_p2539(p2539_t a);
+int64_t exp_p2539(p2539_t a);
 // significand part of p-adic 2539
-uint64_t sig_p2539(p2539_t a);
+int64_t sig_p2539(p2539_t a);
 // add p-adic 2539
 p2539_t add_p2539(p2539_t a, p2539_t b);
 // subtract p-adic 2539

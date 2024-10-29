@@ -18,12 +18,15 @@ typedef uint64_t p3925_t;
 #define EXPONENT_SIGN_MASK_P_39_25 (1ULL << (EXPONENT_BITS_P_39_25 - 1))
 #define BITS_SIGN_MASK_P_39_25 (1ULL << (BITS_P_39_25 - 1))
 
+#define MAX_VALUE_P_39_25 (((1ULL << (EXPONENT_BITS_P_39_25 - 2)) - 1) << SIGNIFICAND_BITS_P_39_25) | ((1ULL << (SIGNIFICAND_BITS_P_39_25 - 2)) - 1)
+#define MIN_VALUE_P_39_25 (((1ULL << (EXPONENT_BITS_P_39_25 - 2)) - 1) << SIGNIFICAND_BITS_P_39_25) | (SIGNIFICAND_SIGN_MASK_P_39_25)
+
 // construct p-adic 3925
-p3925_t new_p3925(uint64_t exp, uint64_t sig);
+p3925_t new_p3925(int64_t exp, int64_t sig);
 // exponent part of p-adic 3925
-uint64_t exp_p3925(p3925_t a);
+int64_t exp_p3925(p3925_t a);
 // significand part of p-adic 3925
-uint64_t sig_p3925(p3925_t a);
+int64_t sig_p3925(p3925_t a);
 // add p-adic 3925
 p3925_t add_p3925(p3925_t a, p3925_t b);
 // subtract p-adic 3925

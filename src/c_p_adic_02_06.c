@@ -61,12 +61,12 @@ static uint8_t get_msb_index_16(uint16_t n) {
 }
 
 // construct p-adic 0206
-p0206_t new_p0206(uint8_t exp, uint8_t sig) {
+p0206_t new_p0206(int8_t exp, int8_t sig) {
     return (exp << SIGNIFICAND_BITS_P_02_06) | (sig & SIGNIFICAND_MASK_P_02_06);
 }
 
 // exponent part of p-adic 0206
-uint8_t exp_p0206(p0206_t a) {
+int8_t exp_p0206(p0206_t a) {
     uint8_t exp_a = (a & EXPONENT_MASK_P_02_06) >> SIGNIFICAND_BITS_P_02_06;
 
     // Handle negatives exponents
@@ -77,7 +77,7 @@ uint8_t exp_p0206(p0206_t a) {
 }
 
 // significand part of p-adic 0206
-uint8_t sig_p0206(p0206_t a) {
+int8_t sig_p0206(p0206_t a) {
     uint8_t sig_a = a & SIGNIFICAND_MASK_P_02_06;
 
     // Handle negative numbers
@@ -283,12 +283,10 @@ p0206_t div_p0206(p0206_t a, p0206_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_P_02_06 - 2)) - 1) << SIGNIFICAND_BITS_P_02_06)
-                   | ((1U << (SIGNIFICAND_BITS_P_02_06 - 2)) - 1);
+            return MAX_VALUE_P_02_06;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_P_02_06 - 2)) - 1) << SIGNIFICAND_BITS_P_02_06)
-                   | (SIGNIFICAND_SIGN_MASK_P_02_06);
+            return MIN_VALUE_P_02_06;
         }
     }
 
@@ -338,10 +336,10 @@ bool equ_p0206(p0206_t a, p0206_t b) {
 int com_p0206(p0206_t a, p0206_t b) {
     if (a == b) return 0;
 
-    uint8_t exp_a = (a & EXPONENT_MASK_P_02_06) >> SIGNIFICAND_BITS_P_02_06;
-    uint8_t exp_b = (b & EXPONENT_MASK_P_02_06) >> SIGNIFICAND_BITS_P_02_06;
-    uint8_t sig_a = a & SIGNIFICAND_MASK_P_02_06;
-    uint8_t sig_b = b & SIGNIFICAND_MASK_P_02_06;
+    int8_t exp_a = (a & EXPONENT_MASK_P_02_06) >> SIGNIFICAND_BITS_P_02_06;
+    int8_t exp_b = (b & EXPONENT_MASK_P_02_06) >> SIGNIFICAND_BITS_P_02_06;
+    int8_t sig_a = a & SIGNIFICAND_MASK_P_02_06;
+    int8_t sig_b = b & SIGNIFICAND_MASK_P_02_06;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

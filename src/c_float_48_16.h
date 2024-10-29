@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_48_16_H
 #define C_FLOAT_48_16_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f4816_t;
 #define EXPONENT_SIGN_MASK_F_48_16 (1ULL << (EXPONENT_BITS_F_48_16 - 1))
 #define BITS_SIGN_MASK_F_48_16 (1ULL << (BITS_F_48_16 - 1))
 
+#define MAX_VALUE_F_48_16 (((1ULL << (EXPONENT_BITS_F_48_16 - 2)) - 1) << SIGNIFICAND_BITS_F_48_16) | ((1ULL << (SIGNIFICAND_BITS_F_48_16 - 2)) - 1)
+#define MIN_VALUE_F_48_16 (((1ULL << (EXPONENT_BITS_F_48_16 - 2)) - 1) << SIGNIFICAND_BITS_F_48_16) | (SIGNIFICAND_SIGN_MASK_F_48_16)
+
 // construct float 4816
-f4816_t new_f4816(uint64_t exp, uint64_t sig);
+f4816_t new_f4816(int64_t exp, int64_t sig);
+// construct float 4816
+f4816_t new_f4816_from_float64(_Float64 f);
+// construct float 4816
+f4816_t new_f4816_from_float32(_Float32 f);
+// construct float 4816
+f4816_t new_f4816_from_float16(_Float16 f);
 // exponent part of float 4816
-uint64_t exp_f4816(f4816_t a);
+int64_t exp_f4816(f4816_t a);
 // significand part of float 4816
-uint64_t sig_f4816(f4816_t a);
+int64_t sig_f4816(f4816_t a);
 // add float 4816
 f4816_t add_f4816(f4816_t a, f4816_t b);
 // subtract float 4816

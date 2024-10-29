@@ -18,12 +18,15 @@ typedef uint64_t p0262_t;
 #define EXPONENT_SIGN_MASK_P_02_62 (1ULL << (EXPONENT_BITS_P_02_62 - 1))
 #define BITS_SIGN_MASK_P_02_62 (1ULL << (BITS_P_02_62 - 1))
 
+#define MAX_VALUE_P_02_62 (((1ULL << (EXPONENT_BITS_P_02_62 - 2)) - 1) << SIGNIFICAND_BITS_P_02_62) | ((1ULL << (SIGNIFICAND_BITS_P_02_62 - 2)) - 1)
+#define MIN_VALUE_P_02_62 (((1ULL << (EXPONENT_BITS_P_02_62 - 2)) - 1) << SIGNIFICAND_BITS_P_02_62) | (SIGNIFICAND_SIGN_MASK_P_02_62)
+
 // construct p-adic 0262
-p0262_t new_p0262(uint64_t exp, uint64_t sig);
+p0262_t new_p0262(int64_t exp, int64_t sig);
 // exponent part of p-adic 0262
-uint64_t exp_p0262(p0262_t a);
+int64_t exp_p0262(p0262_t a);
 // significand part of p-adic 0262
-uint64_t sig_p0262(p0262_t a);
+int64_t sig_p0262(p0262_t a);
 // add p-adic 0262
 p0262_t add_p0262(p0262_t a, p0262_t b);
 // subtract p-adic 0262

@@ -18,12 +18,15 @@ typedef uint8_t p0404_t;
 #define EXPONENT_SIGN_MASK_P_04_04 (1U << (EXPONENT_BITS_P_04_04 - 1))
 #define BITS_SIGN_MASK_P_04_04 (1U << (BITS_P_04_04 - 1))
 
+#define MAX_VALUE_P_04_04 (((1U << (EXPONENT_BITS_P_04_04 - 2)) - 1) << SIGNIFICAND_BITS_P_04_04) | ((1U << (SIGNIFICAND_BITS_P_04_04 - 2)) - 1)
+#define MIN_VALUE_P_04_04 (((1U << (EXPONENT_BITS_P_04_04 - 2)) - 1) << SIGNIFICAND_BITS_P_04_04) | (SIGNIFICAND_SIGN_MASK_P_04_04)
+
 // construct p-adic 0404
-p0404_t new_p0404(uint8_t exp, uint8_t sig);
+p0404_t new_p0404(int8_t exp, int8_t sig);
 // exponent part of p-adic 0404
-uint8_t exp_p0404(p0404_t a);
+int8_t exp_p0404(p0404_t a);
 // significand part of p-adic 0404
-uint8_t sig_p0404(p0404_t a);
+int8_t sig_p0404(p0404_t a);
 // add p-adic 0404
 p0404_t add_p0404(p0404_t a, p0404_t b);
 // subtract p-adic 0404

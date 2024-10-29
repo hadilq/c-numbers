@@ -18,12 +18,15 @@ typedef uint64_t p0460_t;
 #define EXPONENT_SIGN_MASK_P_04_60 (1ULL << (EXPONENT_BITS_P_04_60 - 1))
 #define BITS_SIGN_MASK_P_04_60 (1ULL << (BITS_P_04_60 - 1))
 
+#define MAX_VALUE_P_04_60 (((1ULL << (EXPONENT_BITS_P_04_60 - 2)) - 1) << SIGNIFICAND_BITS_P_04_60) | ((1ULL << (SIGNIFICAND_BITS_P_04_60 - 2)) - 1)
+#define MIN_VALUE_P_04_60 (((1ULL << (EXPONENT_BITS_P_04_60 - 2)) - 1) << SIGNIFICAND_BITS_P_04_60) | (SIGNIFICAND_SIGN_MASK_P_04_60)
+
 // construct p-adic 0460
-p0460_t new_p0460(uint64_t exp, uint64_t sig);
+p0460_t new_p0460(int64_t exp, int64_t sig);
 // exponent part of p-adic 0460
-uint64_t exp_p0460(p0460_t a);
+int64_t exp_p0460(p0460_t a);
 // significand part of p-adic 0460
-uint64_t sig_p0460(p0460_t a);
+int64_t sig_p0460(p0460_t a);
 // add p-adic 0460
 p0460_t add_p0460(p0460_t a, p0460_t b);
 // subtract p-adic 0460

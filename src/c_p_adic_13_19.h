@@ -18,12 +18,15 @@ typedef uint32_t p1319_t;
 #define EXPONENT_SIGN_MASK_P_13_19 (1U << (EXPONENT_BITS_P_13_19 - 1))
 #define BITS_SIGN_MASK_P_13_19 (1U << (BITS_P_13_19 - 1))
 
+#define MAX_VALUE_P_13_19 (((1U << (EXPONENT_BITS_P_13_19 - 2)) - 1) << SIGNIFICAND_BITS_P_13_19) | ((1U << (SIGNIFICAND_BITS_P_13_19 - 2)) - 1)
+#define MIN_VALUE_P_13_19 (((1U << (EXPONENT_BITS_P_13_19 - 2)) - 1) << SIGNIFICAND_BITS_P_13_19) | (SIGNIFICAND_SIGN_MASK_P_13_19)
+
 // construct p-adic 1319
-p1319_t new_p1319(uint32_t exp, uint32_t sig);
+p1319_t new_p1319(int32_t exp, int32_t sig);
 // exponent part of p-adic 1319
-uint32_t exp_p1319(p1319_t a);
+int32_t exp_p1319(p1319_t a);
 // significand part of p-adic 1319
-uint32_t sig_p1319(p1319_t a);
+int32_t sig_p1319(p1319_t a);
 // add p-adic 1319
 p1319_t add_p1319(p1319_t a, p1319_t b);
 // subtract p-adic 1319

@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_56_08_H
 #define C_FLOAT_56_08_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f5608_t;
 #define EXPONENT_SIGN_MASK_F_56_08 (1ULL << (EXPONENT_BITS_F_56_08 - 1))
 #define BITS_SIGN_MASK_F_56_08 (1ULL << (BITS_F_56_08 - 1))
 
+#define MAX_VALUE_F_56_08 (((1ULL << (EXPONENT_BITS_F_56_08 - 2)) - 1) << SIGNIFICAND_BITS_F_56_08) | ((1ULL << (SIGNIFICAND_BITS_F_56_08 - 2)) - 1)
+#define MIN_VALUE_F_56_08 (((1ULL << (EXPONENT_BITS_F_56_08 - 2)) - 1) << SIGNIFICAND_BITS_F_56_08) | (SIGNIFICAND_SIGN_MASK_F_56_08)
+
 // construct float 5608
-f5608_t new_f5608(uint64_t exp, uint64_t sig);
+f5608_t new_f5608(int64_t exp, int64_t sig);
+// construct float 5608
+f5608_t new_f5608_from_float64(_Float64 f);
+// construct float 5608
+f5608_t new_f5608_from_float32(_Float32 f);
+// construct float 5608
+f5608_t new_f5608_from_float16(_Float16 f);
 // exponent part of float 5608
-uint64_t exp_f5608(f5608_t a);
+int64_t exp_f5608(f5608_t a);
 // significand part of float 5608
-uint64_t sig_f5608(f5608_t a);
+int64_t sig_f5608(f5608_t a);
 // add float 5608
 f5608_t add_f5608(f5608_t a, f5608_t b);
 // subtract float 5608

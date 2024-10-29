@@ -18,12 +18,15 @@ typedef uint32_t p0923_t;
 #define EXPONENT_SIGN_MASK_P_09_23 (1U << (EXPONENT_BITS_P_09_23 - 1))
 #define BITS_SIGN_MASK_P_09_23 (1U << (BITS_P_09_23 - 1))
 
+#define MAX_VALUE_P_09_23 (((1U << (EXPONENT_BITS_P_09_23 - 2)) - 1) << SIGNIFICAND_BITS_P_09_23) | ((1U << (SIGNIFICAND_BITS_P_09_23 - 2)) - 1)
+#define MIN_VALUE_P_09_23 (((1U << (EXPONENT_BITS_P_09_23 - 2)) - 1) << SIGNIFICAND_BITS_P_09_23) | (SIGNIFICAND_SIGN_MASK_P_09_23)
+
 // construct p-adic 0923
-p0923_t new_p0923(uint32_t exp, uint32_t sig);
+p0923_t new_p0923(int32_t exp, int32_t sig);
 // exponent part of p-adic 0923
-uint32_t exp_p0923(p0923_t a);
+int32_t exp_p0923(p0923_t a);
 // significand part of p-adic 0923
-uint32_t sig_p0923(p0923_t a);
+int32_t sig_p0923(p0923_t a);
 // add p-adic 0923
 p0923_t add_p0923(p0923_t a, p0923_t b);
 // subtract p-adic 0923

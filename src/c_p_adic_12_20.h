@@ -18,12 +18,15 @@ typedef uint32_t p1220_t;
 #define EXPONENT_SIGN_MASK_P_12_20 (1U << (EXPONENT_BITS_P_12_20 - 1))
 #define BITS_SIGN_MASK_P_12_20 (1U << (BITS_P_12_20 - 1))
 
+#define MAX_VALUE_P_12_20 (((1U << (EXPONENT_BITS_P_12_20 - 2)) - 1) << SIGNIFICAND_BITS_P_12_20) | ((1U << (SIGNIFICAND_BITS_P_12_20 - 2)) - 1)
+#define MIN_VALUE_P_12_20 (((1U << (EXPONENT_BITS_P_12_20 - 2)) - 1) << SIGNIFICAND_BITS_P_12_20) | (SIGNIFICAND_SIGN_MASK_P_12_20)
+
 // construct p-adic 1220
-p1220_t new_p1220(uint32_t exp, uint32_t sig);
+p1220_t new_p1220(int32_t exp, int32_t sig);
 // exponent part of p-adic 1220
-uint32_t exp_p1220(p1220_t a);
+int32_t exp_p1220(p1220_t a);
 // significand part of p-adic 1220
-uint32_t sig_p1220(p1220_t a);
+int32_t sig_p1220(p1220_t a);
 // add p-adic 1220
 p1220_t add_p1220(p1220_t a, p1220_t b);
 // subtract p-adic 1220

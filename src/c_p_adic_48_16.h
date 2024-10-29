@@ -18,12 +18,15 @@ typedef uint64_t p4816_t;
 #define EXPONENT_SIGN_MASK_P_48_16 (1ULL << (EXPONENT_BITS_P_48_16 - 1))
 #define BITS_SIGN_MASK_P_48_16 (1ULL << (BITS_P_48_16 - 1))
 
+#define MAX_VALUE_P_48_16 (((1ULL << (EXPONENT_BITS_P_48_16 - 2)) - 1) << SIGNIFICAND_BITS_P_48_16) | ((1ULL << (SIGNIFICAND_BITS_P_48_16 - 2)) - 1)
+#define MIN_VALUE_P_48_16 (((1ULL << (EXPONENT_BITS_P_48_16 - 2)) - 1) << SIGNIFICAND_BITS_P_48_16) | (SIGNIFICAND_SIGN_MASK_P_48_16)
+
 // construct p-adic 4816
-p4816_t new_p4816(uint64_t exp, uint64_t sig);
+p4816_t new_p4816(int64_t exp, int64_t sig);
 // exponent part of p-adic 4816
-uint64_t exp_p4816(p4816_t a);
+int64_t exp_p4816(p4816_t a);
 // significand part of p-adic 4816
-uint64_t sig_p4816(p4816_t a);
+int64_t sig_p4816(p4816_t a);
 // add p-adic 4816
 p4816_t add_p4816(p4816_t a, p4816_t b);
 // subtract p-adic 4816

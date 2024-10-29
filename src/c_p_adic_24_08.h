@@ -18,12 +18,15 @@ typedef uint32_t p2408_t;
 #define EXPONENT_SIGN_MASK_P_24_08 (1U << (EXPONENT_BITS_P_24_08 - 1))
 #define BITS_SIGN_MASK_P_24_08 (1U << (BITS_P_24_08 - 1))
 
+#define MAX_VALUE_P_24_08 (((1U << (EXPONENT_BITS_P_24_08 - 2)) - 1) << SIGNIFICAND_BITS_P_24_08) | ((1U << (SIGNIFICAND_BITS_P_24_08 - 2)) - 1)
+#define MIN_VALUE_P_24_08 (((1U << (EXPONENT_BITS_P_24_08 - 2)) - 1) << SIGNIFICAND_BITS_P_24_08) | (SIGNIFICAND_SIGN_MASK_P_24_08)
+
 // construct p-adic 2408
-p2408_t new_p2408(uint32_t exp, uint32_t sig);
+p2408_t new_p2408(int32_t exp, int32_t sig);
 // exponent part of p-adic 2408
-uint32_t exp_p2408(p2408_t a);
+int32_t exp_p2408(p2408_t a);
 // significand part of p-adic 2408
-uint32_t sig_p2408(p2408_t a);
+int32_t sig_p2408(p2408_t a);
 // add p-adic 2408
 p2408_t add_p2408(p2408_t a, p2408_t b);
 // subtract p-adic 2408

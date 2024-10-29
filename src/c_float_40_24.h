@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_40_24_H
 #define C_FLOAT_40_24_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f4024_t;
 #define EXPONENT_SIGN_MASK_F_40_24 (1ULL << (EXPONENT_BITS_F_40_24 - 1))
 #define BITS_SIGN_MASK_F_40_24 (1ULL << (BITS_F_40_24 - 1))
 
+#define MAX_VALUE_F_40_24 (((1ULL << (EXPONENT_BITS_F_40_24 - 2)) - 1) << SIGNIFICAND_BITS_F_40_24) | ((1ULL << (SIGNIFICAND_BITS_F_40_24 - 2)) - 1)
+#define MIN_VALUE_F_40_24 (((1ULL << (EXPONENT_BITS_F_40_24 - 2)) - 1) << SIGNIFICAND_BITS_F_40_24) | (SIGNIFICAND_SIGN_MASK_F_40_24)
+
 // construct float 4024
-f4024_t new_f4024(uint64_t exp, uint64_t sig);
+f4024_t new_f4024(int64_t exp, int64_t sig);
+// construct float 4024
+f4024_t new_f4024_from_float64(_Float64 f);
+// construct float 4024
+f4024_t new_f4024_from_float32(_Float32 f);
+// construct float 4024
+f4024_t new_f4024_from_float16(_Float16 f);
 // exponent part of float 4024
-uint64_t exp_f4024(f4024_t a);
+int64_t exp_f4024(f4024_t a);
 // significand part of float 4024
-uint64_t sig_f4024(f4024_t a);
+int64_t sig_f4024(f4024_t a);
 // add float 4024
 f4024_t add_f4024(f4024_t a, f4024_t b);
 // subtract float 4024

@@ -19,12 +19,17 @@ typedef uint16_t f1105_t;
 #define EXPONENT_SIGN_MASK_F_11_05 (1U << (EXPONENT_BITS_F_11_05 - 1))
 #define BITS_SIGN_MASK_F_11_05 (1U << (BITS_F_11_05 - 1))
 
+#define MAX_VALUE_F_11_05 (((1U << (EXPONENT_BITS_F_11_05 - 2)) - 1) << SIGNIFICAND_BITS_F_11_05) | ((1U << (SIGNIFICAND_BITS_F_11_05 - 2)) - 1)
+#define MIN_VALUE_F_11_05 (((1U << (EXPONENT_BITS_F_11_05 - 2)) - 1) << SIGNIFICAND_BITS_F_11_05) | (SIGNIFICAND_SIGN_MASK_F_11_05)
+
 // construct float 1105
-f1105_t new_f1105(uint16_t exp, uint16_t sig);
+f1105_t new_f1105(int16_t exp, int16_t sig);
+// construct float DDD32
+f1105_t new_f1105_from_float16(_Float16 f);
 // exponent part of float 1105
-uint16_t exp_f1105(f1105_t a);
+int16_t exp_f1105(f1105_t a);
 // significand part of float 1105
-uint16_t sig_f1105(f1105_t a);
+int16_t sig_f1105(f1105_t a);
 // add float 1105
 f1105_t add_f1105(f1105_t a, f1105_t b);
 // subtract float 1105

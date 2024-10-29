@@ -18,12 +18,15 @@ typedef uint64_t p2044_t;
 #define EXPONENT_SIGN_MASK_P_20_44 (1ULL << (EXPONENT_BITS_P_20_44 - 1))
 #define BITS_SIGN_MASK_P_20_44 (1ULL << (BITS_P_20_44 - 1))
 
+#define MAX_VALUE_P_20_44 (((1ULL << (EXPONENT_BITS_P_20_44 - 2)) - 1) << SIGNIFICAND_BITS_P_20_44) | ((1ULL << (SIGNIFICAND_BITS_P_20_44 - 2)) - 1)
+#define MIN_VALUE_P_20_44 (((1ULL << (EXPONENT_BITS_P_20_44 - 2)) - 1) << SIGNIFICAND_BITS_P_20_44) | (SIGNIFICAND_SIGN_MASK_P_20_44)
+
 // construct p-adic 2044
-p2044_t new_p2044(uint64_t exp, uint64_t sig);
+p2044_t new_p2044(int64_t exp, int64_t sig);
 // exponent part of p-adic 2044
-uint64_t exp_p2044(p2044_t a);
+int64_t exp_p2044(p2044_t a);
 // significand part of p-adic 2044
-uint64_t sig_p2044(p2044_t a);
+int64_t sig_p2044(p2044_t a);
 // add p-adic 2044
 p2044_t add_p2044(p2044_t a, p2044_t b);
 // subtract p-adic 2044

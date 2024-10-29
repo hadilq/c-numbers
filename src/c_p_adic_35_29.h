@@ -18,12 +18,15 @@ typedef uint64_t p3529_t;
 #define EXPONENT_SIGN_MASK_P_35_29 (1ULL << (EXPONENT_BITS_P_35_29 - 1))
 #define BITS_SIGN_MASK_P_35_29 (1ULL << (BITS_P_35_29 - 1))
 
+#define MAX_VALUE_P_35_29 (((1ULL << (EXPONENT_BITS_P_35_29 - 2)) - 1) << SIGNIFICAND_BITS_P_35_29) | ((1ULL << (SIGNIFICAND_BITS_P_35_29 - 2)) - 1)
+#define MIN_VALUE_P_35_29 (((1ULL << (EXPONENT_BITS_P_35_29 - 2)) - 1) << SIGNIFICAND_BITS_P_35_29) | (SIGNIFICAND_SIGN_MASK_P_35_29)
+
 // construct p-adic 3529
-p3529_t new_p3529(uint64_t exp, uint64_t sig);
+p3529_t new_p3529(int64_t exp, int64_t sig);
 // exponent part of p-adic 3529
-uint64_t exp_p3529(p3529_t a);
+int64_t exp_p3529(p3529_t a);
 // significand part of p-adic 3529
-uint64_t sig_p3529(p3529_t a);
+int64_t sig_p3529(p3529_t a);
 // add p-adic 3529
 p3529_t add_p3529(p3529_t a, p3529_t b);
 // subtract p-adic 3529

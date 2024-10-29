@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_15_17_H
 #define C_FLOAT_15_17_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,25 +20,32 @@ typedef uint32_t f1517_t;
 #define EXPONENT_SIGN_MASK_F_15_17 (1UL << (EXPONENT_BITS_F_15_17 - 1))
 #define BITS_SIGN_MASK_F_15_17 (1UL << (BITS_F_15_17 - 1))
 
-// construct float 26 06
-f1517_t new_f1517(uint32_t exp, uint32_t sig);
-// exponent part of float 26 06
-uint32_t exp_f1517(f1517_t a);
-// significand part of float 26 06
-uint32_t sig_f1517(f1517_t a);
-// add float 26 06
+#define MAX_VALUE_F_15_17 (((1U << (EXPONENT_BITS_F_15_17 - 2)) - 1) << SIGNIFICAND_BITS_F_15_17) | ((1U << (SIGNIFICAND_BITS_F_15_17 - 2)) - 1)
+#define MIN_VALUE_F_15_17 (((1U << (EXPONENT_BITS_F_15_17 - 2)) - 1) << SIGNIFICAND_BITS_F_15_17) | (SIGNIFICAND_SIGN_MASK_F_15_17)
+
+// construct float 1517
+f1517_t new_f1517(int32_t exp, int32_t sig);
+// construct float 1517
+f1517_t new_f1517_from_float32(_Float32 f);
+// construct float 1517
+f1517_t new_f1517_from_float16(_Float16 f);
+// exponent part of float 1517
+int32_t exp_f1517(f1517_t a);
+// significand part of float 1517
+int32_t sig_f1517(f1517_t a);
+// add float 1517
 f1517_t add_f1517(f1517_t a, f1517_t b);
-// subtract float 26 06
+// subtract float 1517
 f1517_t sub_f1517(f1517_t a, f1517_t b);
-// negate float 26 06
+// negate float 1517
 f1517_t neg_f1517(f1517_t a);
-// multiply float 26 06
+// multiply float 1517
 f1517_t mul_f1517(f1517_t a, f1517_t b);
-// divide float 26 06
+// divide float 1517
 f1517_t div_f1517(f1517_t a, f1517_t b);
-// equals float 26 06
+// equals float 1517
 bool equ_f1517(f1517_t a, f1517_t b);
-// compare float 26 06
+// compare float 1517
 int com_f1517(f1517_t a, f1517_t b);
 
 #endif // C_FLOAT_15_17_H

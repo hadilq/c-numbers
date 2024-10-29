@@ -18,12 +18,15 @@ typedef uint64_t p0757_t;
 #define EXPONENT_SIGN_MASK_P_07_57 (1ULL << (EXPONENT_BITS_P_07_57 - 1))
 #define BITS_SIGN_MASK_P_07_57 (1ULL << (BITS_P_07_57 - 1))
 
+#define MAX_VALUE_P_07_57 (((1ULL << (EXPONENT_BITS_P_07_57 - 2)) - 1) << SIGNIFICAND_BITS_P_07_57) | ((1ULL << (SIGNIFICAND_BITS_P_07_57 - 2)) - 1)
+#define MIN_VALUE_P_07_57 (((1ULL << (EXPONENT_BITS_P_07_57 - 2)) - 1) << SIGNIFICAND_BITS_P_07_57) | (SIGNIFICAND_SIGN_MASK_P_07_57)
+
 // construct p-adic 0757
-p0757_t new_p0757(uint64_t exp, uint64_t sig);
+p0757_t new_p0757(int64_t exp, int64_t sig);
 // exponent part of p-adic 0757
-uint64_t exp_p0757(p0757_t a);
+int64_t exp_p0757(p0757_t a);
 // significand part of p-adic 0757
-uint64_t sig_p0757(p0757_t a);
+int64_t sig_p0757(p0757_t a);
 // add p-adic 0757
 p0757_t add_p0757(p0757_t a, p0757_t b);
 // subtract p-adic 0757

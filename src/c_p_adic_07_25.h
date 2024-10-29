@@ -18,12 +18,15 @@ typedef uint32_t p0725_t;
 #define EXPONENT_SIGN_MASK_P_07_25 (1U << (EXPONENT_BITS_P_07_25 - 1))
 #define BITS_SIGN_MASK_P_07_25 (1U << (BITS_P_07_25 - 1))
 
+#define MAX_VALUE_P_07_25 (((1U << (EXPONENT_BITS_P_07_25 - 2)) - 1) << SIGNIFICAND_BITS_P_07_25) | ((1U << (SIGNIFICAND_BITS_P_07_25 - 2)) - 1)
+#define MIN_VALUE_P_07_25 (((1U << (EXPONENT_BITS_P_07_25 - 2)) - 1) << SIGNIFICAND_BITS_P_07_25) | (SIGNIFICAND_SIGN_MASK_P_07_25)
+
 // construct p-adic 0725
-p0725_t new_p0725(uint32_t exp, uint32_t sig);
+p0725_t new_p0725(int32_t exp, int32_t sig);
 // exponent part of p-adic 0725
-uint32_t exp_p0725(p0725_t a);
+int32_t exp_p0725(p0725_t a);
 // significand part of p-adic 0725
-uint32_t sig_p0725(p0725_t a);
+int32_t sig_p0725(p0725_t a);
 // add p-adic 0725
 p0725_t add_p0725(p0725_t a, p0725_t b);
 // subtract p-adic 0725

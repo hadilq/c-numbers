@@ -18,12 +18,15 @@ typedef uint64_t p4915_t;
 #define EXPONENT_SIGN_MASK_P_49_15 (1ULL << (EXPONENT_BITS_P_49_15 - 1))
 #define BITS_SIGN_MASK_P_49_15 (1ULL << (BITS_P_49_15 - 1))
 
+#define MAX_VALUE_P_49_15 (((1ULL << (EXPONENT_BITS_P_49_15 - 2)) - 1) << SIGNIFICAND_BITS_P_49_15) | ((1ULL << (SIGNIFICAND_BITS_P_49_15 - 2)) - 1)
+#define MIN_VALUE_P_49_15 (((1ULL << (EXPONENT_BITS_P_49_15 - 2)) - 1) << SIGNIFICAND_BITS_P_49_15) | (SIGNIFICAND_SIGN_MASK_P_49_15)
+
 // construct p-adic 4915
-p4915_t new_p4915(uint64_t exp, uint64_t sig);
+p4915_t new_p4915(int64_t exp, int64_t sig);
 // exponent part of p-adic 4915
-uint64_t exp_p4915(p4915_t a);
+int64_t exp_p4915(p4915_t a);
 // significand part of p-adic 4915
-uint64_t sig_p4915(p4915_t a);
+int64_t sig_p4915(p4915_t a);
 // add p-adic 4915
 p4915_t add_p4915(p4915_t a, p4915_t b);
 // subtract p-adic 4915

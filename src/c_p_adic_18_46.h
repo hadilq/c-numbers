@@ -18,12 +18,15 @@ typedef uint64_t p1846_t;
 #define EXPONENT_SIGN_MASK_P_18_46 (1ULL << (EXPONENT_BITS_P_18_46 - 1))
 #define BITS_SIGN_MASK_P_18_46 (1ULL << (BITS_P_18_46 - 1))
 
+#define MAX_VALUE_P_18_46 (((1ULL << (EXPONENT_BITS_P_18_46 - 2)) - 1) << SIGNIFICAND_BITS_P_18_46) | ((1ULL << (SIGNIFICAND_BITS_P_18_46 - 2)) - 1)
+#define MIN_VALUE_P_18_46 (((1ULL << (EXPONENT_BITS_P_18_46 - 2)) - 1) << SIGNIFICAND_BITS_P_18_46) | (SIGNIFICAND_SIGN_MASK_P_18_46)
+
 // construct p-adic 1846
-p1846_t new_p1846(uint64_t exp, uint64_t sig);
+p1846_t new_p1846(int64_t exp, int64_t sig);
 // exponent part of p-adic 1846
-uint64_t exp_p1846(p1846_t a);
+int64_t exp_p1846(p1846_t a);
 // significand part of p-adic 1846
-uint64_t sig_p1846(p1846_t a);
+int64_t sig_p1846(p1846_t a);
 // add p-adic 1846
 p1846_t add_p1846(p1846_t a, p1846_t b);
 // subtract p-adic 1846

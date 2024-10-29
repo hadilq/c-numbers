@@ -18,12 +18,15 @@ typedef uint32_t p2606_t;
 #define EXPONENT_SIGN_MASK_P_26_06 (1U << (EXPONENT_BITS_P_26_06 - 1))
 #define BITS_SIGN_MASK_P_26_06 (1U << (BITS_P_26_06 - 1))
 
+#define MAX_VALUE_P_26_06 (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06) | ((1U << (SIGNIFICAND_BITS_P_26_06 - 2)) - 1)
+#define MIN_VALUE_P_26_06 (((1U << (EXPONENT_BITS_P_26_06 - 2)) - 1) << SIGNIFICAND_BITS_P_26_06) | (SIGNIFICAND_SIGN_MASK_P_26_06)
+
 // construct p-adic 2606
-p2606_t new_p2606(uint32_t exp, uint32_t sig);
+p2606_t new_p2606(int32_t exp, int32_t sig);
 // exponent part of p-adic 2606
-uint32_t exp_p2606(p2606_t a);
+int32_t exp_p2606(p2606_t a);
 // significand part of p-adic 2606
-uint32_t sig_p2606(p2606_t a);
+int32_t sig_p2606(p2606_t a);
 // add p-adic 2606
 p2606_t add_p2606(p2606_t a, p2606_t b);
 // subtract p-adic 2606

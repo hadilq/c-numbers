@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p "bc"
 
-generate_test=flase
+generate_test=false
 
 function generate_for {
   bits="$1"

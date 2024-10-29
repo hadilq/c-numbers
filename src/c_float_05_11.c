@@ -71,12 +71,55 @@ static uint8_t get_msb_index_negative(uint16_t n) {
 }
 
 // construct float 0511
-f0511_t new_f0511(uint16_t exp, uint16_t sig) {
+f0511_t new_f0511(int16_t exp, int16_t sig) {
     return (exp << SIGNIFICAND_BITS_F_05_11) | (sig & SIGNIFICAND_MASK_F_05_11);
 }
 
+#define Float16_SIG 10
+#define Float16_SIG_1 Float16_SIG + 1
+#define Float16_EXP 5
+typedef union {
+  _Float16 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint16_t significand : Float16_SIG;
+        uint16_t exponent : Float16_EXP;
+        uint16_t sign : 1;
+#else
+        uint16_t sign : 1;
+        uint16_t exponent : Float16_EXP;
+        uint16_t significand : Float16_SIG;
+#endif
+  } parts;
+} float16_cast;
+
+
+// construct float DDD32
+f0511_t new_f0511_from_float16(_Float16 f) {
+    float16_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t exponent = f1.parts.exponent - 15;  // Unbias the exponent (bias is 15 for float16)
+    uint64_t sign = f1.parts.sign;
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -14;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;    // Zero
+        }
+    }
+    significand = significand | (1U << Float16_SIG) | (sign << (Float16_SIG_1));
+    if (SIGNIFICAND_BITS_F_05_11 > Float16_SIG_1) {
+        significand <<= SIGNIFICAND_BITS_F_05_11 - Float16_SIG_1;
+    } else {
+        significand >>= Float16_SIG_1 - SIGNIFICAND_BITS_F_05_11;
+    }
+    return new_f0511(exponent, significand);
+}
+
 // exponent part of float 0511
-uint16_t exp_f0511(f0511_t a) {
+int16_t exp_f0511(f0511_t a) {
     uint16_t exp_a = (a & EXPONENT_MASK_F_05_11) >> SIGNIFICAND_BITS_F_05_11;
 
     // Handle negatives exponents
@@ -87,7 +130,7 @@ uint16_t exp_f0511(f0511_t a) {
 }
 
 // significand part of float 0511
-uint16_t sig_f0511(f0511_t a) {
+int16_t sig_f0511(f0511_t a) {
     uint16_t sig_a = a & SIGNIFICAND_MASK_F_05_11;
 
     // Handle negative numbers
@@ -319,12 +362,10 @@ f0511_t div_f0511(f0511_t a, f0511_t b) {
     if (sig_b == 0U) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1U << (EXPONENT_BITS_F_05_11 - 2)) - 1) << SIGNIFICAND_BITS_F_05_11)
-                   | ((1U << (SIGNIFICAND_BITS_F_05_11 - 2)) - 1);
+            return MAX_VALUE_F_05_11;
         } else {
             // Return min value as "-infinity"
-            return (((1U << (EXPONENT_BITS_F_05_11 - 2)) - 1) << SIGNIFICAND_BITS_F_05_11)
-                   | (SIGNIFICAND_SIGN_MASK_F_05_11);
+            return MIN_VALUE_F_05_11;
         }
     }
 
@@ -364,10 +405,10 @@ bool equ_f0511(f0511_t a, f0511_t b) {
 int com_f0511(f0511_t a, f0511_t b) {
     if (a == b) return 0;
 
-    uint16_t exp_a = (a & EXPONENT_MASK_F_05_11) >> SIGNIFICAND_BITS_F_05_11;
-    uint16_t exp_b = (b & EXPONENT_MASK_F_05_11) >> SIGNIFICAND_BITS_F_05_11;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_F_05_11;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_F_05_11;
+    int16_t exp_a = (a & EXPONENT_MASK_F_05_11) >> SIGNIFICAND_BITS_F_05_11;
+    int16_t exp_b = (b & EXPONENT_MASK_F_05_11) >> SIGNIFICAND_BITS_F_05_11;
+    int16_t sig_a = a & SIGNIFICAND_MASK_F_05_11;
+    int16_t sig_b = b & SIGNIFICAND_MASK_F_05_11;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

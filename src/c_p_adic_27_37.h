@@ -18,12 +18,15 @@ typedef uint64_t p2737_t;
 #define EXPONENT_SIGN_MASK_P_27_37 (1ULL << (EXPONENT_BITS_P_27_37 - 1))
 #define BITS_SIGN_MASK_P_27_37 (1ULL << (BITS_P_27_37 - 1))
 
+#define MAX_VALUE_P_27_37 (((1ULL << (EXPONENT_BITS_P_27_37 - 2)) - 1) << SIGNIFICAND_BITS_P_27_37) | ((1ULL << (SIGNIFICAND_BITS_P_27_37 - 2)) - 1)
+#define MIN_VALUE_P_27_37 (((1ULL << (EXPONENT_BITS_P_27_37 - 2)) - 1) << SIGNIFICAND_BITS_P_27_37) | (SIGNIFICAND_SIGN_MASK_P_27_37)
+
 // construct p-adic 2737
-p2737_t new_p2737(uint64_t exp, uint64_t sig);
+p2737_t new_p2737(int64_t exp, int64_t sig);
 // exponent part of p-adic 2737
-uint64_t exp_p2737(p2737_t a);
+int64_t exp_p2737(p2737_t a);
 // significand part of p-adic 2737
-uint64_t sig_p2737(p2737_t a);
+int64_t sig_p2737(p2737_t a);
 // add p-adic 2737
 p2737_t add_p2737(p2737_t a, p2737_t b);
 // subtract p-adic 2737

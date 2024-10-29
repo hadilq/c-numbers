@@ -18,12 +18,15 @@ typedef uint64_t p3232_t;
 #define EXPONENT_SIGN_MASK_P_32_32 (1ULL << (EXPONENT_BITS_P_32_32 - 1))
 #define BITS_SIGN_MASK_P_32_32 (1ULL << (BITS_P_32_32 - 1))
 
+#define MAX_VALUE_P_32_32 (((1ULL << (EXPONENT_BITS_P_32_32 - 2)) - 1) << SIGNIFICAND_BITS_P_32_32) | ((1ULL << (SIGNIFICAND_BITS_P_32_32 - 2)) - 1)
+#define MIN_VALUE_P_32_32 (((1ULL << (EXPONENT_BITS_P_32_32 - 2)) - 1) << SIGNIFICAND_BITS_P_32_32) | (SIGNIFICAND_SIGN_MASK_P_32_32)
+
 // construct p-adic 3232
-p3232_t new_p3232(uint64_t exp, uint64_t sig);
+p3232_t new_p3232(int64_t exp, int64_t sig);
 // exponent part of p-adic 3232
-uint64_t exp_p3232(p3232_t a);
+int64_t exp_p3232(p3232_t a);
 // significand part of p-adic 3232
-uint64_t sig_p3232(p3232_t a);
+int64_t sig_p3232(p3232_t a);
 // add p-adic 3232
 p3232_t add_p3232(p3232_t a, p3232_t b);
 // subtract p-adic 3232

@@ -18,12 +18,15 @@ typedef uint32_t p0428_t;
 #define EXPONENT_SIGN_MASK_P_04_28 (1U << (EXPONENT_BITS_P_04_28 - 1))
 #define BITS_SIGN_MASK_P_04_28 (1U << (BITS_P_04_28 - 1))
 
+#define MAX_VALUE_P_04_28 (((1U << (EXPONENT_BITS_P_04_28 - 2)) - 1) << SIGNIFICAND_BITS_P_04_28) | ((1U << (SIGNIFICAND_BITS_P_04_28 - 2)) - 1)
+#define MIN_VALUE_P_04_28 (((1U << (EXPONENT_BITS_P_04_28 - 2)) - 1) << SIGNIFICAND_BITS_P_04_28) | (SIGNIFICAND_SIGN_MASK_P_04_28)
+
 // construct p-adic 0428
-p0428_t new_p0428(uint32_t exp, uint32_t sig);
+p0428_t new_p0428(int32_t exp, int32_t sig);
 // exponent part of p-adic 0428
-uint32_t exp_p0428(p0428_t a);
+int32_t exp_p0428(p0428_t a);
 // significand part of p-adic 0428
-uint32_t sig_p0428(p0428_t a);
+int32_t sig_p0428(p0428_t a);
 // add p-adic 0428
 p0428_t add_p0428(p0428_t a, p0428_t b);
 // subtract p-adic 0428

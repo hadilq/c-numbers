@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_50_14_H
 #define C_FLOAT_50_14_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f5014_t;
 #define EXPONENT_SIGN_MASK_F_50_14 (1ULL << (EXPONENT_BITS_F_50_14 - 1))
 #define BITS_SIGN_MASK_F_50_14 (1ULL << (BITS_F_50_14 - 1))
 
+#define MAX_VALUE_F_50_14 (((1ULL << (EXPONENT_BITS_F_50_14 - 2)) - 1) << SIGNIFICAND_BITS_F_50_14) | ((1ULL << (SIGNIFICAND_BITS_F_50_14 - 2)) - 1)
+#define MIN_VALUE_F_50_14 (((1ULL << (EXPONENT_BITS_F_50_14 - 2)) - 1) << SIGNIFICAND_BITS_F_50_14) | (SIGNIFICAND_SIGN_MASK_F_50_14)
+
 // construct float 5014
-f5014_t new_f5014(uint64_t exp, uint64_t sig);
+f5014_t new_f5014(int64_t exp, int64_t sig);
+// construct float 5014
+f5014_t new_f5014_from_float64(_Float64 f);
+// construct float 5014
+f5014_t new_f5014_from_float32(_Float32 f);
+// construct float 5014
+f5014_t new_f5014_from_float16(_Float16 f);
 // exponent part of float 5014
-uint64_t exp_f5014(f5014_t a);
+int64_t exp_f5014(f5014_t a);
 // significand part of float 5014
-uint64_t sig_f5014(f5014_t a);
+int64_t sig_f5014(f5014_t a);
 // add float 5014
 f5014_t add_f5014(f5014_t a, f5014_t b);
 // subtract float 5014

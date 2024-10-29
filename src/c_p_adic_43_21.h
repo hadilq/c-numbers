@@ -18,12 +18,15 @@ typedef uint64_t p4321_t;
 #define EXPONENT_SIGN_MASK_P_43_21 (1ULL << (EXPONENT_BITS_P_43_21 - 1))
 #define BITS_SIGN_MASK_P_43_21 (1ULL << (BITS_P_43_21 - 1))
 
+#define MAX_VALUE_P_43_21 (((1ULL << (EXPONENT_BITS_P_43_21 - 2)) - 1) << SIGNIFICAND_BITS_P_43_21) | ((1ULL << (SIGNIFICAND_BITS_P_43_21 - 2)) - 1)
+#define MIN_VALUE_P_43_21 (((1ULL << (EXPONENT_BITS_P_43_21 - 2)) - 1) << SIGNIFICAND_BITS_P_43_21) | (SIGNIFICAND_SIGN_MASK_P_43_21)
+
 // construct p-adic 4321
-p4321_t new_p4321(uint64_t exp, uint64_t sig);
+p4321_t new_p4321(int64_t exp, int64_t sig);
 // exponent part of p-adic 4321
-uint64_t exp_p4321(p4321_t a);
+int64_t exp_p4321(p4321_t a);
 // significand part of p-adic 4321
-uint64_t sig_p4321(p4321_t a);
+int64_t sig_p4321(p4321_t a);
 // add p-adic 4321
 p4321_t add_p4321(p4321_t a, p4321_t b);
 // subtract p-adic 4321

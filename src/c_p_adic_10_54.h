@@ -18,12 +18,15 @@ typedef uint64_t p1054_t;
 #define EXPONENT_SIGN_MASK_P_10_54 (1ULL << (EXPONENT_BITS_P_10_54 - 1))
 #define BITS_SIGN_MASK_P_10_54 (1ULL << (BITS_P_10_54 - 1))
 
+#define MAX_VALUE_P_10_54 (((1ULL << (EXPONENT_BITS_P_10_54 - 2)) - 1) << SIGNIFICAND_BITS_P_10_54) | ((1ULL << (SIGNIFICAND_BITS_P_10_54 - 2)) - 1)
+#define MIN_VALUE_P_10_54 (((1ULL << (EXPONENT_BITS_P_10_54 - 2)) - 1) << SIGNIFICAND_BITS_P_10_54) | (SIGNIFICAND_SIGN_MASK_P_10_54)
+
 // construct p-adic 1054
-p1054_t new_p1054(uint64_t exp, uint64_t sig);
+p1054_t new_p1054(int64_t exp, int64_t sig);
 // exponent part of p-adic 1054
-uint64_t exp_p1054(p1054_t a);
+int64_t exp_p1054(p1054_t a);
 // significand part of p-adic 1054
-uint64_t sig_p1054(p1054_t a);
+int64_t sig_p1054(p1054_t a);
 // add p-adic 1054
 p1054_t add_p1054(p1054_t a, p1054_t b);
 // subtract p-adic 1054

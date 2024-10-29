@@ -18,12 +18,15 @@ typedef uint64_t p4222_t;
 #define EXPONENT_SIGN_MASK_P_42_22 (1ULL << (EXPONENT_BITS_P_42_22 - 1))
 #define BITS_SIGN_MASK_P_42_22 (1ULL << (BITS_P_42_22 - 1))
 
+#define MAX_VALUE_P_42_22 (((1ULL << (EXPONENT_BITS_P_42_22 - 2)) - 1) << SIGNIFICAND_BITS_P_42_22) | ((1ULL << (SIGNIFICAND_BITS_P_42_22 - 2)) - 1)
+#define MIN_VALUE_P_42_22 (((1ULL << (EXPONENT_BITS_P_42_22 - 2)) - 1) << SIGNIFICAND_BITS_P_42_22) | (SIGNIFICAND_SIGN_MASK_P_42_22)
+
 // construct p-adic 4222
-p4222_t new_p4222(uint64_t exp, uint64_t sig);
+p4222_t new_p4222(int64_t exp, int64_t sig);
 // exponent part of p-adic 4222
-uint64_t exp_p4222(p4222_t a);
+int64_t exp_p4222(p4222_t a);
 // significand part of p-adic 4222
-uint64_t sig_p4222(p4222_t a);
+int64_t sig_p4222(p4222_t a);
 // add p-adic 4222
 p4222_t add_p4222(p4222_t a, p4222_t b);
 // subtract p-adic 4222

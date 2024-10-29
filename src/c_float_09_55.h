@@ -1,6 +1,7 @@
 #ifndef C_FLOAT_09_55_H
 #define C_FLOAT_09_55_H
 
+#include "bits/floatn-common.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -19,12 +20,21 @@ typedef uint64_t f0955_t;
 #define EXPONENT_SIGN_MASK_F_09_55 (1ULL << (EXPONENT_BITS_F_09_55 - 1))
 #define BITS_SIGN_MASK_F_09_55 (1ULL << (BITS_F_09_55 - 1))
 
+#define MAX_VALUE_F_09_55 (((1ULL << (EXPONENT_BITS_F_09_55 - 2)) - 1) << SIGNIFICAND_BITS_F_09_55) | ((1ULL << (SIGNIFICAND_BITS_F_09_55 - 2)) - 1)
+#define MIN_VALUE_F_09_55 (((1ULL << (EXPONENT_BITS_F_09_55 - 2)) - 1) << SIGNIFICAND_BITS_F_09_55) | (SIGNIFICAND_SIGN_MASK_F_09_55)
+
 // construct float 0955
-f0955_t new_f0955(uint64_t exp, uint64_t sig);
+f0955_t new_f0955(int64_t exp, int64_t sig);
+// construct float 0955
+f0955_t new_f0955_from_float64(_Float64 f);
+// construct float 0955
+f0955_t new_f0955_from_float32(_Float32 f);
+// construct float 0955
+f0955_t new_f0955_from_float16(_Float16 f);
 // exponent part of float 0955
-uint64_t exp_f0955(f0955_t a);
+int64_t exp_f0955(f0955_t a);
 // significand part of float 0955
-uint64_t sig_f0955(f0955_t a);
+int64_t sig_f0955(f0955_t a);
 // add float 0955
 f0955_t add_f0955(f0955_t a, f0955_t b);
 // subtract float 0955

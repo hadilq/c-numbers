@@ -19,12 +19,15 @@ typedef uint8_t f0206_t;
 #define EXPONENT_SIGN_MASK_F_02_06 (1U << (EXPONENT_BITS_F_02_06 - 1))
 #define BITS_SIGN_MASK_F_02_06 (1U << (BITS_F_02_06 - 1))
 
+#define MAX_VALUE_F_02_06 (((1U << (EXPONENT_BITS_F_02_06 - 2)) - 1) << SIGNIFICAND_BITS_F_02_06) | ((1U << (SIGNIFICAND_BITS_F_02_06 - 2)) - 1)
+#define MIN_VALUE_F_02_06 (((1U << (EXPONENT_BITS_F_02_06 - 2)) - 1) << SIGNIFICAND_BITS_F_02_06) | (SIGNIFICAND_SIGN_MASK_F_02_06)
+
 // construct float 0206
-f0206_t new_f0206(uint8_t exp, uint8_t sig);
+f0206_t new_f0206(int8_t exp, int8_t sig);
 // exponent part of float 0206
-uint8_t exp_f0206(f0206_t a);
+int8_t exp_f0206(f0206_t a);
 // significand part of float 0206
-uint8_t sig_f0206(f0206_t a);
+int8_t sig_f0206(f0206_t a);
 // add float 0206
 f0206_t add_f0206(f0206_t a, f0206_t b);
 // subtract float 0206

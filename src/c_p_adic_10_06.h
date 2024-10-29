@@ -18,12 +18,15 @@ typedef uint16_t p1006_t;
 #define EXPONENT_SIGN_MASK_P_10_06 (1U << (EXPONENT_BITS_P_10_06 - 1))
 #define BITS_SIGN_MASK_P_10_06 (1U << (BITS_P_10_06 - 1))
 
+#define MAX_VALUE_P_10_06 (((1U << (EXPONENT_BITS_P_10_06 - 2)) - 1) << SIGNIFICAND_BITS_P_10_06) | ((1U << (SIGNIFICAND_BITS_P_10_06 - 2)) - 1)
+#define MIN_VALUE_P_10_06 (((1U << (EXPONENT_BITS_P_10_06 - 2)) - 1) << SIGNIFICAND_BITS_P_10_06) | (SIGNIFICAND_SIGN_MASK_P_10_06)
+
 // construct p-adic 1006
-p1006_t new_p1006(uint16_t exp, uint16_t sig);
+p1006_t new_p1006(int16_t exp, int16_t sig);
 // exponent part of p-adic 1006
-uint16_t exp_p1006(p1006_t a);
+int16_t exp_p1006(p1006_t a);
 // significand part of p-adic 1006
-uint16_t sig_p1006(p1006_t a);
+int16_t sig_p1006(p1006_t a);
 // add p-adic 1006
 p1006_t add_p1006(p1006_t a, p1006_t b);
 // subtract p-adic 1006

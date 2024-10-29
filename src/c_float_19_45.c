@@ -71,12 +71,143 @@ static uint8_t get_msb_index_negative(uint64_t n) {
 }
 
 // construct float 1945
-f1945_t new_f1945(uint64_t exp, uint64_t sig) {
+f1945_t new_f1945(int64_t exp, int64_t sig) {
     return (exp << SIGNIFICAND_BITS_F_19_45) | (sig & SIGNIFICAND_MASK_F_19_45);
 }
 
+#define Float64_SIG 52
+#define Float64_SIG_1 Float64_SIG + 1
+#define Float64_EXP 11
+typedef union {
+  _Float64 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint64_t significand : Float64_SIG;
+        uint64_t exponent : Float64_EXP;
+        uint64_t sign : 1;
+#else
+        uint64_t sign : 1;
+        uint64_t exponent : Float64_EXP;
+        uint64_t significand : Float64_SIG;
+#endif
+  } parts;
+} float64_cast;
+
+// construct float 1945
+f1945_t new_f1945_from_float64(_Float64 f) {
+    float64_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t sign = f1.parts.sign;
+    uint64_t exponent = f1.parts.exponent- 1023;  // Unbias the exponent;
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -1022;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;      // Zero
+        }
+    }
+    log_debug_float("significand", significand);
+    log_debug_float("exponent", exponent);
+    significand = significand | (1ULL << Float64_SIG) | (sign << (Float64_SIG_1));
+    if (SIGNIFICAND_BITS_F_19_45 > Float64_SIG_1) {
+        significand <<= (SIGNIFICAND_BITS_F_19_45 - Float64_SIG_1);
+    } else {
+        significand >>= Float64_SIG_1 - SIGNIFICAND_BITS_F_19_45;
+    }
+    return new_f1945(exponent, significand);
+
+}
+
+#define Float32_SIG 23
+#define Float32_SIG_1 Float32_SIG + 1
+#define Float32_EXP 8
+typedef union {
+  _Float32 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint32_t significand : Float32_SIG;
+        uint32_t exponent : Float32_EXP;
+        uint32_t sign : 1;
+#else
+        uint32_t sign : 1;
+        uint32_t exponent : Float32_EXP;
+        uint32_t significand : Float32_SIG;
+#endif
+    } parts;
+} float32_cast;
+
+// construct float 1945
+f1945_t new_f1945_from_float32(_Float32 f) {
+    float32_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t sign = f1.parts.sign;
+    uint64_t exponent = f1.parts.exponent - 127;  // Unbias the exponent (bias is 127 for float32)
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -126;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;     // Zero
+        }
+    }
+    significand = significand | (1U << Float32_SIG) | (sign << (Float32_SIG_1));
+    log_debug_float("significand:", significand);
+    log_debug_float("exponent:", f1.parts.exponent);
+    if (SIGNIFICAND_BITS_F_19_45 > Float32_SIG_1) {
+        significand <<= SIGNIFICAND_BITS_F_19_45 - Float32_SIG_1;
+    } else {
+        significand >>= Float32_SIG_1 - SIGNIFICAND_BITS_F_19_45;
+    }
+    return new_f1945(exponent, significand);
+}
+
+#define Float16_SIG 10
+#define Float16_SIG_1 Float16_SIG + 1
+#define Float16_EXP 5
+typedef union {
+  _Float16 f;
+  struct {
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        uint16_t significand : Float16_SIG;
+        uint16_t exponent : Float16_EXP;
+        uint16_t sign : 1;
+#else
+        uint16_t sign : 1;
+        uint16_t exponent : Float16_EXP;
+        uint16_t significand : Float16_SIG;
+#endif
+  } parts;
+} float16_cast;
+
+// construct float 1945
+f1945_t new_f1945_from_float16(_Float16 f) {
+    float16_cast f1 = { .f = f };
+    uint64_t significand = f1.parts.significand;
+    uint64_t exponent = f1.parts.exponent - 15;  // Unbias the exponent (bias is 15 for float16)
+    uint64_t sign = f1.parts.sign;
+
+    // Handle subnormal numbers
+    if (f1.parts.exponent == 0) {
+        if (f1.parts.significand != 0) {
+            exponent = -14;  // Minimum exponent for subnormal numbers
+        } else {
+            exponent = 0;    // Zero
+        }
+    }
+    significand = significand | (1U << Float16_SIG) | (sign << (Float16_SIG_1));
+    if (SIGNIFICAND_BITS_F_19_45 > Float16_SIG_1) {
+        significand <<= SIGNIFICAND_BITS_F_19_45 - Float16_SIG_1;
+    } else {
+        significand >>= Float16_SIG_1 - SIGNIFICAND_BITS_F_19_45;
+    }
+    return new_f1945(exponent, significand);
+}
+
 // exponent part of float 1945
-uint64_t exp_f1945(f1945_t a) {
+int64_t exp_f1945(f1945_t a) {
     uint64_t exp_a = (a & EXPONENT_MASK_F_19_45) >> SIGNIFICAND_BITS_F_19_45;
 
     // Handle negatives exponents
@@ -87,7 +218,7 @@ uint64_t exp_f1945(f1945_t a) {
 }
 
 // significand part of float 1945
-uint64_t sig_f1945(f1945_t a) {
+int64_t sig_f1945(f1945_t a) {
     uint64_t sig_a = a & SIGNIFICAND_MASK_F_19_45;
 
     // Handle negative numbers
@@ -317,12 +448,10 @@ f1945_t div_f1945(f1945_t a, f1945_t b) {
     if (sig_b == 0ULL) {
         if (posi_a) {
             // Return max value as "infinity"
-            return (((1ULL << (EXPONENT_BITS_F_19_45 - 2)) - 1) << SIGNIFICAND_BITS_F_19_45)
-                   | ((1ULL << (SIGNIFICAND_BITS_F_19_45 - 2)) - 1);
+            return MAX_VALUE_F_19_45;
         } else {
             // Return min value as "-infinity"
-            return (((1ULL << (EXPONENT_BITS_F_19_45 - 2)) - 1) << SIGNIFICAND_BITS_F_19_45)
-                   | (SIGNIFICAND_SIGN_MASK_F_19_45);
+            return MIN_VALUE_F_19_45;
         }
     }
 
@@ -362,10 +491,10 @@ bool equ_f1945(f1945_t a, f1945_t b) {
 int com_f1945(f1945_t a, f1945_t b) {
     if (a == b) return 0;
 
-    uint64_t exp_a = (a & EXPONENT_MASK_F_19_45) >> SIGNIFICAND_BITS_F_19_45;
-    uint64_t exp_b = (b & EXPONENT_MASK_F_19_45) >> SIGNIFICAND_BITS_F_19_45;
-    uint64_t sig_a = a & SIGNIFICAND_MASK_F_19_45;
-    uint64_t sig_b = b & SIGNIFICAND_MASK_F_19_45;
+    int64_t exp_a = (a & EXPONENT_MASK_F_19_45) >> SIGNIFICAND_BITS_F_19_45;
+    int64_t exp_b = (b & EXPONENT_MASK_F_19_45) >> SIGNIFICAND_BITS_F_19_45;
+    int64_t sig_a = a & SIGNIFICAND_MASK_F_19_45;
+    int64_t sig_b = b & SIGNIFICAND_MASK_F_19_45;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

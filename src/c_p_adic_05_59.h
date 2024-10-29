@@ -18,12 +18,15 @@ typedef uint64_t p0559_t;
 #define EXPONENT_SIGN_MASK_P_05_59 (1ULL << (EXPONENT_BITS_P_05_59 - 1))
 #define BITS_SIGN_MASK_P_05_59 (1ULL << (BITS_P_05_59 - 1))
 
+#define MAX_VALUE_P_05_59 (((1ULL << (EXPONENT_BITS_P_05_59 - 2)) - 1) << SIGNIFICAND_BITS_P_05_59) | ((1ULL << (SIGNIFICAND_BITS_P_05_59 - 2)) - 1)
+#define MIN_VALUE_P_05_59 (((1ULL << (EXPONENT_BITS_P_05_59 - 2)) - 1) << SIGNIFICAND_BITS_P_05_59) | (SIGNIFICAND_SIGN_MASK_P_05_59)
+
 // construct p-adic 0559
-p0559_t new_p0559(uint64_t exp, uint64_t sig);
+p0559_t new_p0559(int64_t exp, int64_t sig);
 // exponent part of p-adic 0559
-uint64_t exp_p0559(p0559_t a);
+int64_t exp_p0559(p0559_t a);
 // significand part of p-adic 0559
-uint64_t sig_p0559(p0559_t a);
+int64_t sig_p0559(p0559_t a);
 // add p-adic 0559
 p0559_t add_p0559(p0559_t a, p0559_t b);
 // subtract p-adic 0559

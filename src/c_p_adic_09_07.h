@@ -18,12 +18,15 @@ typedef uint16_t p0907_t;
 #define EXPONENT_SIGN_MASK_P_09_07 (1U << (EXPONENT_BITS_P_09_07 - 1))
 #define BITS_SIGN_MASK_P_09_07 (1U << (BITS_P_09_07 - 1))
 
+#define MAX_VALUE_P_09_07 (((1U << (EXPONENT_BITS_P_09_07 - 2)) - 1) << SIGNIFICAND_BITS_P_09_07) | ((1U << (SIGNIFICAND_BITS_P_09_07 - 2)) - 1)
+#define MIN_VALUE_P_09_07 (((1U << (EXPONENT_BITS_P_09_07 - 2)) - 1) << SIGNIFICAND_BITS_P_09_07) | (SIGNIFICAND_SIGN_MASK_P_09_07)
+
 // construct p-adic 0907
-p0907_t new_p0907(uint16_t exp, uint16_t sig);
+p0907_t new_p0907(int16_t exp, int16_t sig);
 // exponent part of p-adic 0907
-uint16_t exp_p0907(p0907_t a);
+int16_t exp_p0907(p0907_t a);
 // significand part of p-adic 0907
-uint16_t sig_p0907(p0907_t a);
+int16_t sig_p0907(p0907_t a);
 // add p-adic 0907
 p0907_t add_p0907(p0907_t a, p0907_t b);
 // subtract p-adic 0907

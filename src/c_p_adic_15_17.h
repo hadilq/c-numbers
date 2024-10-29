@@ -18,12 +18,15 @@ typedef uint32_t p1517_t;
 #define EXPONENT_SIGN_MASK_P_15_17 (1U << (EXPONENT_BITS_P_15_17 - 1))
 #define BITS_SIGN_MASK_P_15_17 (1U << (BITS_P_15_17 - 1))
 
+#define MAX_VALUE_P_15_17 (((1U << (EXPONENT_BITS_P_15_17 - 2)) - 1) << SIGNIFICAND_BITS_P_15_17) | ((1U << (SIGNIFICAND_BITS_P_15_17 - 2)) - 1)
+#define MIN_VALUE_P_15_17 (((1U << (EXPONENT_BITS_P_15_17 - 2)) - 1) << SIGNIFICAND_BITS_P_15_17) | (SIGNIFICAND_SIGN_MASK_P_15_17)
+
 // construct p-adic 1517
-p1517_t new_p1517(uint32_t exp, uint32_t sig);
+p1517_t new_p1517(int32_t exp, int32_t sig);
 // exponent part of p-adic 1517
-uint32_t exp_p1517(p1517_t a);
+int32_t exp_p1517(p1517_t a);
 // significand part of p-adic 1517
-uint32_t sig_p1517(p1517_t a);
+int32_t sig_p1517(p1517_t a);
 // add p-adic 1517
 p1517_t add_p1517(p1517_t a, p1517_t b);
 // subtract p-adic 1517

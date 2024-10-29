@@ -18,12 +18,15 @@ typedef uint8_t p0206_t;
 #define EXPONENT_SIGN_MASK_P_02_06 (1U << (EXPONENT_BITS_P_02_06 - 1))
 #define BITS_SIGN_MASK_P_02_06 (1U << (BITS_P_02_06 - 1))
 
+#define MAX_VALUE_P_02_06 (((1U << (EXPONENT_BITS_P_02_06 - 2)) - 1) << SIGNIFICAND_BITS_P_02_06) | ((1U << (SIGNIFICAND_BITS_P_02_06 - 2)) - 1)
+#define MIN_VALUE_P_02_06 (((1U << (EXPONENT_BITS_P_02_06 - 2)) - 1) << SIGNIFICAND_BITS_P_02_06) | (SIGNIFICAND_SIGN_MASK_P_02_06)
+
 // construct p-adic 0206
-p0206_t new_p0206(uint8_t exp, uint8_t sig);
+p0206_t new_p0206(int8_t exp, int8_t sig);
 // exponent part of p-adic 0206
-uint8_t exp_p0206(p0206_t a);
+int8_t exp_p0206(p0206_t a);
 // significand part of p-adic 0206
-uint8_t sig_p0206(p0206_t a);
+int8_t sig_p0206(p0206_t a);
 // add p-adic 0206
 p0206_t add_p0206(p0206_t a, p0206_t b);
 // subtract p-adic 0206

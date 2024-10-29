@@ -18,12 +18,15 @@ typedef uint32_t p2210_t;
 #define EXPONENT_SIGN_MASK_P_22_10 (1U << (EXPONENT_BITS_P_22_10 - 1))
 #define BITS_SIGN_MASK_P_22_10 (1U << (BITS_P_22_10 - 1))
 
+#define MAX_VALUE_P_22_10 (((1U << (EXPONENT_BITS_P_22_10 - 2)) - 1) << SIGNIFICAND_BITS_P_22_10) | ((1U << (SIGNIFICAND_BITS_P_22_10 - 2)) - 1)
+#define MIN_VALUE_P_22_10 (((1U << (EXPONENT_BITS_P_22_10 - 2)) - 1) << SIGNIFICAND_BITS_P_22_10) | (SIGNIFICAND_SIGN_MASK_P_22_10)
+
 // construct p-adic 2210
-p2210_t new_p2210(uint32_t exp, uint32_t sig);
+p2210_t new_p2210(int32_t exp, int32_t sig);
 // exponent part of p-adic 2210
-uint32_t exp_p2210(p2210_t a);
+int32_t exp_p2210(p2210_t a);
 // significand part of p-adic 2210
-uint32_t sig_p2210(p2210_t a);
+int32_t sig_p2210(p2210_t a);
 // add p-adic 2210
 p2210_t add_p2210(p2210_t a, p2210_t b);
 // subtract p-adic 2210

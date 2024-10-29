@@ -18,12 +18,15 @@ typedef uint64_t p1747_t;
 #define EXPONENT_SIGN_MASK_P_17_47 (1ULL << (EXPONENT_BITS_P_17_47 - 1))
 #define BITS_SIGN_MASK_P_17_47 (1ULL << (BITS_P_17_47 - 1))
 
+#define MAX_VALUE_P_17_47 (((1ULL << (EXPONENT_BITS_P_17_47 - 2)) - 1) << SIGNIFICAND_BITS_P_17_47) | ((1ULL << (SIGNIFICAND_BITS_P_17_47 - 2)) - 1)
+#define MIN_VALUE_P_17_47 (((1ULL << (EXPONENT_BITS_P_17_47 - 2)) - 1) << SIGNIFICAND_BITS_P_17_47) | (SIGNIFICAND_SIGN_MASK_P_17_47)
+
 // construct p-adic 1747
-p1747_t new_p1747(uint64_t exp, uint64_t sig);
+p1747_t new_p1747(int64_t exp, int64_t sig);
 // exponent part of p-adic 1747
-uint64_t exp_p1747(p1747_t a);
+int64_t exp_p1747(p1747_t a);
 // significand part of p-adic 1747
-uint64_t sig_p1747(p1747_t a);
+int64_t sig_p1747(p1747_t a);
 // add p-adic 1747
 p1747_t add_p1747(p1747_t a, p1747_t b);
 // subtract p-adic 1747

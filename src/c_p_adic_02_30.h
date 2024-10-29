@@ -18,12 +18,15 @@ typedef uint32_t p0230_t;
 #define EXPONENT_SIGN_MASK_P_02_30 (1U << (EXPONENT_BITS_P_02_30 - 1))
 #define BITS_SIGN_MASK_P_02_30 (1U << (BITS_P_02_30 - 1))
 
+#define MAX_VALUE_P_02_30 (((1U << (EXPONENT_BITS_P_02_30 - 2)) - 1) << SIGNIFICAND_BITS_P_02_30) | ((1U << (SIGNIFICAND_BITS_P_02_30 - 2)) - 1)
+#define MIN_VALUE_P_02_30 (((1U << (EXPONENT_BITS_P_02_30 - 2)) - 1) << SIGNIFICAND_BITS_P_02_30) | (SIGNIFICAND_SIGN_MASK_P_02_30)
+
 // construct p-adic 0230
-p0230_t new_p0230(uint32_t exp, uint32_t sig);
+p0230_t new_p0230(int32_t exp, int32_t sig);
 // exponent part of p-adic 0230
-uint32_t exp_p0230(p0230_t a);
+int32_t exp_p0230(p0230_t a);
 // significand part of p-adic 0230
-uint32_t sig_p0230(p0230_t a);
+int32_t sig_p0230(p0230_t a);
 // add p-adic 0230
 p0230_t add_p0230(p0230_t a, p0230_t b);
 // subtract p-adic 0230
