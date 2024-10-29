@@ -83,7 +83,6 @@ int result6 = com_f5707(a, b);
 This set of operations is available for all the types in this collection.
 
 # Roadmap
-- Have some utility to convert `float8`, `float16`, `float32`, and `float64` into these types.
 - Complete the test suite, and review the comments on the current tests.
 
 # Cite
