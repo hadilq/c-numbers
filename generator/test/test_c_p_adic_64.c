@@ -36,7 +36,7 @@ static void test_addition() {
     // Test case 1: Simple addition
     pDDD64_t a = new_pDDD64(2, 5ULL); // 000...0101. × 2^2
     pDDD64_t b = new_pDDD64(2, 6ULL); // 000...0110. × 2^2
-    pDDD64_t result = add_pDDD64(a, b); // 00...010110. × 2^55
+    pDDD64_t result = add_pDDD64(a, b); // 00...010110. × 2^2
     assert_p_adic_CCC_64(
         "Addition result 1", result,
         2ULL,

@@ -1,16 +1,23 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p "bc"
 
-generate_test=false
+available_tests_list=(
+  "test_c_float_02_06.c"
+  "test_c_float_04_04.c"
+  "test_c_float_11_05.c"
+  "test_c_float_26_06.c"
+  "test_c_float_57_07.c"
+  "test_c_p_adic_04_04.c"
+  "test_c_p_adic_11_05.c"
+  "test_c_p_adic_26_06.c"
+  "test_c_p_adic_57_07.c"
+)
 
 function generate_for {
   bits="$1"
   format_bit="$(printf "%02d" "$bits")"
   find generator -type f -regex ".*$bits\.[ch]" | while read -r file; do
     file_name=$(basename "$file")
-    if [[ $file_name == "test_"* ]] && [[ $generate_test != true ]]; then
-      continue
-    fi
     init=$(echo "x = l($bits)/l(2) + 1; scale = 0; x / 1" | bc -l)
     init_significand=$((bits - init))
     finish=$((bits - 2))
@@ -21,6 +28,9 @@ function generate_for {
       generate_file_name=$(echo "$file_name" | sed -r "s/$format_bit/$format_significand\_$format_exponent/g")
       if [[ $file_name == "test_"* ]]; then
         generate_file="test/$generate_file_name"
+        if [[ ! " ${available_tests_list[*]} " =~ (^|[[:space:]])$generate_file_name($|[[:space:]]) ]]; then
+          continue
+        fi
       else
         generate_file="src/$generate_file_name"
       fi

@@ -30,6 +30,26 @@ static void assert_float_26_06(const char* label, f2606_t f, uint32_t expected_e
     assert((f & SIGNIFICAND_MASK_F_26_06) == expected_sig);
 }
 
+static void test_constructor() {
+    printf("Testing constructor...\n");
+
+    // Test case 1: Float32
+    f2606_t a = new_f2606_from_float32(1.164);
+    assert_float_26_06(
+        "Constructor result 1", a,
+        0,
+        0x14fdf40ULL
+    );
+
+    // Test case 2: Float16
+    a = new_f2606_from_float16(1.164);
+    assert_float_26_06(
+        "Constructor result 2", a,
+        0,
+        0x1500000ULL
+    );
+}
+
 static void test_addition() {
     printf("Testing addition...\n");
 
@@ -325,6 +345,7 @@ static void test_equals_and_compare() {
 }
 
 int main() {
+    test_constructor();
     test_addition();
     test_subtraction();
     test_multiplication();

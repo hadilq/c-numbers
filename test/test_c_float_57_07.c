@@ -30,6 +30,34 @@ static void assert_float_57_07(const char* label, f5707_t f, uint64_t expected_e
     assert((f & SIGNIFICAND_MASK_F_57_07) == expected_sig);
 }
 
+static void test_constructor() {
+    printf("Testing constructor...\n");
+
+    // Test case 1: Float64
+    f5707_t a = new_f5707_from_float64(1.164);
+    assert_float_57_07(
+        "Constructor result 1", a,
+        0,
+        0xa7ef9db22d0e40ULL
+    );
+
+    // Test case 2: Float32
+    a = new_f5707_from_float32(1.164);
+    assert_float_57_07(
+        "Constructor result 2", a,
+        0,
+        0xa7efa000000000ULL
+    );
+
+    // Test case 3: Float16
+    a = new_f5707_from_float16(1.164);
+    assert_float_57_07(
+        "Constructor result 3", a,
+        0,
+        0xa8000000000000ULL
+    );
+}
+
 static void test_addition() {
     printf("Testing addition...\n");
 
@@ -325,6 +353,7 @@ static void test_equals_and_compare() {
 }
 
 int main() {
+    test_constructor();
     test_addition();
     test_subtraction();
     test_multiplication();
