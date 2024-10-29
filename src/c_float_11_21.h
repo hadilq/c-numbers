@@ -27,14 +27,14 @@ typedef uint32_t f1121_t;
 f1121_t new_f1121(int32_t exp, int32_t sig);
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float32)
+  #if __is_identifier(_Float32)
 // construct float 1121
 f1121_t new_f1121_from_float32(_Float32 f);
   #endif
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 // construct float 1121
 f1121_t new_f1121_from_float16(_Float16 f);
   #endif

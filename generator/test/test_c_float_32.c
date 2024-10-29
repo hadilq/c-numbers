@@ -34,7 +34,7 @@ static void test_constructor() {
     printf("Testing constructor...\n");
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float32)
+  #if __is_identifier(_Float32)
     // Test case 1: Float32
     fDDD32_t a = new_fDDD32_from_float32(1.164);
     assert_float_CCC_32(
@@ -46,7 +46,7 @@ static void test_constructor() {
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
     // Test case 2: Float16
     fDDD32_t b = new_fDDD32_from_float16(1.164);
     assert_float_CCC_32(

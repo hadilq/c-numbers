@@ -27,14 +27,14 @@ typedef uint32_t f2606_t;
 f2606_t new_f2606(int32_t exp, int32_t sig);
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float32)
+  #if __is_identifier(_Float32)
 // construct float 2606
 f2606_t new_f2606_from_float32(_Float32 f);
   #endif
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 // construct float 2606
 f2606_t new_f2606_from_float16(_Float16 f);
   #endif

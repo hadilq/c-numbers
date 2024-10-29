@@ -27,7 +27,7 @@ typedef uint64_t f0856_t;
 f0856_t new_f0856(int64_t exp, int64_t sig);
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float64)
+  #if __is_identifier(_Float64)
 // construct float 0856
 f0856_t new_f0856_from_float64(_Float64 f);
     #define FLOAT64_BUILTIN
@@ -35,7 +35,7 @@ f0856_t new_f0856_from_float64(_Float64 f);
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float32)
+  #if __is_identifier(_Float32)
 // construct float 0856
 f0856_t new_f0856_from_float32(_Float32 f);
     #define FLOAT32_BUILTIN
@@ -43,7 +43,7 @@ f0856_t new_f0856_from_float32(_Float32 f);
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 // construct float 0856
 f0856_t new_f0856_from_float16(_Float16 f);
     #define FLOAT16_BUILTIN

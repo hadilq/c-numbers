@@ -27,14 +27,14 @@ typedef uint32_t f1616_t;
 f1616_t new_f1616(int32_t exp, int32_t sig);
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float32)
+  #if __is_identifier(_Float32)
 // construct float 1616
 f1616_t new_f1616_from_float32(_Float32 f);
   #endif
 #endif
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 // construct float 1616
 f1616_t new_f1616_from_float16(_Float16 f);
   #endif

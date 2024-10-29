@@ -76,7 +76,7 @@ f0610_t new_f0610(int16_t exp, int16_t sig) {
 }
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 #define Float16_SIG 10
 #define Float16_SIG_1 Float16_SIG + 1
 #define Float16_EXP 5

@@ -26,7 +26,7 @@ typedef uint16_t f0511_t;
 f0511_t new_f0511(int16_t exp, int16_t sig);
 
 #ifdef __is_identifier
-  #if !__is_identifier(_Float16)
+  #if __is_identifier(_Float16)
 // construct float DDD32
 f0511_t new_f0511_from_float16(_Float16 f);
   #endif
