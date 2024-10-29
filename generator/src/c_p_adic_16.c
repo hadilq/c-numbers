@@ -338,10 +338,10 @@ bool equ_pDDD16(pDDD16_t a, pDDD16_t b) {
 int com_pDDD16(pDDD16_t a, pDDD16_t b) {
     if (a == b) return 0;
 
-    uint16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
-    uint16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
+    int16_t exp_a = (a & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    int16_t exp_b = (b & EXPONENT_MASK_P_CCC_16) >> SIGNIFICAND_BITS_P_CCC_16;
+    int16_t sig_a = a & SIGNIFICAND_MASK_P_CCC_16;
+    int16_t sig_b = b & SIGNIFICAND_MASK_P_CCC_16;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

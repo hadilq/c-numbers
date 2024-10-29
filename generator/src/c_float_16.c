@@ -364,10 +364,10 @@ bool equ_fDDD16(fDDD16_t a, fDDD16_t b) {
 int com_fDDD16(fDDD16_t a, fDDD16_t b) {
     if (a == b) return 0;
 
-    uint16_t exp_a = (a & EXPONENT_MASK_F_CCC_16) >> SIGNIFICAND_BITS_F_CCC_16;
-    uint16_t exp_b = (b & EXPONENT_MASK_F_CCC_16) >> SIGNIFICAND_BITS_F_CCC_16;
-    uint16_t sig_a = a & SIGNIFICAND_MASK_F_CCC_16;
-    uint16_t sig_b = b & SIGNIFICAND_MASK_F_CCC_16;
+    int16_t exp_a = (a & EXPONENT_MASK_F_CCC_16) >> SIGNIFICAND_BITS_F_CCC_16;
+    int16_t exp_b = (b & EXPONENT_MASK_F_CCC_16) >> SIGNIFICAND_BITS_F_CCC_16;
+    int16_t sig_a = a & SIGNIFICAND_MASK_F_CCC_16;
+    int16_t sig_b = b & SIGNIFICAND_MASK_F_CCC_16;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

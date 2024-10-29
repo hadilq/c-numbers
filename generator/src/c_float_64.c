@@ -362,10 +362,10 @@ bool equ_fDDD64(fDDD64_t a, fDDD64_t b) {
 int com_fDDD64(fDDD64_t a, fDDD64_t b) {
     if (a == b) return 0;
 
-    uint64_t exp_a = (a & EXPONENT_MASK_F_CCC_64) >> SIGNIFICAND_BITS_F_CCC_64;
-    uint64_t exp_b = (b & EXPONENT_MASK_F_CCC_64) >> SIGNIFICAND_BITS_F_CCC_64;
-    uint64_t sig_a = a & SIGNIFICAND_MASK_F_CCC_64;
-    uint64_t sig_b = b & SIGNIFICAND_MASK_F_CCC_64;
+    int64_t exp_a = (a & EXPONENT_MASK_F_CCC_64) >> SIGNIFICAND_BITS_F_CCC_64;
+    int64_t exp_b = (b & EXPONENT_MASK_F_CCC_64) >> SIGNIFICAND_BITS_F_CCC_64;
+    int64_t sig_a = a & SIGNIFICAND_MASK_F_CCC_64;
+    int64_t sig_b = b & SIGNIFICAND_MASK_F_CCC_64;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

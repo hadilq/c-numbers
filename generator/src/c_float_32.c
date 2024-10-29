@@ -362,10 +362,10 @@ bool equ_fDDD32(fDDD32_t a, fDDD32_t b) {
 int com_fDDD32(fDDD32_t a, fDDD32_t b) {
     if (a == b) return 0;
 
-    uint32_t exp_a = (a & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
-    uint32_t exp_b = (b & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
-    uint32_t sig_a = a & SIGNIFICAND_MASK_F_CCC_32;
-    uint32_t sig_b = b & SIGNIFICAND_MASK_F_CCC_32;
+    int32_t exp_a = (a & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
+    int32_t exp_b = (b & EXPONENT_MASK_F_CCC_32) >> SIGNIFICAND_BITS_F_CCC_32;
+    int32_t sig_a = a & SIGNIFICAND_MASK_F_CCC_32;
+    int32_t sig_b = b & SIGNIFICAND_MASK_F_CCC_32;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

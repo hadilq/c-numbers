@@ -338,10 +338,10 @@ bool equ_pDDD64(pDDD64_t a, pDDD64_t b) {
 int com_pDDD64(pDDD64_t a, pDDD64_t b) {
     if (a == b) return 0;
 
-    uint64_t exp_a = (a & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
-    uint64_t exp_b = (b & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
-    uint64_t sig_a = a & SIGNIFICAND_MASK_P_CCC_64;
-    uint64_t sig_b = b & SIGNIFICAND_MASK_P_CCC_64;
+    int64_t exp_a = (a & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
+    int64_t exp_b = (b & EXPONENT_MASK_P_CCC_64) >> SIGNIFICAND_BITS_P_CCC_64;
+    int64_t sig_a = a & SIGNIFICAND_MASK_P_CCC_64;
+    int64_t sig_b = b & SIGNIFICAND_MASK_P_CCC_64;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;

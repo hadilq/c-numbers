@@ -338,10 +338,10 @@ bool equ_pDDD08(pDDD08_t a, pDDD08_t b) {
 int com_pDDD08(pDDD08_t a, pDDD08_t b) {
     if (a == b) return 0;
 
-    uint8_t exp_a = (a & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
-    uint8_t exp_b = (b & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
-    uint8_t sig_a = a & SIGNIFICAND_MASK_P_CCC_08;
-    uint8_t sig_b = b & SIGNIFICAND_MASK_P_CCC_08;
+    int8_t exp_a = (a & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
+    int8_t exp_b = (b & EXPONENT_MASK_P_CCC_08) >> SIGNIFICAND_BITS_P_CCC_08;
+    int8_t sig_a = a & SIGNIFICAND_MASK_P_CCC_08;
+    int8_t sig_b = b & SIGNIFICAND_MASK_P_CCC_08;
 
     if (exp_a > exp_b) return 1;
     if (exp_a < exp_b) return -1;
